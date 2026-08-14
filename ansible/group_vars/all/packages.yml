@@ -120,3 +120,26 @@ plasma_packages:
 theme_packages:
   - papirus-icon-theme
   - fonts-jetbrains-mono
+
+pip_user_packages:
+  - beautifulsoup4
+  - curl_cffi
+  - git-filter-repo
+  - numpy
+  - pandas
+  - peewee
+  - pillow
+  - prompt_toolkit
+  - protobuf
+  - pyarrow
+  - python-dateutil
+  - python-dotenv
+  - pytz
+  - questionary
+  - SQLAlchemy
+  - six
+  - soupsieve
+  - websockets
+  - pytest
+
+npm_global_packages: []

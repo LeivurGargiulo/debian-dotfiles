@@ -1,0 +1,13 @@
+---
+- name: Install pip user packages
+  ansible.builtin.pip:
+    name: "{{ pip_user_packages }}"
+    extra_args: --user
+  become: false
+
+- name: Install npm global packages
+  community.general.npm:
+    name: "{{ item }}"
+    global: true
+  loop: "{{ npm_global_packages }}"
+  when: npm_global_packages | length > 0
