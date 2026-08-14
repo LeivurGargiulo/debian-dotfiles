@@ -60,17 +60,6 @@ exactly the things WSL/VM testing structurally can't verify:
       Wayland — the old repo's bare-metal pass found flameshot broken on
       Wayland; this repo uses `kde-spectacle` instead specifically to avoid
       that, confirm it still works on this hardware
-- [ ] **Tailscale + SSH/mosh reachable from another device** — don't just
-      check `tailscale status` locally, actually SSH in from a second
-      machine or your phone. `tailscale status` showing a peer as
-      "offline, last seen Xh ago" means *that peer* dropped off the
-      tailnet (battery optimization killing the app, etc.), not a bug in
-      this playbook — rule that out on the peer's end before assuming
-      sshd/tailscaled misconfiguration here. Confirm `sshd` is reachable
-      (`systemctl status ssh.socket` — Debian's sshd is socket-activated,
-      "inactive (dead)" for `ssh.service` with the socket present is
-      normal, not a bug) and mosh's UDP range isn't blocked by a firewall
-      if one was configured on this specific box.
 
 ## Idempotency
 
