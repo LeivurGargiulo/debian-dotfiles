@@ -27,3 +27,6 @@
 
 - name: Install flatpak apps
   ansible.builtin.include_tasks: flatpak.yml
+
+- name: Add apt repos and install Google Chrome and VS Code
+  ansible.builtin.include_tasks: apt_repos.yml

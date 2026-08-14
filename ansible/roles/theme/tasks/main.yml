@@ -35,11 +35,17 @@
     dest: /usr/share/color-schemes/CatppuccinMocha.colors
     mode: "0644"
 
+- name: Determine invoking user's UID for XDG_RUNTIME_DIR
+  ansible.builtin.command: id -u
+  become: false
+  register: invoking_uid
+  changed_when: false
+
 - name: Apply Catppuccin Mocha color scheme
   ansible.builtin.command: plasma-apply-colorscheme CatppuccinMocha
   become: false
   environment:
-    XDG_RUNTIME_DIR: "/run/user/{{ ansible_facts['env']['SUDO_UID'] | default(1000) }}"
+    XDG_RUNTIME_DIR: "/run/user/{{ invoking_uid.stdout }}"
 
 - name: Fetch a Catppuccin Mocha wallpaper
   ansible.builtin.get_url:
@@ -50,3 +56,5 @@
 - name: Apply wallpaper
   ansible.builtin.command: plasma-apply-wallpaperimage /usr/share/wallpapers/catppuccin-mocha.png
   become: false
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ invoking_uid.stdout }}"

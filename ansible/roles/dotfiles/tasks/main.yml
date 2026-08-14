@@ -1,4 +1,4 @@
 ---
 - name: Apply chezmoi source state
-  ansible.builtin.command: chezmoi --source "{{ playbook_dir }}/../chezmoi" apply
+  ansible.builtin.command: chezmoi init --source "{{ playbook_dir }}/../chezmoi" --apply
   become: false

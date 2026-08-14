@@ -75,8 +75,8 @@ apt_packages:
   - prismlauncher
 
   # not in Debian apt — installed separately (see packages_manual role tasks):
-  #   starship, tailscale, google-chrome-stable, chezmoi, ncspot, lazygit,
-  #   yt-dlp, atuin, jrnl, glow, mangohud, ventoy, vscode, zen browser,
+  #   starship, tailscale, chezmoi, ncspot, lazygit,
+  #   yt-dlp, atuin, jrnl, glow, mangohud, ventoy, zen browser,
   #   vesktop, telegram, zapzap, easyeffects (flatpak), gnome-boxes,
   #   openrgb, reaper, catppuccin-cursors, catppuccin-papirus-folders
 
