@@ -15,37 +15,26 @@
     dest: /etc/systemd/system/default.target
     state: link
 
-- name: Clone Bismuth KWin tiling script
-  ansible.builtin.git:
-    repo: https://github.com/Bismuth-Forge/bismuth.git
-    dest: /tmp/bismuth-build
-    depth: 1
-  register: bismuth_clone
-
-- name: Build and install Bismuth (requires cmake/extra-cmake-modules)
+- name: Install build deps for Polonium KWin tiling script
   ansible.builtin.apt:
     name:
-      - cmake
-      - extra-cmake-modules
-      - libkf6config-dev
-      - libkf6configwidgets-dev
-      - libkf6i18n-dev
-      - libkf6kio-dev
-      - qt6-declarative-dev
+      - nodejs
+      - npm
+      - zip
+      - make
     state: present
 
-- name: Configure and build Bismuth
-  ansible.builtin.shell: |
-    set -euo pipefail
-    cd /tmp/bismuth-build
-    cmake -B build -DCMAKE_INSTALL_PREFIX=/usr
-    cmake --build build
-  args:
-    executable: /bin/bash
-  when: bismuth_clone.changed
+- name: Clone Polonium KWin tiling script (Bismuth successor, Plasma 6 native)
+  ansible.builtin.git:
+    repo: https://github.com/zeroxoneafour/polonium.git
+    dest: /tmp/polonium-build
+    depth: 1
+  become: false
+  register: polonium_clone
 
-- name: Install Bismuth
-  ansible.builtin.command: cmake --install build
+- name: Build and install Polonium
+  ansible.builtin.command: make
   args:
-    chdir: /tmp/bismuth-build
-  when: bismuth_clone.changed
+    chdir: /tmp/polonium-build
+  become: false
+  when: polonium_clone.changed
