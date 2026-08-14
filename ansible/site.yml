@@ -1,0 +1,11 @@
+---
+- name: Configure Debian workstation
+  hosts: local
+  become: true
+  pre_tasks:
+    - name: Assert target is Debian
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == "Debian"
+        fail_msg: "This playbook only supports Debian. Detected: {{ ansible_facts['distribution'] }}"
+  roles: []
