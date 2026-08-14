@@ -1,0 +1,30 @@
+---
+- name: Check if starship is installed
+  ansible.builtin.command: which starship
+  register: starship_check
+  ignore_errors: true
+  changed_when: false
+
+- name: Install starship via official script
+  ansible.builtin.shell: curl -sS https://starship.rs/install.sh | sh -s -- --yes
+  when: starship_check.rc != 0
+
+- name: Check if tailscale is installed
+  ansible.builtin.command: which tailscale
+  register: tailscale_check
+  ignore_errors: true
+  changed_when: false
+
+- name: Install tailscale via official script
+  ansible.builtin.shell: curl -fsSL https://tailscale.com/install.sh | sh
+  when: tailscale_check.rc != 0
+
+- name: Check if chezmoi is installed
+  ansible.builtin.command: which chezmoi
+  register: chezmoi_check
+  ignore_errors: true
+  changed_when: false
+
+- name: Install chezmoi via official script
+  ansible.builtin.shell: sh -c "$(curl -fsLS get.chezmoi.io)" -- -b /usr/local/bin
+  when: chezmoi_check.rc != 0

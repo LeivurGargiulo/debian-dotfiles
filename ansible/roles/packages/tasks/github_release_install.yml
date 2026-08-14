@@ -1,0 +1,27 @@
+---
+- name: "Find matching asset for {{ release.item.repo }}"
+  ansible.builtin.set_fact:
+    matched_asset: "{{ (release.json.assets | selectattr('name', 'match', release.item.asset_pattern) | first).browser_download_url }}"
+
+- name: "Install {{ release.item.binary_name }} directly (single-binary release)"
+  ansible.builtin.get_url:
+    url: "{{ matched_asset }}"
+    dest: "/usr/local/bin/{{ release.item.binary_name }}"
+    mode: "0755"
+  when: release.item.direct_binary | default(false)
+
+- name: "Download and unarchive {{ release.item.binary_name }}"
+  ansible.builtin.unarchive:
+    src: "{{ matched_asset }}"
+    dest: "/tmp/{{ release.item.binary_name }}-extract"
+    remote_src: true
+  when: not (release.item.direct_binary | default(false))
+
+- name: "Move {{ release.item.binary_name }} into place"
+  ansible.builtin.shell: |
+    set -euo pipefail
+    found="$(find /tmp/{{ release.item.binary_name }}-extract -type f -name '{{ release.item.binary_name }}' | head -1)"
+    install -m 0755 "$found" /usr/local/bin/{{ release.item.binary_name }}
+  args:
+    executable: /bin/bash
+  when: not (release.item.direct_binary | default(false))

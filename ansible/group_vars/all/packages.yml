@@ -79,3 +79,28 @@ apt_packages:
   #   yt-dlp, atuin, jrnl, glow, mangohud, ventoy, vscode, zen browser,
   #   vesktop, telegram, zapzap, easyeffects (flatpak), gnome-boxes,
   #   openrgb, reaper, catppuccin-cursors, catppuccin-papirus-folders
+
+github_release_binaries:
+  - repo: jesseduffield/lazygit
+    asset_pattern: "lazygit_.*_Linux_x86_64.tar.gz"
+    binary_name: lazygit
+  - repo: hrkfdn/ncspot
+    asset_pattern: "ncspot-.*-linux.tar.gz"
+    binary_name: ncspot
+  - repo: yt-dlp/yt-dlp
+    asset_pattern: "yt-dlp_linux"
+    binary_name: yt-dlp
+    direct_binary: true
+  - repo: atuinsh/atuin
+    asset_pattern: "atuin-x86_64-unknown-linux-gnu.tar.gz"
+    binary_name: atuin
+  - repo: ventoy/Ventoy
+    asset_pattern: "ventoy-.*-linux.tar.gz"
+    binary_name: Ventoy2Disk.sh
+
+flatpak_apps:
+  - dev.vencord.Vesktop
+  - org.telegram.desktop
+  - com.rtosta.zapzap
+  - com.github.wwmm.easyeffects
+  - org.gnome.Boxes

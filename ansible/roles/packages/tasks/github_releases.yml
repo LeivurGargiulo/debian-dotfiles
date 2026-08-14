@@ -1,0 +1,16 @@
+---
+- name: Fetch latest release info for GitHub binaries
+  ansible.builtin.uri:
+    url: "https://api.github.com/repos/{{ item.repo }}/releases/latest"
+    return_content: true
+  loop: "{{ github_release_binaries }}"
+  loop_control:
+    label: "{{ item.repo }}"
+  register: gh_releases
+
+- name: Download and install each GitHub-release binary
+  ansible.builtin.include_tasks: github_release_install.yml
+  loop: "{{ gh_releases.results }}"
+  loop_control:
+    label: "{{ item.item.repo }}"
+    loop_var: release

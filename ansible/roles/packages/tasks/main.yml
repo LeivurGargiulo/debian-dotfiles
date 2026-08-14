@@ -18,3 +18,12 @@
   ansible.builtin.debug:
     msg: "FAILED to install: {{ apt_result.results | selectattr('failed', 'defined') | selectattr('failed') | map(attribute='item') | list }}"
   when: apt_result.results | selectattr('failed', 'defined') | selectattr('failed') | list | length > 0
+
+- name: Install non-apt binaries from GitHub releases
+  ansible.builtin.include_tasks: github_releases.yml
+
+- name: Install packages via official install scripts
+  ansible.builtin.include_tasks: official_scripts.yml
+
+- name: Install flatpak apps
+  ansible.builtin.include_tasks: flatpak.yml
