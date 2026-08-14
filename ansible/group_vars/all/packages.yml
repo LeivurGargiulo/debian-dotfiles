@@ -74,10 +74,10 @@ apt_packages:
 
 github_release_binaries:
   - repo: jesseduffield/lazygit
-    asset_pattern: "lazygit_.*_Linux_x86_64.tar.gz"
+    asset_pattern: "lazygit_.*_linux_x86_64.tar.gz"
     binary_name: lazygit
   - repo: hrkfdn/ncspot
-    asset_pattern: "ncspot-.*-linux.tar.gz"
+    asset_pattern: "ncspot-.*-linux-x86_64.tar.gz"
     binary_name: ncspot
   - repo: yt-dlp/yt-dlp
     asset_pattern: "yt-dlp_linux"
@@ -96,7 +96,7 @@ github_release_binaries:
     asset_pattern: "yazi-x86_64-unknown-linux-musl.zip"
     binary_name: yazi
   - repo: darkhz/bluetuith
-    asset_pattern: "bluetuith_.*_linux_amd64.tar.gz"
+    asset_pattern: "bluetuith_.*_Linux_x86_64.tar.gz"
     binary_name: bluetuith
 
 flatpak_apps:
