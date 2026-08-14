@@ -116,3 +116,7 @@ plasma_packages:
   - kitty
   - kde-config-gtk-style
   - kpackagetool6
+
+theme_packages:
+  - papirus-icon-theme
+  - fonts-jetbrains-mono

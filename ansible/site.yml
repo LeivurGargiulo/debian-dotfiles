@@ -11,3 +11,4 @@
   roles:
     - packages
     - desktop
+    - theme
