@@ -10,10 +10,20 @@
     dest: /tmp/catppuccin-papirus-folders
     depth: 1
 
-- name: Install catppuccin-papirus-folders
-  ansible.builtin.command: ./install.sh -a
-  args:
-    chdir: /tmp/catppuccin-papirus-folders
+- name: Install Catppuccin Papirus folder color assets
+  ansible.builtin.copy:
+    src: /tmp/catppuccin-papirus-folders/src/
+    dest: /usr/share/icons/Papirus/
+    remote_src: true
+
+- name: Fetch papirus-folders script
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/papirus-folders
+    dest: /usr/local/bin/papirus-folders
+    mode: "0755"
+
+- name: Set Catppuccin Mocha Mauve Papirus folder color
+  ansible.builtin.command: papirus-folders -C cat-mocha-mauve --theme Papirus-Dark
 
 - name: Clone catppuccin-cursors
   ansible.builtin.git:
