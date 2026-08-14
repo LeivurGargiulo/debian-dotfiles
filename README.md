@@ -9,6 +9,6 @@ for the build-out plan.
 
 ```sh
 sudo apt install ansible git
-git clone <repo> ~/debian/ansible
+git clone <repo> ~/debian && cd ~/debian/ansible
 ansible-playbook site.yml --ask-become-pass
 ```
