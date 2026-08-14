@@ -40,8 +40,8 @@
 
 - name: Fetch Catppuccin Plasma color scheme
   ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/catppuccin/kde/main/themes/colorschemes/CatppuccinMocha.colors
-    dest: /usr/share/color-schemes/CatppuccinMocha.colors
+    url: https://raw.githubusercontent.com/catppuccin/kde/main/generated/color-schemes/CatppuccinMochaMauve.colors
+    dest: /usr/share/color-schemes/CatppuccinMochaMauve.colors
     mode: "0644"
 
 - name: Determine invoking user's UID for XDG_RUNTIME_DIR
@@ -51,7 +51,7 @@
   changed_when: false
 
 - name: Apply Catppuccin Mocha color scheme
-  ansible.builtin.command: plasma-apply-colorscheme CatppuccinMocha
+  ansible.builtin.command: plasma-apply-colorscheme CatppuccinMochaMauve
   become: false
   environment:
     XDG_RUNTIME_DIR: "/run/user/{{ invoking_uid.stdout }}"
