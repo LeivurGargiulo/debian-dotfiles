@@ -25,18 +25,18 @@
 - name: Set Catppuccin Mocha Mauve Papirus folder color
   ansible.builtin.command: papirus-folders -C cat-mocha-mauve --theme Papirus-Dark
 
-- name: Clone catppuccin-cursors
-  ansible.builtin.git:
-    repo: https://github.com/catppuccin/cursors.git
-    dest: /tmp/catppuccin-cursors
-    depth: 1
-  register: cursors_clone
+- name: Fetch Catppuccin Mocha Mauve cursor theme
+  ansible.builtin.get_url:
+    url: https://github.com/catppuccin/cursors/releases/download/v2.0.0/catppuccin-mocha-mauve-cursors.zip
+    dest: /tmp/catppuccin-mocha-mauve-cursors.zip
+    mode: "0644"
 
-- name: Install Catppuccin Mocha cursor theme
-  ansible.builtin.copy:
-    src: /tmp/catppuccin-cursors/mocha/dist/catppuccin-mocha-dark-cursors
+- name: Install Catppuccin Mocha Mauve cursor theme
+  ansible.builtin.unarchive:
+    src: /tmp/catppuccin-mocha-mauve-cursors.zip
     dest: /usr/share/icons/
     remote_src: true
+    creates: /usr/share/icons/catppuccin-mocha-mauve-cursors
   when: cursors_clone.changed
 
 - name: Fetch Catppuccin Plasma color scheme
