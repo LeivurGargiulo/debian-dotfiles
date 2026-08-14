@@ -104,3 +104,15 @@ flatpak_apps:
   - com.rtosta.zapzap
   - com.github.wwmm.easyeffects
   - org.gnome.Boxes
+
+plasma_packages:
+  - plasma-desktop
+  - sddm
+  - kwin-wayland
+  - plasma-nm
+  - bluedevil
+  - kde-spectacle
+  - konsole
+  - kitty
+  - kde-config-gtk-style
+  - kpackagetool6
