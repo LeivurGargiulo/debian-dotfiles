@@ -12,3 +12,5 @@
     - packages
     - desktop
     - theme
+    - dotfiles
+    - shell-env
