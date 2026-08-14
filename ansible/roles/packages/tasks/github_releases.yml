@@ -12,5 +12,5 @@
   ansible.builtin.include_tasks: github_release_install.yml
   loop: "{{ gh_releases.results }}"
   loop_control:
-    label: "{{ item.item.repo }}"
+    label: "{{ release.item.repo }}"
     loop_var: release
