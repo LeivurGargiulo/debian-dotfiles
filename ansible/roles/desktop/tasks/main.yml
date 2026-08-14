@@ -10,9 +10,10 @@
     enabled: true
 
 - name: Set default systemd target to graphical
-  ansible.builtin.systemd:
-    name: graphical.target
-    enabled: true
+  ansible.builtin.file:
+    src: /usr/lib/systemd/system/graphical.target
+    dest: /etc/systemd/system/default.target
+    state: link
 
 - name: Clone Bismuth KWin tiling script
   ansible.builtin.git:

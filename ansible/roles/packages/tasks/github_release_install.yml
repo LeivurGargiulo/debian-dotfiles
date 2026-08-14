@@ -10,6 +10,13 @@
     mode: "0755"
   when: release.item.direct_binary | default(false)
 
+- name: "Create extract dir for {{ release.item.binary_name }}"
+  ansible.builtin.file:
+    path: "/tmp/{{ release.item.binary_name }}-extract"
+    state: directory
+    mode: "0755"
+  when: not (release.item.direct_binary | default(false))
+
 - name: "Download and unarchive {{ release.item.binary_name }}"
   ansible.builtin.unarchive:
     src: "{{ matched_asset }}"
