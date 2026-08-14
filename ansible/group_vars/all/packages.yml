@@ -1,0 +1,81 @@
+---
+apt_packages:
+  # core CLI (carried from old apt.txt)
+  - curl
+  - eza
+  - bat
+  - fd-find
+  - ripgrep
+  - fzf
+  - zoxide
+  - tmux
+  - mosh
+  - jq
+  - git
+  - gh
+  - zsh
+  - p7zip-full
+  - p7zip-rar
+  - ffmpeg
+  - python3
+  - python3-pip
+  - python3-venv
+  - openjdk-21-jdk
+  - openssh-server
+  - docker.io
+  - docker-compose-v2
+  - unzip
+  - imagemagick
+  - git-delta
+  - meld
+  - scrcpy
+  - duf
+  - smartmontools
+  - hdparm
+  - ncdu
+  - bandwhich
+  - btop
+  - glances
+
+  # TUI-first picks
+  - yazi
+  - bluetuith
+  - zathura
+  - mpv
+  - transmission-cli
+  - tremc
+  - cava
+
+  # firewall / disk / archive
+  - ufw
+  - gparted
+
+  # remote/GUI exceptions with no TUI equivalent
+  - dolphin
+  - remmina
+  - remmina-plugin-rdp
+  - remmina-plugin-vnc
+  - filezilla
+  - gimp
+  - kdenlive
+  - obs-studio
+  - nextcloud-desktop
+  - libnotify-bin
+  - gwenview
+  - ark
+
+  # office/audio
+  - pavucontrol
+
+  # password manager CLI
+  - bitwarden-cli
+
+  # KVM sharing / minecraft launcher
+  - barrier
+  - prismlauncher
+
+  # not in Debian apt — installed separately (see packages_manual role tasks):
+  #   starship, tailscale, google-chrome-stable, chezmoi, ncspot, lazygit,
+  #   yt-dlp, atuin, jrnl, glow, mangohud, ventoy, vscode, zen browser,
+  #   vesktop, telegram, zapzap, easyeffects (flatpak), gnome-boxes,
+  #   openrgb, reaper, catppuccin-cursors, catppuccin-papirus-folders

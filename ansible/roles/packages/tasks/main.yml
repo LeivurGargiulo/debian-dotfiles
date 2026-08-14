@@ -1,0 +1,20 @@
+---
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Install apt packages individually (resilient to one bad name)
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ apt_packages }}"
+  loop_control:
+    label: "{{ item }}"
+  register: apt_result
+  ignore_errors: true
+
+- name: Report failed apt packages
+  ansible.builtin.debug:
+    msg: "FAILED to install: {{ apt_result.results | selectattr('failed', 'defined') | selectattr('failed') | map(attribute='item') | list }}"
+  when: apt_result.results | selectattr('failed', 'defined') | selectattr('failed') | list | length > 0

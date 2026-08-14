@@ -8,4 +8,5 @@
         that:
           - ansible_facts['distribution'] == "Debian"
         fail_msg: "This playbook only supports Debian. Detected: {{ ansible_facts['distribution'] }}"
-  roles: []
+  roles:
+    - packages
