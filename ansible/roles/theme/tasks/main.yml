@@ -37,7 +37,6 @@
     dest: /usr/share/icons/
     remote_src: true
     creates: /usr/share/icons/catppuccin-mocha-mauve-cursors
-  when: cursors_clone.changed
 
 - name: Fetch Catppuccin Plasma color scheme
   ansible.builtin.get_url:
