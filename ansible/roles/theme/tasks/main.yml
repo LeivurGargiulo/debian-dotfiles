@@ -58,3 +58,145 @@
   become: false
   environment:
     XDG_RUNTIME_DIR: "/run/user/{{ invoking_uid.stdout }}"
+
+- name: Clone catppuccin-kde (Global Theme, window decoration, splash)
+  ansible.builtin.git:
+    repo: https://github.com/catppuccin/kde.git
+    dest: /tmp/catppuccin-kde
+    depth: 1
+  register: catppuccin_kde_clone
+
+- name: Install and apply Catppuccin Mocha Global Theme (panels, window decoration, splash)
+  ansible.builtin.command: sh install.sh -q -n 1 4 1 auto
+  args:
+    chdir: /tmp/catppuccin-kde
+  become: false
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ invoking_uid.stdout }}"
+  when: catppuccin_kde_clone.changed
+
+- name: Create Kvantum theme directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.config/Kvantum/catppuccin-mocha-mauve"
+    state: directory
+    mode: "0755"
+  become: false
+
+- name: Fetch Catppuccin Kvantum theme files
+  ansible.builtin.get_url:
+    url: "https://raw.githubusercontent.com/catppuccin/kvantum/main/themes/catppuccin-mocha-mauve/{{ item }}"
+    dest: "{{ ansible_user_dir }}/.config/Kvantum/catppuccin-mocha-mauve/{{ item }}"
+    mode: "0644"
+  become: false
+  loop:
+    - catppuccin-mocha-mauve.kvconfig
+    - catppuccin-mocha-mauve.svg
+
+- name: Set Kvantum as the active widget style
+  ansible.builtin.command: kwriteconfig6 --file kdeglobals --group KDE --key widgetStyle kvantum
+  become: false
+  changed_when: true
+
+- name: Select Catppuccin theme in Kvantum
+  community.general.ini_file:
+    path: "{{ ansible_user_dir }}/.config/Kvantum/kvantum.kvconfig"
+    section: General
+    option: theme
+    value: catppuccin-mocha-mauve
+    mode: "0644"
+  become: false
+
+- name: Fetch Catppuccin SDDM login theme
+  ansible.builtin.get_url:
+    url: https://github.com/catppuccin/sddm/releases/download/v1.1.2/catppuccin-mocha-mauve-sddm.zip
+    dest: /tmp/catppuccin-mocha-mauve-sddm.zip
+    mode: "0644"
+
+- name: Extract Catppuccin SDDM login theme
+  ansible.builtin.unarchive:
+    src: /tmp/catppuccin-mocha-mauve-sddm.zip
+    dest: /usr/share/sddm/themes/
+    remote_src: true
+    creates: /usr/share/sddm/themes/catppuccin-mocha-mauve
+
+- name: Set Catppuccin as the SDDM login theme
+  ansible.builtin.copy:
+    dest: /etc/sddm.conf.d/theme.conf
+    content: |
+      [Theme]
+      Current=catppuccin-mocha-mauve
+    mode: "0644"
+
+- name: Fetch Catppuccin Konsole colorscheme
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/catppuccin/konsole/main/themes/catppuccin-mocha.colorscheme
+    dest: "{{ ansible_user_dir }}/.local/share/konsole/catppuccin-mocha.colorscheme"
+    mode: "0644"
+  become: false
+
+- name: Install Catppuccin Konsole profile
+  ansible.builtin.copy:
+    dest: "{{ ansible_user_dir }}/.local/share/konsole/Catppuccin-Mocha.profile"
+    content: |
+      [Appearance]
+      ColorScheme=catppuccin-mocha
+
+      [General]
+      Name=Catppuccin-Mocha
+      Parent=FALLBACK/
+    mode: "0644"
+  become: false
+
+- name: Set Catppuccin as Konsole's default profile
+  ansible.builtin.command: kwriteconfig6 --file konsolerc --group "Desktop Entry" --key DefaultProfile Catppuccin-Mocha.profile
+  become: false
+  changed_when: true
+
+- name: Create GTK theme directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.local/share/themes"
+    state: directory
+    mode: "0755"
+  become: false
+
+- name: Fetch Catppuccin GTK theme
+  ansible.builtin.get_url:
+    url: "https://github.com/catppuccin/gtk/releases/download/v1.0.3/catppuccin-mocha-mauve-standard+default.zip"
+    dest: /tmp/catppuccin-mocha-mauve-gtk.zip
+    mode: "0644"
+
+- name: Extract Catppuccin GTK theme
+  ansible.builtin.unarchive:
+    src: /tmp/catppuccin-mocha-mauve-gtk.zip
+    dest: "{{ ansible_user_dir }}/.local/share/themes/"
+    remote_src: true
+    creates: "{{ ansible_user_dir }}/.local/share/themes/catppuccin-mocha-mauve-standard+default"
+  become: false
+
+- name: Create GTK settings directories
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.config/{{ item }}"
+    state: directory
+    mode: "0755"
+  become: false
+  loop:
+    - gtk-3.0
+    - gtk-4.0
+
+- name: Apply Catppuccin GTK theme to GTK3 apps
+  community.general.ini_file:
+    path: "{{ ansible_user_dir }}/.config/gtk-3.0/settings.ini"
+    section: Settings
+    option: gtk-theme-name
+    value: catppuccin-mocha-mauve-standard+default
+    mode: "0644"
+  become: false
+
+- name: Apply Catppuccin GTK theme to GTK4 apps
+  community.general.ini_file:
+    path: "{{ ansible_user_dir }}/.config/gtk-4.0/settings.ini"
+    section: Settings
+    option: gtk-theme-name
+    value: catppuccin-mocha-mauve-standard+default
+    mode: "0644"
+  become: false

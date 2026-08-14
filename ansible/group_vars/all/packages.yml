@@ -123,6 +123,7 @@ plasma_packages:
 theme_packages:
   - papirus-icon-theme
   - fonts-jetbrains-mono
+  - qt-style-kvantum
 
 pip_user_packages:
   - beautifulsoup4
