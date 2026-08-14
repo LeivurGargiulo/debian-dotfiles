@@ -1,0 +1,4 @@
+encryption = "age"
+[age]
+    identity = "~/.config/chezmoi/key.txt"
+    recipient = "{{ (age.recipient | default "") }}"
