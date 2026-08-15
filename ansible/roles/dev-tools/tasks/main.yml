@@ -11,3 +11,19 @@
     global: true
   loop: "{{ npm_global_packages }}"
   when: npm_global_packages | length > 0
+
+- name: Add Claude Code plugin marketplaces
+  ansible.builtin.command: claude plugin marketplace add {{ item }}
+  loop: "{{ claude_marketplaces }}"
+  register: marketplace_add
+  changed_when: "'already' not in marketplace_add.stdout"
+  failed_when: marketplace_add.rc != 0 and 'already' not in marketplace_add.stdout
+  become: false
+
+- name: Install Claude Code plugins
+  ansible.builtin.command: claude plugin install {{ item }} -y --scope user
+  loop: "{{ claude_plugins }}"
+  register: plugin_install
+  changed_when: "'already' not in plugin_install.stdout"
+  failed_when: plugin_install.rc != 0 and 'already' not in plugin_install.stdout
+  become: false

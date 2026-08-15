@@ -258,3 +258,26 @@ pip_user_packages:
 npm_global_packages:
   - "@bitwarden/cli"
   - "@anthropic-ai/claude-code"
+
+# Claude Code marketplaces + plugins (mirrors ~/.claude/settings.json
+# extraKnownMarketplaces / enabledPlugins on this machine).
+claude_marketplaces:
+  - anthropics/claude-plugins-official
+  - DietrichGebert/ponytail
+  - forrestchang/andrej-karpathy-skills
+  - JuliusBrussee/caveman
+  - anthropics/claude-plugins-community
+
+claude_plugins:
+  - pyright-lsp@claude-plugins-official
+  - typescript-lsp@claude-plugins-official
+  - security-guidance@claude-plugins-official
+  - ponytail@ponytail
+  - superpowers@claude-plugins-official
+  - context7@claude-plugins-official
+  - claude-code-setup@claude-plugins-official
+  - andrej-karpathy-skills@karpathy-skills
+  - caveman@caveman
+  - playwright@claude-plugins-official
+  - serena@claude-plugins-official
+  - agnix@claude-community
