@@ -60,6 +60,7 @@ apt_packages:
   # firewall / disk / archive
   - ufw
   - gparted
+  - timeshift
 
   # remote/GUI exceptions with no TUI equivalent
   - remmina
