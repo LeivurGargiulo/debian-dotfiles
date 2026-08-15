@@ -24,6 +24,7 @@
 
 - name: Install non-apt binaries from GitHub releases
   ansible.builtin.include_tasks: github_releases.yml
+  tags: github_releases
 
 - name: Install packages via official install scripts
   ansible.builtin.include_tasks: official_scripts.yml

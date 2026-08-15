@@ -13,6 +13,8 @@ apt_packages:
   - jq
   - git
   - gh
+  - nodejs
+  - npm
   - zsh
   - p7zip-full
   - unrar-free
@@ -51,7 +53,7 @@ apt_packages:
   # TUI-first picks
   - zathura
   - mpv
-  - transmission-cli
+  - rtorrent
   - cava
 
   # firewall / disk / archive
@@ -72,19 +74,24 @@ apt_packages:
   - steam-installer
 
   # not in Debian apt — installed separately (see packages_manual role tasks):
-  #   starship, tailscale, chezmoi, uv, rustup (official scripts),
-  #   raijin (cargo, needs rustup above),
+  #   starship, tailscale, chezmoi, uv (official scripts),
   #   ncspot, lazygit,
   #   yt-dlp, atuin, ventoy,
   #   vesktop, telegram, zapzap, easyeffects (flatpak), gnome-boxes,
   #   openrgb, reaper, catppuccin-cursors, catppuccin-papirus-folders,
   #   scrcpy (not resolving on this apt mirror, check sources.list),
   #   bandwhich, yazi, bluetuith, steam-tui, glow, lazydocker,
-  #   amdgpu_top, taskwarrior-tui, gophertube, wden (github releases
-  #   below), tremc, jrnl, rofi-rbw (pip), bitwarden-cli, claude-code
-  #   CLI (npm),
+  #   amdgpu_top, taskwarrior-tui, gophertube, wden, wtfutil (github
+  #   releases below), jrnl, rofi-rbw (pip), bitwarden-cli,
+  #   claude-code CLI (npm),
   #   barrier (dropped, unmaintained upstream — see input-leap flatpak),
   #   prismlauncher, osu!, rustdesk (flatpak)
+  #   tremc (dropped, pip release requires Python <3.10, incompatible
+  #   with system Python 3.13; replaced by rtorrent, which has a
+  #   built-in ncurses TUI and is packaged in apt)
+  #   xwinwrap (dropped, build-from-source only, no packaged release)
+  #   prism-tui (skipped, no packaged release, requires Rust 1.92+
+  #   toolchain via rustup — apt's rustc/cargo is only 1.85)
 
 github_release_binaries:
   - repo: jesseduffield/lazygit
@@ -139,9 +146,16 @@ github_release_binaries:
   - repo: doy/rbw
     asset_pattern: "rbw_.*_linux_amd64.tar.gz"
     binary_name: rbw
-
-cargo_packages:
-  - raijin
+  - repo: wtfutil/wtf
+    asset_pattern: "wtf_.*_linux_amd64.tar.gz"
+    binary_name: wtf
+    archive_file: wtfutil
+  - repo: zellij-org/zellij
+    asset_pattern: "^zellij-x86_64-unknown-linux-musl.tar.gz$"
+    binary_name: zellij
+  - repo: YS-L/csvlens
+    asset_pattern: "csvlens-x86_64-unknown-linux-gnu.tar.xz"
+    binary_name: csvlens
 
 flatpak_apps:
   - io.github.zen_browser.zen
@@ -205,7 +219,6 @@ pip_user_packages:
   - soupsieve
   - websockets
   - pytest
-  - tremc
   - jrnl
   - rofi-rbw
 

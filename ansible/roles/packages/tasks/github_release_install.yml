@@ -27,7 +27,7 @@
 - name: "Move {{ release.item.binary_name }} into place"
   ansible.builtin.shell: |
     set -euo pipefail
-    found="$(find /tmp/{{ release.item.binary_name }}-extract -type f -name '{{ release.item.binary_name }}' | head -1)"
+    found="$(find /tmp/{{ release.item.binary_name }}-extract -type f -name '{{ release.item.archive_file | default(release.item.binary_name) }}' | head -1)"
     install -m 0755 "$found" /usr/local/bin/{{ release.item.binary_name }}
   args:
     executable: /bin/bash

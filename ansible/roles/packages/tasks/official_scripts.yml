@@ -39,25 +39,3 @@
   ansible.builtin.shell: curl -LsSf https://astral.sh/uv/install.sh | sh
   become: false
   when: uv_check.rc != 0
-
-- name: Check if rustup/cargo is installed
-  ansible.builtin.stat:
-    path: "{{ invoking_home }}/.cargo/bin/cargo"
-  become: false
-  register: cargo_stat
-
-- name: Install rustup (Rust toolchain, needed for cargo-only packages)
-  ansible.builtin.shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
-  become: false
-  when: not cargo_stat.stat.exists
-
-- name: Install cargo packages
-  community.general.cargo:
-    name: "{{ item }}"
-    state: present
-    executable: "{{ invoking_home }}/.cargo/bin/cargo"
-  become: false
-  loop: "{{ cargo_packages }}"
-  loop_control:
-    label: "{{ item }}"
-  when: cargo_packages | length > 0

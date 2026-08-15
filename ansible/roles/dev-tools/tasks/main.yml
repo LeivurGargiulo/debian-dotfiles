@@ -2,7 +2,7 @@
 - name: Install pip user packages
   ansible.builtin.pip:
     name: "{{ pip_user_packages }}"
-    extra_args: --user
+    extra_args: --user --break-system-packages
   become: false
 
 - name: Install npm global packages
