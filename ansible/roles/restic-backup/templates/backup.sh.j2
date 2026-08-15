@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+restic backup "{{ vault_root }}"
+restic forget --prune \
+  --keep-daily {{ restic_retention.daily }} \
+  --keep-weekly {{ restic_retention.weekly }} \
+  --keep-monthly {{ restic_retention.monthly }}

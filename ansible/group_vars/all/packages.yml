@@ -13,6 +13,7 @@ apt_packages:
   - jq
   - git
   - gh
+  - restic
   - nodejs
   - npm
   - zsh

@@ -1,0 +1,31 @@
+---
+vault_root: "{{ invoking_home }}/vault"
+
+vault_dirs:
+  - documents
+  - coding
+  - projects
+  - media/photos
+  - media/music
+  - media/video
+  - games
+  - downloads
+  - inbox
+  - archive
+
+# NAS is provisioned separately (spare PC, rest-server). Update
+# restic_nas_host once it's reachable. Traffic runs over tailscale
+# (already installed), so plain http is fine here rather than standing
+# up TLS on rest-server.
+restic_nas_host: "nas.local"
+restic_nas_port: 8000
+restic_repository: "rest:http://{{ restic_nas_host }}:{{ restic_nas_port }}/vault"
+
+# Repo password lives in Bitwarden. Create this entry manually once the
+# NAS repo exists (`restic init` needs the same password).
+restic_password_bw_entry: restic-vault-repo
+
+restic_retention:
+  daily: 7
+  weekly: 4
+  monthly: 6

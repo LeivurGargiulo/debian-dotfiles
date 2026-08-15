@@ -1,0 +1,7 @@
+[Unit]
+Description=Backup ~/vault with restic
+
+[Service]
+Type=oneshot
+EnvironmentFile={{ invoking_home }}/.config/restic/env
+ExecStart={{ invoking_home }}/.local/bin/vault-backup.sh

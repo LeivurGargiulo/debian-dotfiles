@@ -33,3 +33,5 @@
     - dotfiles
     - shell-env
     - dev-tools
+    - vault
+    - restic-backup

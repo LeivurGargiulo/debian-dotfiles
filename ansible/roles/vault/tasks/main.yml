@@ -1,0 +1,9 @@
+---
+- name: Create vault directory tree
+  ansible.builtin.file:
+    path: "{{ vault_root }}/{{ item }}"
+    state: directory
+    owner: "{{ invoking_user }}"
+    group: "{{ invoking_user }}"
+    mode: "0755"
+  loop: "{{ vault_dirs }}"

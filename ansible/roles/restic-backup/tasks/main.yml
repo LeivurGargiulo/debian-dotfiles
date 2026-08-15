@@ -1,0 +1,72 @@
+---
+- name: Ensure restic config dir exists
+  ansible.builtin.file:
+    path: "{{ invoking_home }}/.config/restic"
+    state: directory
+    owner: "{{ invoking_user }}"
+    group: "{{ invoking_user }}"
+    mode: "0700"
+
+- name: Template restic env file (repository + password command)
+  ansible.builtin.template:
+    src: env.j2
+    dest: "{{ invoking_home }}/.config/restic/env"
+    owner: "{{ invoking_user }}"
+    group: "{{ invoking_user }}"
+    mode: "0600"
+
+- name: Ensure ~/.local/bin exists
+  ansible.builtin.file:
+    path: "{{ invoking_home }}/.local/bin"
+    state: directory
+    owner: "{{ invoking_user }}"
+    group: "{{ invoking_user }}"
+    mode: "0755"
+
+- name: Template vault backup script
+  ansible.builtin.template:
+    src: backup.sh.j2
+    dest: "{{ invoking_home }}/.local/bin/vault-backup.sh"
+    owner: "{{ invoking_user }}"
+    group: "{{ invoking_user }}"
+    mode: "0755"
+
+- name: Ensure systemd user unit dir exists
+  ansible.builtin.file:
+    path: "{{ invoking_home }}/.config/systemd/user"
+    state: directory
+    owner: "{{ invoking_user }}"
+    group: "{{ invoking_user }}"
+    mode: "0755"
+
+- name: Template vault-backup systemd service
+  ansible.builtin.template:
+    src: backup.service.j2
+    dest: "{{ invoking_home }}/.config/systemd/user/vault-backup.service"
+    owner: "{{ invoking_user }}"
+    group: "{{ invoking_user }}"
+    mode: "0644"
+
+- name: Template vault-backup systemd timer
+  ansible.builtin.template:
+    src: backup.timer.j2
+    dest: "{{ invoking_home }}/.config/systemd/user/vault-backup.timer"
+    owner: "{{ invoking_user }}"
+    group: "{{ invoking_user }}"
+    mode: "0644"
+
+- name: Enable lingering (timer fires without an active login session)
+  ansible.builtin.command: "loginctl enable-linger {{ invoking_user }}"
+  changed_when: false
+
+- name: Reload systemd user daemon and enable/start the timer
+  ansible.builtin.systemd:
+    name: vault-backup.timer
+    scope: user
+    daemon_reload: true
+    enabled: true
+    state: started
+  become: true
+  become_user: "{{ invoking_user }}"
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ invoking_uid }}"
