@@ -205,3 +205,9 @@
     value: catppuccin-mocha-mauve-standard+default
     mode: "0644"
   become: false
+
+- name: Generate betterlockscreen's cached lock wallpaper
+  ansible.builtin.command: betterlockscreen -u /usr/share/wallpapers/catppuccin-mocha.png
+  args:
+    creates: "{{ invoking_home }}/.cache/betterlockscreen"
+  become: false

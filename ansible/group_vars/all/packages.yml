@@ -179,6 +179,7 @@ i3_packages:
   - xinit
   - i3-wm
   - i3lock
+  - kitty
   - polybar
   - rofi
   - dunst

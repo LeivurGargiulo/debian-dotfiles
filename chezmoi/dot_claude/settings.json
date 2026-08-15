@@ -37,7 +37,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.local/bin/notify-send 'Claude Code' \"$(cat | jq -r '.message // \"Needs input\"')\""
+            "command": "notify-send 'Claude Code' \"$(cat | jq -r '.message // \"Needs input\"')\""
           }
         ]
       }
@@ -47,7 +47,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.local/bin/notify-send 'Claude Code' 'Task finished'"
+            "command": "notify-send 'Claude Code' 'Task finished'"
           }
         ]
       }
