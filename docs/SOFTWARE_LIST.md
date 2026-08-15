@@ -52,7 +52,9 @@ sync), pulsemixer (PulseAudio mixer), mangohud (gaming perf overlay),
 taskwarrior (task manager), calcurse (TUI calendar), xclip (X11
 clipboard CLI), playerctl (media-key control), udiskie (USB
 automount), aerc (TUI email client), newsboat (TUI RSS reader), cmus
-(console music player), ytfzf (search/play YouTube via mpv)
+(console music player), ytfzf (search/play YouTube via mpv), rbw
+(unofficial Bitwarden CLI/agent, faster unlock than `@bitwarden/cli`),
+oathtool (TOTP/HOTP code generator)
 
 ## TUI-first picks (`apt_packages`)
 
@@ -108,6 +110,21 @@ Installed by downloading the latest GitHub release asset straight to
 - taskwarrior-tui (interactive TUI front-end for taskwarrior, above)
 - gophertube (TUI YouTube search/browse via mpv — heavier alternative
   to ytfzf, above)
+- wden (dedicated Bitwarden TUI — self-contained vault browser, works
+  alongside rbw/rofi-rbw above rather than replacing them)
+
+## Password management / 2FA (`apt_packages` + `pip_user_packages` +
+`github_release_binaries` + `npm_global_packages`)
+
+- **rbw** (apt) — unofficial Bitwarden CLI/agent, holds decrypted vault
+  keys in memory after one unlock instead of re-prompting per command
+- **rofi-rbw** (pip) — Rofi frontend for rbw, quick password lookups
+  via the existing rofi launcher
+- **wden** (GitHub release, see above) — dedicated Bitwarden TUI, full
+  vault browser
+- **oathtool** (apt) — TOTP/HOTP 2FA code generator
+- `@bitwarden/cli` (npm, already installed) — official Bitwarden CLI,
+  kept alongside rbw
 
 ## Installed via official install scripts (`official_scripts.yml`)
 

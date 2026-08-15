@@ -46,6 +46,8 @@ apt_packages:
   - newsboat
   - cmus
   - ytfzf
+  - rbw
+  - oathtool
 
   # TUI-first picks
   - zathura
@@ -79,8 +81,9 @@ apt_packages:
   #   openrgb, reaper, catppuccin-cursors, catppuccin-papirus-folders,
   #   scrcpy (not resolving on this apt mirror, check sources.list),
   #   bandwhich, yazi, bluetuith, steam-tui, glow, lazydocker,
-  #   amdgpu_top, taskwarrior-tui, gophertube (github releases below),
-  #   tremc, jrnl (pip), bitwarden-cli, claude-code CLI (npm),
+  #   amdgpu_top, taskwarrior-tui, gophertube, wden (github releases
+  #   below), tremc, jrnl, rofi-rbw (pip), bitwarden-cli, claude-code
+  #   CLI (npm),
   #   barrier (dropped, unmaintained upstream — see input-leap flatpak),
   #   prismlauncher, osu!, rustdesk (flatpak)
 
@@ -129,6 +132,10 @@ github_release_binaries:
   - repo: KrishnaSSH/GopherTube
     asset_pattern: "gophertube-linux-amd64-.*"
     binary_name: gophertube
+    direct_binary: true
+  - repo: luryus/wden
+    asset_pattern: "wden-x86_64-unknown-linux-gnu"
+    binary_name: wden
     direct_binary: true
 
 cargo_packages:
@@ -198,6 +205,7 @@ pip_user_packages:
   - pytest
   - tremc
   - jrnl
+  - rofi-rbw
 
 npm_global_packages:
   - "@bitwarden/cli"
