@@ -203,6 +203,7 @@ i3_packages:
 theme_packages:
   - papirus-icon-theme
   - qt-style-kvantum
+  - bc
 
 # picom is built from source (pijulius/picom, implement-window-animations
 # branch — adds animations, no Debian package exists for this fork).

@@ -43,19 +43,37 @@
     mode: "0755"
   become: false
 
-- name: Fetch {{ dotfiles_theme }} cursor theme
+- name: Fetch catppuccin cursor theme (catppuccin)
   ansible.builtin.get_url:
-    url: "https://github.com/catppuccin/cursors/releases/download/v2.0.0/catppuccin-mocha-{{ dotfiles_theme == 'catppuccin' | ternary('mauve', 'peach') }}-cursors.zip"
-    dest: "/tmp/catppuccin-mocha-{{ dotfiles_theme == 'catppuccin' | ternary('mauve', 'peach') }}-cursors.zip"
+    url: "https://github.com/catppuccin/cursors/releases/download/v2.0.0/catppuccin-mocha-mauve-cursors.zip"
+    dest: "/tmp/catppuccin-mocha-mauve-cursors.zip"
     mode: "0644"
+  when: dotfiles_theme == 'catppuccin'
 
-- name: Install {{ dotfiles_theme }} cursor theme
+- name: Install catppuccin cursor theme (catppuccin)
   ansible.builtin.unarchive:
-    src: "/tmp/catppuccin-mocha-{{ dotfiles_theme == 'catppuccin' | ternary('mauve', 'peach') }}-cursors.zip"
+    src: "/tmp/catppuccin-mocha-mauve-cursors.zip"
     dest: "{{ invoking_home }}/.local/share/icons/"
     remote_src: true
-    creates: "{{ invoking_home }}/.local/share/icons/catppuccin-mocha-{{ dotfiles_theme == 'catppuccin' | ternary('mauve', 'peach') }}-cursors"
+    creates: "{{ invoking_home }}/.local/share/icons/catppuccin-mocha-mauve-cursors"
   become: false
+  when: dotfiles_theme == 'catppuccin'
+
+- name: Fetch Bibata Modern Amber cursor theme (orange)
+  ansible.builtin.get_url:
+    url: "https://github.com/ful1e5/Bibata_Cursor/releases/download/v2.0.7/Bibata-Modern-Amber.tar.xz"
+    dest: "/tmp/Bibata-Modern-Amber.tar.xz"
+    mode: "0644"
+  when: dotfiles_theme == 'orange'
+
+- name: Install Bibata Modern Amber cursor theme (orange)
+  ansible.builtin.unarchive:
+    src: "/tmp/Bibata-Modern-Amber.tar.xz"
+    dest: "{{ invoking_home }}/.local/share/icons/"
+    remote_src: true
+    creates: "{{ invoking_home }}/.local/share/icons/Bibata-Modern-Amber"
+  become: false
+  when: dotfiles_theme == 'orange'
 
 - name: Set X cursor default via ~/.icons/default
   ansible.builtin.file:
@@ -78,7 +96,7 @@
 - name: Set GTK cursor-theme via gsettings
   ansible.builtin.command: >
     gsettings set org.gnome.desktop.interface cursor-theme
-    catppuccin-mocha-{{ dotfiles_theme == 'catppuccin' | ternary('mauve', 'peach') }}-cursors
+    {{ dotfiles_theme == 'catppuccin' | ternary('catppuccin-mocha-mauve-cursors', 'Bibata-Modern-Amber') }}
   become: false
   environment:
     DISPLAY: ":0"

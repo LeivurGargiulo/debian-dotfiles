@@ -62,7 +62,7 @@ exec --no-startup-id picom --config ~/.config/picom/i3.conf -b
 bindsym $mod+p exec --no-startup-id ~/.local/share/i3/scripts/toggle_picom.sh
 
 # keyboard layout
-exec --no-startup-id setxkbmap -layout us,gb -option grp:alt_shift_toggle
+exec --no-startup-id setxkbmap -layout us,latam -option grp:alt_shift_toggle
 
 # Background
 exec_always --no-startup-id nitrogen --restore
