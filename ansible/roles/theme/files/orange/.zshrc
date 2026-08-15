@@ -28,13 +28,13 @@ alias cdi="zi"   # fuzzy-pick a visited dir
 export FZF_DEFAULT_COMMAND="fdfind --type f --hidden --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="fdfind --type d --hidden --exclude .git"
-# Catppuccin Mocha (https://github.com/catppuccin/fzf)
+# RiceOrange (Windows Terminal scheme, gamdias WSL)
 export FZF_DEFAULT_OPTS=" \
---color=bg+:#1f120a,bg:#0d0704,spinner:#ffcf9c,hl:#f38ba8 \
---color=fg:#ffedd5,header:#f38ba8,info:#ff6a00,pointer:#ffcf9c \
---color=marker:#ffd9a0,fg+:#ffedd5,prompt:#ff6a00,hl+:#f38ba8 \
---color=selected-bg:#2e1c0f \
---color=border:#6b4a30,label:#ffedd5"
+--color=bg+:#3A3A3A,bg:#0A0A0A,spinner:#FFB768,hl:#FF4500 \
+--color=fg:#E8E8E8,header:#FF4500,info:#FF7A00,pointer:#FFB768 \
+--color=marker:#FFC670,fg+:#E8E8E8,prompt:#FF7A00,hl+:#FF4500 \
+--color=selected-bg:#3A3A3A \
+--color=border:#6E6E6E,label:#E8E8E8"
 
 # quick nav
 alias ..="cd .."
