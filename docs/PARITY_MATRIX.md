@@ -17,7 +17,7 @@ flatpak-apps.txt), `Win` (oldpackages/windows-inventory/).
 | Bluetooth | bluedevil (built-in applet) | GUI | GNOME |
 | Clipboard manager | Klipper (Plasma built-in) | GUI | GNOME, Arch |
 | Screenshot | spectacle | GUI | PopOS, Win |
-| Archive tool | ark + unzip/7z | GUI+CLI | Arch, Win |
+| Archive tool | thunar-archive-plugin + unzip/7z | GUI+CLI | Arch, Win |
 | PDF viewer | zathura | TUI-adjacent | Arch |
 | Torrent client | qbittorrent | GUI | Arch, PopOS |
 | Remote desktop | remmina | GUI | Arch |

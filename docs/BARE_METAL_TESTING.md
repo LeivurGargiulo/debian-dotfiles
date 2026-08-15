@@ -1,9 +1,14 @@
 # Bare-metal testing
 
-Runs after the VM pass (`docs/superpowers/plans/2026-08-14-ansible-dotfiles-rebuild.md`,
-Task 11) passes clean. The old repo found two bugs only on real hardware
-(Plasma package names, flameshot/Wayland incompatibility) that the VM pass
-missed — this stays a required step even after VM success.
+Runs after `ansible-playbook site.yml --syntax-check` and
+`chezmoi apply --dry-run` both pass clean — see
+`docs/superpowers/plans/2026-08-15-i3-ricing-rebuild.md` Task 8 for the
+checkpoint this doc turns into a repeatable procedure. This is an i3 +
+LightDM stack (previously KDE Plasma + SDDM — see
+`docs/superpowers/plans/2026-08-15-i3-ricing-rebuild.md` for that
+rebuild). WSL/VM testing structurally can't verify compositor effects,
+tray icons, or a real display-manager login, so this stays a required
+step even after those pass.
 
 ## Prereqs
 
@@ -17,7 +22,7 @@ missed — this stays a required step even after VM success.
 ## Install
 
 1. Boot the netinst USB, install base Debian (no desktop task selected —
-   the `desktop` role installs Plasma).
+   the `desktop` role installs the i3 stack).
 2. First boot, log in, get the repo onto the machine:
    ```sh
    sudo apt install -y ansible git
@@ -44,22 +49,44 @@ missed — this stays a required step even after VM success.
 Reboot, then check each of these — this list exists because these are
 exactly the things WSL/VM testing structurally can't verify:
 
-- [ ] sddm login screen appears, Plasma session loads
-- [ ] Catppuccin Mocha color scheme applied (check System Settings → Colors)
-- [ ] Wallpaper set correctly
-- [ ] Bismuth tiling active (open two windows, confirm auto-tile)
-- [ ] kitty opens with glass/blur effect — this is the one the old repo's
-      README flagged as compositor-specific (was SwayFX before, is KWin's
-      native blur-behind now). If blur doesn't render: check
-      `kwriteconfig6 --file kwinrc --group Compositing --key Enabled` is
-      true and the machine's GPU driver actually supports OpenGL
-      compositing (a cheap/headless server board may not).
+- [ ] LightDM shows a session picker and login works; select the i3 session
+      explicitly (not a leftover Plasma/other session entry)
+- [ ] i3 starts; Polybar bar is visible with a tray showing icons (not an
+      empty tray — upstream's config never exec'd a tray-app agent, this
+      repo's `i3/config` adds `nm-applet`/`blueman-applet`/polkit agent
+      execs specifically to fill it)
+- [ ] `notify-send test` delivers a Dunst notification, themed (not
+      default GTK notification styling)
+- [ ] Picom is running — shadows and window transparency visible (`picom
+      --config ~/.config/picom/i3.conf` should already be running from i3's
+      autostart, check with `pgrep picom`)
+- [ ] Rofi launcher opens (`$mod+a`) and is Catppuccin-themed, not
+      unstyled/default rofi
+- [ ] Rofi power menu opens (`$mod+Ctrl+Delete`) and its logout/suspend/
+      reboot/shutdown choices work — this exercises the
+      `~/.config/rofi/config/{i3,power}.rasi` paths fixed post-vendoring,
+      confirm both menus load their theme, not a blank/unstyled prompt
+- [ ] kitty and fastfetch render CaskaydiaCove Nerd Font (icons/glyphs
+      show, not tofu boxes); fastfetch shows the custom Debian/Catppuccin
+      ASCII logo (`~/.config/fastfetch/debian-catppuccin.txt`), not
+      upstream's Arch logo
+- [ ] GTK apps (Thunar) and Qt apps (any Kvantum-styled Qt app, or `qt5ct`
+      itself) render Catppuccin Mocha Mauve — check widget style is
+      Kvantum in `qt5ct`, not the Qt default
+- [ ] Papirus-Dark icon theme applied with Catppuccin Mocha Mauve folder
+      colors (not Tela — check via `lxappearance` or the file manager's
+      icon set)
+- [ ] Wallpaper set correctly via nitrogen (`nitrogen --restore` runs from
+      i3's autostart — confirm the Catppuccin Mocha wallpaper, not a blank
+      desktop)
+- [ ] `nvim` opens without plugin/config errors
+- [ ] `yazi` opens with the `catppuccin-mocha` flavor active
 - [ ] `zsh` is default shell, oh-my-zsh + plugins load, atuin history search
       works (`Ctrl+R`)
-- [ ] flameshot or `kde-spectacle` screenshot tool actually works under
-      Wayland — the old repo's bare-metal pass found flameshot broken on
-      Wayland; this repo uses `kde-spectacle` instead specifically to avoid
-      that, confirm it still works on this hardware
+- [ ] `flameshot` screenshot tool works — confirm it actually works on
+      this hardware; the prior KDE-era repo found flameshot broken under
+      Wayland, this i3 stack is X11-only so that failure mode shouldn't
+      apply, but verify rather than assume
 
 ## Idempotency
 

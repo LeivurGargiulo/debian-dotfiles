@@ -27,13 +27,15 @@ apt_packages:
   - unzip
   - imagemagick
   - git-delta
-  - meld
   - duf
   - smartmontools
   - hdparm
   - ncdu
   - btop
-  - glances
+  - chafa
+  - lftp
+  - rclone
+  - pulsemixer
 
   # TUI-first picks
   - zathura
@@ -46,25 +48,17 @@ apt_packages:
   - gparted
 
   # remote/GUI exceptions with no TUI equivalent
-  - dolphin
   - remmina
   - remmina-plugin-rdp
   - remmina-plugin-vnc
-  - filezilla
   - gimp
   - kdenlive
   - obs-studio
-  - nextcloud-desktop
   - libnotify-bin
-  - gwenview
-  - ark
-
-  # office/audio
-  - pavucontrol
 
   # not in Debian apt — installed separately (see packages_manual role tasks):
   #   starship, tailscale, chezmoi, ncspot, lazygit,
-  #   yt-dlp, atuin, jrnl, glow, mangohud, ventoy, zen browser,
+  #   yt-dlp, atuin, jrnl, glow, mangohud, ventoy,
   #   vesktop, telegram, zapzap, easyeffects (flatpak), gnome-boxes,
   #   openrgb, reaper, catppuccin-cursors, catppuccin-papirus-folders,
   #   scrcpy (not resolving on this apt mirror, check sources.list),
@@ -100,6 +94,7 @@ github_release_binaries:
     binary_name: bluetuith
 
 flatpak_apps:
+  - io.github.zen_browser.zen
   - dev.vencord.Vesktop
   - org.telegram.desktop
   - com.rtosta.zapzap
