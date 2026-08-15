@@ -1,7 +1,7 @@
 ---
 - name: Check if oh-my-zsh is installed
   ansible.builtin.stat:
-    path: "{{ ansible_env.HOME }}/.oh-my-zsh"
+    path: "{{ invoking_home }}/.oh-my-zsh"
   become: false
   register: omz_stat
 
@@ -14,34 +14,34 @@
 - name: Clone zsh-autosuggestions plugin
   ansible.builtin.git:
     repo: https://github.com/zsh-users/zsh-autosuggestions.git
-    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    dest: "{{ invoking_home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
     depth: 1
   become: false
 
 - name: Clone zsh-syntax-highlighting plugin
   ansible.builtin.git:
     repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
-    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+    dest: "{{ invoking_home }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
     depth: 1
   become: false
 
 - name: Clone zsh-completions plugin
   ansible.builtin.git:
     repo: https://github.com/zsh-users/zsh-completions.git
-    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-completions"
+    dest: "{{ invoking_home }}/.oh-my-zsh/custom/plugins/zsh-completions"
     depth: 1
   become: false
 
 - name: Clone zsh-history-substring-search plugin
   ansible.builtin.git:
     repo: https://github.com/zsh-users/zsh-history-substring-search.git
-    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-history-substring-search"
+    dest: "{{ invoking_home }}/.oh-my-zsh/custom/plugins/zsh-history-substring-search"
     depth: 1
   become: false
 
 - name: Check if nvm is installed
   ansible.builtin.stat:
-    path: "{{ ansible_env.HOME }}/.nvm"
+    path: "{{ invoking_home }}/.nvm"
   become: false
   register: nvm_stat
 
@@ -53,7 +53,7 @@
 
 - name: Install latest Node LTS via nvm
   ansible.builtin.shell: |
-    export NVM_DIR="{{ ansible_env.HOME }}/.nvm"
+    export NVM_DIR="{{ invoking_home }}/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     nvm install --lts
   args:
@@ -63,11 +63,11 @@
 - name: Clone tmux plugin manager
   ansible.builtin.git:
     repo: https://github.com/tmux-plugins/tpm.git
-    dest: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
+    dest: "{{ invoking_home }}/.tmux/plugins/tpm"
     depth: 1
   become: false
 
 - name: Set zsh as default shell
   ansible.builtin.user:
-    name: "{{ ansible_env.USER }}"
+    name: "{{ invoking_user }}"
     shell: /usr/bin/zsh

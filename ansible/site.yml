@@ -8,6 +8,24 @@
         that:
           - ansible_facts['distribution'] == "Debian"
         fail_msg: "This playbook only supports Debian. Detected: {{ ansible_facts['distribution'] }}"
+
+    - name: Look up invoking user's UID (ansible_facts are gathered as root; become:false tasks need the real uid)
+      ansible.builtin.command: id -u
+      become: false
+      register: _invoking_uid
+      changed_when: false
+
+    - name: Look up invoking user's passwd entry
+      ansible.builtin.command: "getent passwd {{ _invoking_uid.stdout }}"
+      become: false
+      register: _invoking_passwd
+      changed_when: false
+
+    - name: Set invoking user facts (uid, name, home) for become:false tasks across all roles
+      ansible.builtin.set_fact:
+        invoking_uid: "{{ _invoking_uid.stdout }}"
+        invoking_user: "{{ _invoking_passwd.stdout.split(':')[0] }}"
+        invoking_home: "{{ _invoking_passwd.stdout.split(':')[5] }}"
   roles:
     - packages
     - desktop
