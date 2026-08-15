@@ -41,6 +41,7 @@ client.background        $base
 
 # Resolution
 exec_always --no-startup-id xrandr --auto
+exec_always --no-startup-id xsetroot -cursor_name left_ptr
 
 # Border
 default_border pixel 1
@@ -158,6 +159,12 @@ bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
+
+# resize tiles directly, no mode needed
+bindsym Mod1+Left resize shrink width 10 px or 10 ppt
+bindsym Mod1+Right resize grow width 10 px or 10 ppt
+bindsym Mod1+Up resize shrink height 10 px or 10 ppt
+bindsym Mod1+Down resize grow height 10 px or 10 ppt
 
 # start rofi (a program launcher)
 bindsym $mod+space exec --no-startup-id "rofi -show drun -show-icons"

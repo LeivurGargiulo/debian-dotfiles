@@ -1,35 +1,35 @@
 # i3 config file (v4)
-# Orange Neon Glass
+# Catppuccin Mocha Mauve, modeled on vari-sh/Catppuccin-i3-dotfiles
 
 set $mod Mod4
 
 # Colors Catppuccin
-set $rosewater #ffcf9c
-set $flamingo #ffb86c
-set $pink #ff9500
-set $mauve #ff6a00
+set $rosewater #f5e0dc
+set $flamingo #f2cdcd
+set $pink #f5c2e7
+set $mauve #cba6f7
 set $red #f38ba8
-set $maroon #cc2400
-set $peach #ff9500
+set $maroon #eba0ac
+set $peach #fab387
 set $yellow #f9e2af
 set $green #a6e3a1
-set $teal #ff8c3d
-set $sky #ffa057
-set $sapphire #ff7a1a
-set $blue #ffc266
-set $lavender #ffd9a0
-set $text #ffedd5
-set $subtext1 #e0a465
-set $subtext0 #c98b52
-set $overlay2 #a8703f
-set $overlay1 #8a5a3a
-set $overlay0 #6b4a30
-set $surface2 #3d2716
-set $surface1 #2e1c0f
-set $surface0 #1f120a
-set $base #0d0704
-set $mantle #0a0503
-set $crust #060302
+set $teal #94e2d5
+set $sky #89dceb
+set $sapphire #74c7ec
+set $blue #89b4fa
+set $lavender #b4befe
+set $text #cdd6f4
+set $subtext1 #bac2de
+set $subtext0 #a6adc8
+set $overlay2 #9399b2
+set $overlay1 #7f849c
+set $overlay0 #6c7086
+set $surface2 #585b70
+set $surface1 #45475a
+set $surface0 #313244
+set $base #1e1e2e
+set $mantle #181825
+set $crust #11111b
 
 # Theming
 # target                 border   bg      text   indicator  child_border
@@ -41,6 +41,7 @@ client.background        $base
 
 # Resolution
 exec_always --no-startup-id xrandr --auto
+exec_always --no-startup-id xsetroot -cursor_name left_ptr
 
 # Border
 default_border pixel 1
@@ -61,7 +62,7 @@ exec --no-startup-id picom --config ~/.config/picom/i3.conf -b
 bindsym $mod+p exec --no-startup-id ~/.local/share/i3/scripts/toggle_picom.sh
 
 # keyboard layout
-exec --no-startup-id setxkbmap -layout us,latam -option grp:alt_shift_toggle
+exec --no-startup-id setxkbmap -layout us,gb -option grp:alt_shift_toggle
 
 # Background
 exec_always --no-startup-id nitrogen --restore
@@ -158,6 +159,12 @@ bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
+
+# resize tiles directly, no mode needed
+bindsym Mod1+Left resize shrink width 10 px or 10 ppt
+bindsym Mod1+Right resize grow width 10 px or 10 ppt
+bindsym Mod1+Up resize shrink height 10 px or 10 ppt
+bindsym Mod1+Down resize grow height 10 px or 10 ppt
 
 # start rofi (a program launcher)
 bindsym $mod+space exec --no-startup-id "rofi -show drun -show-icons"
