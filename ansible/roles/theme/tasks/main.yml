@@ -120,6 +120,20 @@
     mode: "0755"
   become: false
 
+- name: Create qt5ct color scheme directory
+  ansible.builtin.file:
+    path: "{{ invoking_home }}/.config/qt5ct/colors"
+    state: directory
+    mode: "0755"
+  become: false
+
+- name: Fetch Catppuccin Mocha Mauve qt5ct color scheme
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/catppuccin/qt5ct/main/themes/catppuccin-mocha-mauve.conf
+    dest: "{{ invoking_home }}/.config/qt5ct/colors/catppuccin-mocha-mauve.conf"
+    mode: "0644"
+  become: false
+
 - name: Set Kvantum as the qt5ct widget style
   community.general.ini_file:
     path: "{{ invoking_home }}/.config/qt5ct/qt5ct.conf"
@@ -128,6 +142,20 @@
     value: kvantum
     mode: "0644"
   become: false
+
+- name: Select the Catppuccin qt5ct color scheme
+  community.general.ini_file:
+    path: "{{ invoking_home }}/.config/qt5ct/qt5ct.conf"
+    section: Appearance
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    mode: "0644"
+  become: false
+  loop:
+    - option: custom_palette
+      value: "true"
+    - option: color_scheme_path
+      value: "{{ invoking_home }}/.config/qt5ct/colors/catppuccin-mocha-mauve.conf"
 
 - name: Create GTK theme directory
   ansible.builtin.file:
