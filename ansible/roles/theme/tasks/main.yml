@@ -75,6 +75,7 @@
     repo: https://github.com/catppuccin/kde.git
     dest: /tmp/catppuccin-kde
     depth: 1
+  become: false
   register: catppuccin_kde_clone
 
 - name: Install and apply Catppuccin Mocha Global Theme (panels, window decoration, splash)
