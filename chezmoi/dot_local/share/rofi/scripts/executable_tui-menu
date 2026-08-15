@@ -1,0 +1,22 @@
+#!/bin/bash
+# rofi script-mode launcher for terminal-only tools with no .desktop entry.
+
+declare -A tools=(
+    ["rtorrent — BitTorrent client"]="rtorrent"
+    ["taskwarrior-tui — task manager"]="taskwarrior-tui"
+    ["cmus — music player"]="cmus"
+    ["glow — markdown viewer"]="glow"
+    ["rbw — Bitwarden CLI vault"]="rbw unlock"
+    ["wden — AWS SSO login"]="wden"
+    ["oathtool — TOTP codes"]="oathtool"
+)
+
+if [[ -z "$1" ]]; then
+    for label in "${!tools[@]}"; do
+        echo "$label"
+    done
+    exit 0
+fi
+
+cmd="${tools[$1]}"
+[[ -n "$cmd" ]] && kitty -e bash -c "$cmd; read -n1 -p 'press any key to close'"

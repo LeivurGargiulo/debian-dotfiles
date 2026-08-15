@@ -1,0 +1,44 @@
+#!/bin/bash
+# rofi script-mode reference: static list of i3 keybinds. Update by hand
+# when i3/config binds change.
+
+if [[ -n "$1" ]]; then
+    exit 0
+fi
+
+cat <<'EOF'
+mod+Return — open terminal
+mod+f — open browser
+mod+e — open file manager
+mod+q — kill focused window
+mod+a — app launcher (rofi)
+mod+shift+a — TUI app launcher
+mod+n — wallpaper manager
+mod+c — clipboard history
+mod+p — toggle picom effects
+mod+ctrl+l — lock screen
+mod+grave — toggle dropdown terminal
+mod+Tab — window switcher
+mod+o — audio output switcher
+mod+comma — screenshot to clipboard
+print — screenshot gui
+mod+1..0 — switch workspace
+mod+alt+1..0 — move container to workspace
+mod+ctrl+left/right — prev/next workspace
+mod+j/k/l/; — focus left/down/up/right
+mod+shift+j/k/l/; — move window left/down/up/right
+mod+h — split horizontal
+mod+v — split vertical
+mod+g — toggle split layout
+mod+s — stacking layout
+mod+t — tabbed layout
+mod+z — fullscreen toggle
+mod+w — floating toggle
+mod+r — resize mode
+mod+minus — show scratchpad
+mod+shift+minus — move to scratchpad
+mod+shift+c — reload config
+mod+shift+r — restart i3
+mod+ctrl+delete — logout menu
+mod+slash — this cheat-sheet
+EOF
