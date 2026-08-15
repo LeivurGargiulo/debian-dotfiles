@@ -75,6 +75,21 @@ if command -v picom >/dev/null 2>&1; then
   nohup picom --config "$HOME/.config/picom/i3.conf" -b >/dev/null 2>&1 &
   disown
 fi
-command -v i3-msg >/dev/null 2>&1 && i3-msg reload >/dev/null
+if command -v i3-msg >/dev/null 2>&1; then
+  i3-msg reload >/dev/null
+  # i3 doesn't retroactively rename already-created workspaces on
+  # reload - a workspace's live name is set once, at creation time.
+  # Config-only edits (like dropping workspace label icons) never
+  # reach a workspace that already exists, so normalize any workspace
+  # still carrying an icon suffix back to its plain number.
+  i3-msg -t get_workspaces 2>/dev/null | python3 -c '
+import json, sys, subprocess, re
+for w in json.load(sys.stdin):
+    name = w["name"]
+    m = re.match(r"^(\d+):", name)
+    if m and m.group(1) != name:
+        subprocess.run(["i3-msg", "rename", "workspace", name, "to", m.group(1)])
+' 2>/dev/null || true
+fi
 
 echo "theme -> $THEME"
