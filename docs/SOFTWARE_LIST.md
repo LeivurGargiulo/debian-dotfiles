@@ -51,7 +51,8 @@ imagemagick, git-delta, duf, smartmontools, hdparm, ncdu, btop, chafa
 sync), pulsemixer (PulseAudio mixer), mangohud (gaming perf overlay),
 taskwarrior (task manager), calcurse (TUI calendar), xclip (X11
 clipboard CLI), playerctl (media-key control), udiskie (USB
-automount), aerc (TUI email client), newsboat (TUI RSS reader)
+automount), aerc (TUI email client), newsboat (TUI RSS reader), cmus
+(console music player), ytfzf (search/play YouTube via mpv)
 
 ## TUI-first picks (`apt_packages`)
 
@@ -104,6 +105,9 @@ Installed by downloading the latest GitHub release asset straight to
 - glow (TUI markdown reader)
 - lazydocker (TUI for Docker/Compose, already installed under `docker.io`)
 - amdgpu_top (AMD GPU monitor — AMD-hardware only)
+- taskwarrior-tui (interactive TUI front-end for taskwarrior, above)
+- gophertube (TUI YouTube search/browse via mpv — heavier alternative
+  to ytfzf, above)
 
 ## Installed via official install scripts (`official_scripts.yml`)
 
@@ -111,6 +115,13 @@ Installed by downloading the latest GitHub release asset straight to
 - tailscale (VPN)
 - chezmoi (dotfile manager — this repo's config is applied by it)
 - uv (Python package/project manager, user-scoped install)
+- rustup (Rust toolchain, user-scoped install — only pulled in because
+  Raijin below needs `cargo install`, not used for anything else)
+
+## Cargo packages (`cargo_packages`, via rustup above)
+
+- Raijin (weather TUI, no API key required — only distributed via
+  `cargo install`, no pre-built binary exists upstream)
 
 ## Flatpak apps (`flatpak_apps`, via Flathub)
 
@@ -163,9 +174,8 @@ picom, dunst, fastfetch, kitty, neovim (kickstart.nvim fork), yazi
   the oldpackages review, not confirmed wanted, left out
 - ollama — raised during the oldpackages review (local LLM runner), not
   yet confirmed wanted
-- taskwarrior-tui, gurk (Signal), weather TUI, Posting, cmus/termusic,
-  YouTube-TUI browser — surfaced from the awesome-tuis/best-TUI-apps
-  web search, awaiting a decision on which (if any) to add
+- gurk (Signal), Posting (HTTP client) — surfaced from the
+  awesome-tuis/best-TUI-apps web search, not confirmed wanted
 
 ## Dropped for non-FOSS / build-size (this pass)
 

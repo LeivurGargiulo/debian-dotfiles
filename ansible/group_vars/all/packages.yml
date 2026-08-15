@@ -44,6 +44,8 @@ apt_packages:
   - udiskie
   - aerc
   - newsboat
+  - cmus
+  - ytfzf
 
   # TUI-first picks
   - zathura
@@ -69,13 +71,15 @@ apt_packages:
   - steam-installer
 
   # not in Debian apt — installed separately (see packages_manual role tasks):
-  #   starship, tailscale, chezmoi, ncspot, lazygit, uv,
+  #   starship, tailscale, chezmoi, uv, rustup (official scripts),
+  #   raijin (cargo, needs rustup above),
+  #   ncspot, lazygit,
   #   yt-dlp, atuin, ventoy,
   #   vesktop, telegram, zapzap, easyeffects (flatpak), gnome-boxes,
   #   openrgb, reaper, catppuccin-cursors, catppuccin-papirus-folders,
   #   scrcpy (not resolving on this apt mirror, check sources.list),
   #   bandwhich, yazi, bluetuith, steam-tui, glow, lazydocker,
-  #   amdgpu_top (github releases below),
+  #   amdgpu_top, taskwarrior-tui, gophertube (github releases below),
   #   tremc, jrnl (pip), bitwarden-cli, claude-code CLI (npm),
   #   barrier (dropped, unmaintained upstream — see input-leap flatpak),
   #   prismlauncher, osu!, rustdesk (flatpak)
@@ -119,6 +123,16 @@ github_release_binaries:
   - repo: Umio-Yasuno/amdgpu_top
     asset_pattern: "amdgpu_top-.*-x86_64-unknown-linux-gnu.tar.gz"
     binary_name: amdgpu_top
+  - repo: kdheepak/taskwarrior-tui
+    asset_pattern: "taskwarrior-tui-x86_64-unknown-linux-gnu.tar.gz"
+    binary_name: taskwarrior-tui
+  - repo: KrishnaSSH/GopherTube
+    asset_pattern: "gophertube-linux-amd64-.*"
+    binary_name: gophertube
+    direct_binary: true
+
+cargo_packages:
+  - raijin
 
 flatpak_apps:
   - io.github.zen_browser.zen
