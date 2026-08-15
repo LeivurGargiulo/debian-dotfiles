@@ -1,0 +1,23 @@
+name: Check GitHub release asset patterns
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # weekly, Monday 06:00 UTC
+  workflow_dispatch: {}
+  pull_request:
+    paths:
+      - "ansible/group_vars/all/packages.yml"
+      - "scripts/check_release_assets.py"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - run: pip install pyyaml
+      - run: python3 scripts/check_release_assets.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
