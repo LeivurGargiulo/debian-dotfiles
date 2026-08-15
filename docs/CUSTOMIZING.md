@@ -16,17 +16,14 @@ bindsym $mod+<key> exec --no-startup-id <command>
 
 Check [KEYBINDINGS.md](KEYBINDINGS.md) for which keys are already
 taken before picking one. After adding, reload with `mod+shift+c` (no
-restart needed) and add the line to
-`chezmoi/dot_local/share/rofi/scripts/executable_keybind-help` (it's a
-static list, not auto-generated — see below) plus KEYBINDINGS.md.
+restart needed) and add the row to KEYBINDINGS.md by hand — there's no
+in-rofi cheat-sheet or generator, KEYBINDINGS.md is the only place this
+lives now.
 
 ## Add a description on the launcher (rofi drun)
 
-Two different "launcher description" cases:
-
-**An app already has a `.desktop` file but no description shows** —
-rofi pulls the second line from that file's `Comment=` field. Find it
-with:
+An app already has a `.desktop` file but no description shows — rofi
+pulls the second line from that file's `Comment=` field. Find it with:
 
 ```sh
 find /usr/share/applications ~/.local/share/applications -iname '*appname*'
@@ -39,26 +36,12 @@ survives package updates). No repo change needed unless you want the
 override vendored — if so, add the copy under
 `chezmoi/dot_local/share/applications/`.
 
-**A tool has no `.desktop` file at all** (most TUI tools: rtorrent,
-taskwarrior-tui, cmus, etc.) — it will never show in `mod+a` (drun) no
-matter what. These belong in the curated TUI menu instead:
-
-Edit `chezmoi/dot_local/share/rofi/scripts/executable_tui-menu`, add a
-line to the `tools` associative array:
-
-```bash
-["label — one-line description"]="shell command to run"
-```
-
-The command runs inside a kitty window
-(`kitty -e bash -c "$cmd; read -n1 ..."`), so anything that works in a
-terminal works here. `mod+shift+a` opens this menu.
-
-## Add an entry to the audio switcher
-
-`chezmoi/dot_local/share/rofi/scripts/executable_audio-switch` lists
-whatever `pactl list short sinks` returns — nothing to hand-maintain,
-new audio devices show up automatically once PulseAudio sees them.
+A tool with **no** `.desktop` file at all (most TUI tools) will never
+show in `mod+d` (drun), full stop — there's no curated TUI menu
+fallback in this repo anymore (dropped in the i3/polybar/rofi
+re-vendor, see [KEYBINDINGS.md](KEYBINDINGS.md#not-bound-deliberately)).
+Launch those from a terminal, or write a `.desktop` file for it under
+`chezmoi/dot_local/share/applications/` if you want it in the launcher.
 
 ## Add a polybar module
 
@@ -68,9 +51,14 @@ Edit `chezmoi/dot_config/polybar/config.ini`:
    or `internal/*` module as a template — see polybar's own docs for
    module types)
 2. Add `yourmodule` to `modules-left` / `modules-center` /
-   `modules-right` at the top of the `[bar/top]` section
+   `modules-right` at the top of the `[bar/main]` section
 3. Restart polybar to test: `pkill polybar && ~/.config/polybar/launch.sh &`
    (or just `mod+shift+r` to restart i3, which respawns everything)
+
+`launch.sh` runs `polybar main &` — the bar name (`main`) must match
+the `[bar/main]` section name if you ever rename it, or polybar fails
+to find the bar (this bit a real bug earlier in this repo's history —
+see git history "Re-vendor i3/polybar/rofi").
 
 ## Change picom opacity/blur
 
@@ -89,30 +77,61 @@ Edit `chezmoi/dot_config/picom/i3.conf`:
 
 Toggle with `mod+p` to A/B test changes without restarting i3.
 
-## Change workspace icons
+## Change workspace names
 
 Edit the `set $ws1`.."$ws10"` lines near the top of
-`chezmoi/dot_config/i3/config`. Format is `"<number>:<icon>"` — the
-number before the colon is what i3 uses for `workspace number`
-matching, the rest is just a label. Find Nerd Font glyphs at
+`chezmoi/dot_config/i3/config` (currently plain `"1"`.."10"`). To add
+icons, use `"<number>:<icon>"` — the number before the colon is what i3
+uses for `workspace number` matching, the rest is just a label. Find
+Nerd Font glyphs at
 [nerdfonts.com/cheat-sheet](https://www.nerdfonts.com/cheat-sheet) (the
-installed font is CaskaydiaCove Nerd Font, covers the full set).
+installed font is CaskaydiaCove Nerd Font, covers the full set). Update
+the same strings anywhere they're referenced (`workspace number $ws1`
+lines further down) — i3 matches on the number prefix so this is safe.
 
 ## Remap focus/move keys
 
-`i3/config` uses `$left`/`$down`/`$up`/`$right` (currently
-`j`/`k`/`l`/`semicolon`) instead of vim's hjkl, because the arrow keys
-already work as a fallback and this frees up a row. To change:
+`i3/config`'s focus/move binds use `j`/`k`/`l`/`semicolon` directly
+(Colemak-ish left/down/up/right) instead of vim's hjkl or i3's default
+arrow-only binds — arrow keys work too as a fallback. To change,
+find-and-replace `bindsym $mod+j` / `k` / `l` / `semicolon` (and the
+matching `$mod+Shift+...` move binds, and the `resize` mode block's
+`j`/`k`/`l`/`semicolon` lines) with your preferred keys — there's no
+indirection variable for this anymore (the earlier `$left`/`$down`/
+`$up`/`$right` `set` layer was dropped in the i3/polybar/rofi
+re-vendor), so it's a direct edit in a few places.
 
-```
-set $up <key>
-set $down <key>
-set $left <key>
-set $right <key>
-```
+## Add Catppuccin theming to a newly installed tool
 
-These variables are reused inside the resize `mode` block too — no
-other edits needed.
+This repo tries to theme every installed tool that has an official
+[catppuccin org repo](https://github.com/orgs/catppuccin/repositories)
+(Mocha flavor, matching everything else). When adding a new tool:
+
+1. Check if `https://github.com/catppuccin/<toolname>` exists.
+2. `gh api repos/catppuccin/<toolname>/git/trees/HEAD?recursive=true`
+   to find the actual theme/config file path — names and formats vary
+   a lot per tool (a full config file, a color-only snippet to
+   `include`, a plugin script, inline TOML/YAML keys...).
+3. Vendor it under `chezmoi/dot_config/<toolname>/...` (or
+   `chezmoi/dot_gitconfig`-style dotfile if the tool has no XDG config
+   dir) — check whether the tool auto-discovers a theme file by name,
+   or needs an explicit "enable this theme" key added to its main
+   config (most do).
+4. Never add account/credential/server config while doing this — theme
+   only. (`aerc`, `atuin`, `ncspot` all needed this discipline.)
+5. Verify against the real binary, not just `chezmoi apply --dry-run`
+   — most tools have a `--version`/`--help` that at least proves the
+   binary starts, and several (bat, tmux, git+delta) have a real way to
+   confirm the theme actually loaded (`bat --list-themes`, a real tmux
+   session, `git diff | delta`).
+
+See git history "Catppuccin Mocha for bat, delta, eza, fzf, tmux,
+btop, cava, zathura, mpv, newsboat, aerc, atuin, ncspot, lazygit,
+zellij, qt5ct" for 15 worked examples, including the two non-obvious
+mechanisms: `qt5ct` is ansible-managed (`ansible/roles/theme/tasks/main.yml`),
+not chezmoi, and `tmux` themes go in `chezmoi/dot_tmux.conf.local`
+(never edit `dot_tmux.conf` itself — it's vendored oh-my-tmux, see its
+own "DO NOT MODIFY" header).
 
 ## Add a Claude Code plugin, hook, or command
 
@@ -123,7 +142,9 @@ See [CLAUDE_CODE_SETUP.md](CLAUDE_CODE_SETUP.md#adding-a-plugin-hook-or-command)
 See [SOFTWARE_LIST.md](SOFTWARE_LIST.md) — pick the right section
 (apt/pip/npm/github-release/flatpak/cargo/manual-script) and add to
 the matching list in `ansible/group_vars/all/packages.yml`, then
-update SOFTWARE_LIST.md's table by hand (it's not generated).
+update SOFTWARE_LIST.md's table by hand (it's not generated). If it has
+an official Catppuccin theme, see "Add Catppuccin theming to a newly
+installed tool" above.
 
 ## After any change
 

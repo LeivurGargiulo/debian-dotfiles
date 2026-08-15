@@ -5,23 +5,31 @@ package/tool list see [SOFTWARE_LIST.md](SOFTWARE_LIST.md); for every
 hotkey see [KEYBINDINGS.md](KEYBINDINGS.md); to change any of this see
 [CUSTOMIZING.md](CUSTOMIZING.md).
 
+i3/polybar/rofi/picom/dunst are modeled on
+[vari-sh/Catppuccin-i3-dotfiles](https://github.com/vari-sh/Catppuccin-i3-dotfiles),
+retextured to this repo's existing Papirus icon theme, CaskaydiaCove
+Nerd Font, and Debian base instead of upstream's own choices.
+
 ## What starts on login
 
 Defined in `chezmoi/dot_config/i3/config`'s `exec` block, in order:
 
-1. `dex --autostart` — runs any `.desktop` autostart entries (GTK/Qt
-   app trays register themselves here)
-2. `dunst` — notification daemon
-3. `polybar/launch.sh` — the top status bar
+1. `xrandr --auto` — apply detected monitor geometry
+2. `picom --config ~/.config/picom/i3.conf -b` — compositor (animations/
+   blur/shadows/translucency, see below)
+3. `setxkbmap -layout us,gb -option grp:alt_shift_toggle` — US/GB
+   keyboard layouts, `alt+shift` to toggle
 4. `nitrogen --restore` — reapplies last-set wallpaper
-5. `picom` — compositor (animations/blur/shadows/translucency, see below)
-6. `flameshot` — screenshot tool, sits in tray until invoked
-7. `nm-applet`, `blueman-applet` — network/Bluetooth tray icons
-8. `lxpolkit` — GUI auth prompt for privileged actions (mount, package
-   installs from a GUI, etc.)
-9. `greenclip daemon` — clipboard history collector
-10. `kitty --class dropdown_term` — spawns the dropdown terminal once,
-    then it's parked in the scratchpad (see below)
+5. `polybar/launch.sh` — the top status bar
+6. `nm-applet`, `blueman-applet`, `lxpolkit` — network/Bluetooth tray
+   icons and the GUI polkit auth agent (upstream vari-sh never execs
+   these, so polybar's tray module would otherwise sit empty — added
+   deliberately, see git history "Re-vendor i3/polybar/rofi")
+7. `dunst` — notification daemon
+8. `greenclip daemon` — clipboard history collector
+9. `dbus-update-activation-environment --all`
+10. `dex --autostart` — runs any `.desktop` autostart entries
+11. `xset s off` / `-dpms` / `s noblank` — disable screen blanking/DPMS
 
 ## picom (compositor)
 
@@ -40,69 +48,75 @@ window animations the stock build doesn't have. Config:
   translucent windows
 - **Shadow**: soft drop shadow, radius 7, offset -7/-7
 - Toggle the whole thing on/off at runtime with `mod+p` (kills/respawns
-  the picom process — see `dot_local/share/i3/scripts/executable_toggle_picom.sh`)
+  the picom process — see
+  `dot_local/share/i3/scripts/executable_toggle_picom.sh`)
 
-## The five rofi menus
+## Rofi
 
-All rofi invocations share the Catppuccin Mocha theme
-(`rofi/local/themes/catppuccin-mocha.rasi`) and the `i3.rasi` config
-(icons on, drun shows `.desktop` `Comment=` text as a second line).
+Single theme file (`chezmoi/dot_config/rofi/config.rasi`, Catppuccin
+Mocha Mauve, Papirus-Dark icons) shared by every rofi invocation. Two
+entry points:
 
 | Bind | Mode | What it shows |
 |---|---|---|
-| `mod+a` | `drun` (built-in) | every installed app with a `.desktop` file — name, icon, one-line description |
-| `mod+shift+a` | `tui-menu` (script) | terminal-only tools with **no** `.desktop` entry: rtorrent, taskwarrior-tui, cmus, glow, rbw, wden, oathtool — each opens in a kitty window |
-| `mod+Tab` | `window` (built-in) | every currently open window, across all workspaces, to jump to |
-| `mod+c` | `clipboard` (greenclip) | last 50 clipboard entries, pick one to paste |
-| `mod+o` | `audio-switch` (script) | every pactl sink, pick one to become the default output (moves currently-playing streams too) |
-| `mod+slash` | `keybind-help` (script) | this repo's keybind list, statically written — not auto-generated from the config |
-| `mod+ctrl+Delete` | `menu` (rofi-power-menu script) | logout / suspend / reboot / shutdown |
+| `mod+d` | `drun` (built-in) | every installed app with a `.desktop` file — icon + name |
+| `mod+c` | `clipboard` (greenclip) | clipboard history, pick one to paste |
+| `mod+shift+e` | power menu (`~/.local/share/rofi/scripts/powermenu.sh`) | Lock / Logout / Reboot / Shutdown |
 
-The four script-mode menus (`tui-menu`, `audio-switch`,
-`keybind-help`, `rofi-power-menu`) live in
-`chezmoi/dot_local/share/rofi/scripts/`. Rofi script mode: called with
-no args it prints the menu lines; called with the chosen line as `$1`
-it performs the action. See [CUSTOMIZING.md](CUSTOMIZING.md) to add
-entries to any of them.
+The power menu is a plain bash script (not a rofi "modi" plugin) —
+`rofi -dmenu` presents four options, the script `case`s on the choice.
+Lock runs `~/.local/share/i3/scripts/lock.sh` (betterlockscreen);
+Logout runs `i3-msg exit`; Reboot/Shutdown call `systemctl`.
 
-## Dropdown terminal
+## Polybar
 
-A kitty instance tagged `--class dropdown_term`, spawned once at
-login, immediately floated + moved to the scratchpad by the
-`for_window [instance="dropdown_term"]` rule in `i3/config`. `mod+grave`
-toggles it show/hide — it's always running in the background, so
-toggling is instant (no relaunch).
+One bar (`[bar/main]` in `chezmoi/dot_config/polybar/config.ini`),
+launched by `~/.config/polybar/launch.sh` (`polybar main &`).
 
-## Workspaces
+- **Left**: `rofi` (click → drun) → `i3` (workspaces) → `xwindow`
+  (focused window title)
+- **Center**: `date` (clock)
+- **Right**: `pulseaudio` → `memory` → `cpu` → `public-ip` (via
+  `scripts/ip_monitor.sh`, polls every 5 min, click-left copies the IP,
+  click-right shows ISP/country/city) → `tray` (nm-applet/blueman
+  icons land here) → `battery` → `powermenu` (click → same power menu
+  as `mod+shift+e`)
 
-10 workspaces, numbered 1-10 via `mod+1..0`. 1-4 carry fixed icons
-(terminal, browser, files, code) as a visual hint for "this is where I
-usually put X" — they don't auto-rename based on what's actually
-running. 5-10 use a generic workspace glyph. See
-[CUSTOMIZING.md](CUSTOMIZING.md#change-workspace-icons).
-
-## Polybar modules
-
-Left to right: `rofi` (click to open drun) → `xworkspaces` → `tray`
-… (center: clock) … `pulseaudio` → `backlight` → `memory` → `cpu` →
-`public-ip` (via `ip_monitor.sh`, refreshes every 5 min) → `wlan` →
-`battery`×3 (percentage / wattage / time-remaining) → `powermenu`
-(click to open the same rofi power menu as `mod+ctrl+Delete`).
+`point` modules are just a small separator glyph between the modules
+above — not a real data source.
 
 ## Lock screen
 
-`mod+ctrl+l` runs `betterlockscreen -l dim` (script:
-`dot_local/share/i3/scripts/executable_lock.sh`). Themed Catppuccin
-Mocha Mauve via `chezmoi/dot_config/betterlockscreen/betterlockscreenrc`.
-No auto-lock-on-idle is configured — see
+`mod+x` (or the power menu's Lock option) runs
+`~/.local/share/i3/scripts/lock.sh`, which calls `betterlockscreen -l
+dim`. Themed Catppuccin Mocha Mauve via
+`chezmoi/dot_config/betterlockscreen/betterlockscreenrc`. No
+auto-lock-on-idle is configured — see
 [KEYBINDINGS.md](KEYBINDINGS.md#not-bound-deliberately).
+
+## Terminal (kitty) and system info (fastfetch)
+
+Kitty is fully Catppuccin Mocha themed (`chezmoi/dot_config/kitty/kitty.conf`)
+against the [official catppuccin/kitty](https://github.com/catppuccin/kitty)
+palette — base 16 colors plus cursor/scrollbar/URL/window-border/
+titlebar/tab-bar/mark colors.
+
+`fastfetch` (`chezmoi/dot_config/fastfetch/config.jsonc`) shows a real
+Catppuccin logo PNG rendered through kitty's image protocol (works
+because the terminal actually is kitty — no ASCII-art fallback needed),
+laid out as boxed Hardware/Software sections with a nerd-font icon per
+row (ported from
+[Nukecraft5419/fastfetch](https://github.com/Nukecraft5419/fastfetch)).
 
 ## What's NOT part of this desktop layer
 
 - No compositor picture-in-picture / window peek — picom here is
   purely visual (blur/shadow/animation), not a feature layer
-- No workspace auto-naming by running app (would need an extra daemon
-  like `i3-workspace-names-daemon` — skipped, static icons chosen
-  instead, see the original brainstorm in git history)
+- No workspace auto-naming by running app, no workspace icons (plain
+  numbers only — see [KEYBINDINGS.md](KEYBINDINGS.md#workspaces))
 - No per-app opacity beyond the 4 rules in `picom/i3.conf` — add more
   as needed, see [CUSTOMIZING.md](CUSTOMIZING.md#change-picom-opacityblur)
+- No dropdown terminal, window switcher, audio-device switcher, or
+  curated TUI-app launcher — these were custom rofi scripts from an
+  earlier session, removed when i3/polybar/rofi were re-vendored from
+  upstream vari-sh (see [KEYBINDINGS.md](KEYBINDINGS.md#not-bound-deliberately))

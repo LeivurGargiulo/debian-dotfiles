@@ -2,72 +2,67 @@
 
 Everything bound in i3. Source of truth is always
 `chezmoi/dot_config/i3/config` — this is a snapshot, regenerate by hand
-if binds change. `$mod` is the Windows/Super key. `mod+slash` opens a
-live rofi version of this list on the running machine.
+if binds change. `$mod` is the Windows/Super key. There is no in-rofi
+cheat-sheet anymore (the old `mod+slash` script menu was dropped when
+i3/polybar/rofi were re-vendored from
+[vari-sh/Catppuccin-i3-dotfiles](https://github.com/vari-sh/Catppuccin-i3-dotfiles)
+— see git history "Re-vendor i3/polybar/rofi") — this doc is the only
+cheat-sheet now.
 
 ## Apps / launchers
 
 | Bind | Action |
 |---|---|
 | `mod+Return` | open terminal (kitty) |
-| `mod+f` | open browser (zen-browser) |
-| `mod+e` | open file manager (Thunar) |
-| `mod+a` | app launcher (rofi drun) |
-| `mod+shift+a` | curated TUI app launcher (see [DESKTOP_GUIDE.md](DESKTOP_GUIDE.md)) |
-| `mod+Tab` | window switcher — jump to any open window |
-| `mod+grave` | toggle dropdown terminal (quake-style, scratchpad) |
-| `mod+n` | wallpaper manager (nitrogen) |
+| `mod+d` | app launcher (rofi drun, with icons) |
+| `mod+Tab` / `mod+shift+Tab` | next / previous workspace |
 | `mod+c` | clipboard history (greenclip via rofi) |
-| `mod+o` | audio output/input device switcher |
-| `mod+slash` | keybind cheat-sheet (this list, in rofi) |
-| `mod+ctrl+l` | lock screen (betterlockscreen) |
+| `mod+shift+e` | power menu (rofi: lock/logout/reboot/shutdown) |
+| `mod+x` | lock screen (betterlockscreen) |
 | `mod+p` | toggle picom (compositor effects) on/off |
 
 ## Windows
 
 | Bind | Action |
 |---|---|
-| `mod+q` | kill focused window |
+| `mod+shift+q` | kill focused window |
 | `mod+j / k / l / semicolon` | focus left / down / up / right |
 | `mod+Left/Down/Up/Right` | focus left/down/up/right (arrow-key alt) |
 | `mod+shift+j / k / l / semicolon` | move window left / down / up / right |
 | `mod+shift+Left/Down/Up/Right` | move window (arrow-key alt) |
 | `mod+h` | split horizontal |
 | `mod+v` | split vertical |
-| `mod+g` | toggle split layout |
 | `mod+s` | stacking layout |
-| `mod+t` | tabbed layout |
-| `mod+z` | fullscreen toggle |
-| `mod+w` | floating toggle |
+| `mod+w` | tabbed layout |
+| `mod+e` | toggle split layout |
+| `mod+f` | fullscreen toggle |
+| `mod+shift+space` | floating toggle |
+| `mod+space` | toggle focus between tiling / floating |
+| `mod+a` | focus parent container |
 | `mod+r` | resize mode (then `j/k/l/;` or arrows, `Return`/`Escape`/`mod+r` to exit) |
 | `mod+minus` | show/cycle scratchpad windows |
 | `mod+shift+minus` | move focused window to scratchpad |
 
-Custom focus/move letters (`j`=left, `k`=down, `l`=up, `semicolon`=right)
-are a Colemak-ish remap set in `i3/config` via `$left`/`$down`/`$up`/`$right`
-— arrow keys always work as a fallback, see [CUSTOMIZING.md](CUSTOMIZING.md#remap-focusmove-keys) to change them.
+`j`=left, `k`=down, `l`=up, `semicolon`=right — a Colemak-ish remap so
+the arrow keys stay free as a fallback. Arrow keys always work too.
 
 ## Workspaces
 
 | Bind | Action |
 |---|---|
 | `mod+1..0` | switch to workspace 1-10 |
-| `mod+alt+1..0` | move focused container to workspace 1-10 |
-| `mod+ctrl+Left/Right` | previous/next workspace |
+| `mod+shift+1..0` | move focused container to workspace 1-10 |
 
-Workspaces 1-4 carry fixed icons (terminal/browser/files/code); 5-10 use
-a generic workspace glyph. See [CUSTOMIZING.md](CUSTOMIZING.md#change-workspace-icons)
-to change them.
+Workspaces are plain numbers (`1`.."10"`), no icons — the earlier
+icon-labeled workspace set (`"1:terminal-icon"` etc.) was dropped in the
+same re-vendor. See [CUSTOMIZING.md](CUSTOMIZING.md#change-workspace-names)
+to add icons back if you want them.
 
 ## Screenshots (flameshot)
 
 | Bind | Action |
 |---|---|
-| `Print` | flameshot GUI (select region, annotate) |
-| `mod+comma` | screenshot → clipboard |
-| `mod+ctrl+comma` | screenshot → save dialog |
-| `mod+alt+comma` | screenshot after 3s delay → clipboard |
-| `mod+shift+comma` | screenshot after 3s delay → save dialog |
+| `mod+shift+s` | flameshot GUI (select region, annotate) |
 
 ## Media / hardware keys
 
@@ -84,12 +79,22 @@ to change them.
 |---|---|
 | `mod+shift+c` | reload i3 config |
 | `mod+shift+r` | restart i3 in place |
-| `mod+ctrl+Delete` | logout menu (rofi: logout/suspend/reboot/shutdown) |
+| `mod+shift+x` | exit i3 (confirm dialog) |
 
 ## Not bound (deliberately)
 
-- No dedicated Discord launch bind — was `mod+d`, removed (see git
-  history "Overhaul i3 hotkeys"), launch it from `mod+a` (drun) instead.
-- No lock/screensaver timeout — `mod+ctrl+l` is manual-only. Add an idle
+- No dropdown/quake-style terminal — the earlier `mod+grave` scratchpad
+  terminal was dropped in the i3/polybar/rofi re-vendor; `mod+Return`
+  opens a normal kitty window instead.
+- No dedicated browser/file-manager/wallpaper-manager binds — launch
+  Zen Browser, Thunar, or nitrogen from `mod+d` (drun) instead. The old
+  `mod+f`/`mod+e`/`mod+n` binds for these were reclaimed by i3 window
+  commands (fullscreen / layout toggle / — respectively) to match
+  upstream vari-sh's layout.
+- No window-switcher, audio-device-switcher, or TUI-app-launcher rofi
+  modes — those were custom scripts added in an earlier session and
+  removed in the re-vendor along with their keybinds
+  (`mod+Tab`-as-window-switcher, `mod+o`, `mod+shift+a`).
+- No lock/screensaver timeout — `mod+x` is manual-only. Add an idle
   daemon (e.g. `xss-lock` + `betterlockscreen`) if you want auto-lock;
   not currently installed.

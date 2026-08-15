@@ -51,25 +51,35 @@ exactly the things WSL/VM testing structurally can't verify:
 
 - [ ] LightDM shows a session picker and login works; select the i3 session
       explicitly (not a leftover Plasma/other session entry)
-- [ ] i3 starts; Polybar bar is visible with a tray showing icons (not an
-      empty tray — upstream's config never exec'd a tray-app agent, this
-      repo's `i3/config` adds `nm-applet`/`blueman-applet`/polkit agent
-      execs specifically to fill it)
+- [ ] i3 starts; Polybar bar is visible (`[bar/main]`, launched as
+      `polybar main`) with a tray showing icons (not an empty tray —
+      upstream's config never exec'd a tray-app agent, this repo's
+      `i3/config` adds `nm-applet`/`blueman-applet`/`lxpolkit` execs
+      specifically to fill it)
 - [ ] `notify-send test` delivers a Dunst notification, themed (not
       default GTK notification styling)
 - [ ] Picom is running — shadows and window transparency visible (`picom
       --config ~/.config/picom/i3.conf` should already be running from i3's
       autostart, check with `pgrep picom`)
-- [ ] Rofi launcher opens (`$mod+a`) and is Catppuccin-themed, not
-      unstyled/default rofi
-- [ ] Rofi power menu opens (`$mod+Ctrl+Delete`) and its logout/suspend/
-      reboot/shutdown choices work — this exercises the
-      `~/.config/rofi/config/{i3,power}.rasi` paths fixed post-vendoring,
-      confirm both menus load their theme, not a blank/unstyled prompt
-- [ ] kitty and fastfetch render CaskaydiaCove Nerd Font (icons/glyphs
-      show, not tofu boxes); fastfetch shows the custom Debian/Catppuccin
-      ASCII logo (`~/.config/fastfetch/debian-catppuccin.txt`), not
-      upstream's Arch logo
+- [ ] Rofi launcher opens (`mod+d`) and is Catppuccin-themed, not
+      unstyled/default rofi (single theme file now: `~/.config/rofi/config.rasi`)
+- [ ] Power menu opens (`mod+shift+e`) and its Lock/Logout/Reboot/Shutdown
+      choices work (`~/.local/share/rofi/scripts/powermenu.sh`) — confirm
+      it's rendered with the rofi theme, not a blank/unstyled prompt
+- [ ] kitty renders CaskaydiaCove Nerd Font and full Catppuccin Mocha
+      coloring (cursor, tab bar, window borders — not just the 16 base
+      colors); `fastfetch` shows the real Catppuccin logo PNG via kitty's
+      image protocol (not ASCII-art, not upstream's Arch logo) in the
+      boxed Hardware/Software layout with nerd-font icons per row
+- [ ] `bat --list-themes | grep -i mocha` finds "Catppuccin Mocha", and
+      `bat <anyfile>` actually renders with it (run `bat cache --build`
+      first if not — needed once per machine, not part of `chezmoi apply`)
+- [ ] `git diff | delta` (in any repo with changes) renders a colored,
+      Catppuccin-styled diff, not delta's default colors or a plain diff
+      — confirms `~/.gitconfig` (chezmoi-managed now) is being picked up
+- [ ] tmux status bar shows Catppuccin modules (host/session/date), not
+      oh-my-tmux's own default theme — confirms `~/.tmux.conf.local` is
+      sourced and `tmux_conf_theme=disabled` took effect
 - [ ] GTK apps (Thunar) and Qt apps (any Kvantum-styled Qt app, or `qt5ct`
       itself) render Catppuccin Mocha Mauve — check widget style is
       Kvantum in `qt5ct`, not the Qt default
@@ -82,7 +92,10 @@ exactly the things WSL/VM testing structurally can't verify:
 - [ ] `nvim` opens without plugin/config errors
 - [ ] `yazi` opens with the `catppuccin-mocha` flavor active
 - [ ] `zsh` is default shell, oh-my-zsh + plugins load, atuin history search
-      works (`Ctrl+R`)
+      works (`Ctrl+R`), and `eza`/`ls` output is Catppuccin-colored
+- [ ] `btop`, `cava`, `zathura <anypdf>`, `mpv <anyvideo>`, `newsboat`,
+      `aerc`, `ncspot`, `lazygit` (in any git repo), `zellij` all launch
+      with Catppuccin Mocha coloring, not their tool defaults
 - [ ] `flameshot` screenshot tool works — confirm it actually works on
       this hardware; the prior KDE-era repo found flameshot broken under
       Wayland, this i3 stack is X11-only so that failure mode shouldn't

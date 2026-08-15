@@ -40,18 +40,20 @@ ansible-playbook site.yml --ask-become-pass
 
 ## 5. Try the keybindings
 
-- [ ] `$mod+a` opens the Rofi app launcher, themed (not plain/default look)
-- [ ] `$mod+Ctrl+Delete` opens the Rofi power menu, themed, and its
-      choices (logout/suspend/reboot/shutdown) are clickable
+- [ ] `mod+d` opens the Rofi app launcher, themed (not plain/default look)
+- [ ] `mod+shift+e` opens the Rofi power menu, themed, and its
+      choices (Lock/Logout/Reboot/Shutdown) are clickable
 - [ ] Open a terminal, run `notify-send test` — a themed notification
       pops up
 
 ## 6. Check the apps
 
-- [ ] Open kitty — font renders as CaskaydiaCove Nerd Font (icons show,
+- [ ] Open kitty — font renders as CaskaydiaCove Nerd Font, full
+      Catppuccin Mocha coloring (cursor, tabs, borders — icons show,
       not empty boxes/"tofu")
-- [ ] Run `fastfetch` — shows the custom Debian/Catppuccin logo (not
-      Arch's logo), font/icons render correctly
+- [ ] Run `fastfetch` — shows the real Catppuccin logo PNG via kitty's
+      image protocol (not ASCII art, not Arch's logo), font/icons
+      render correctly
 - [ ] Open Thunar (file manager) — Catppuccin Mocha Mauve GTK theme applied
 - [ ] Open any Qt app (or `qt5ct`) — Catppuccin Mocha Mauve via Kvantum
       applied
@@ -60,7 +62,10 @@ ansible-playbook site.yml --ask-become-pass
 - [ ] Run `nvim` — opens with no plugin/config errors
 - [ ] Run `yazi` — opens with the Catppuccin Mocha flavor active
 - [ ] Open a new shell — it's zsh, oh-my-zsh loads, `Ctrl+R` triggers
-      atuin's fuzzy history search
+      atuin's fuzzy history search, `ls`/`eza` output is Catppuccin-colored
+- [ ] `bat`, `git diff | delta`, `btop`, `cava`, `zathura`, `mpv`,
+      `newsboat`, `aerc`, `ncspot`, `lazygit`, `zellij`, a new `tmux`
+      session — all Catppuccin Mocha, not tool defaults
 - [ ] Run `flameshot` — screenshot capture works
 
 ## 7. Run it twice

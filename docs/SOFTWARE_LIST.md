@@ -216,13 +216,51 @@ from `~/.claude/` and why, in [CLAUDE_CODE_SETUP.md](CLAUDE_CODE_SETUP.md).
 ## Vendored dotfile configs (chezmoi, not installed packages)
 
 Config only, application itself installed above: i3, polybar, rofi
-(+ tui-menu/audio-switch/keybind-help/rofi-power-menu scripts),
-picom, dunst, fastfetch, kitty, neovim (kickstart.nvim fork), yazi
-(with the `catppuccin-mocha` flavor), greenclip, betterlockscreen, and
-Claude Code (`~/.claude/`, see [CLAUDE_CODE_SETUP.md](CLAUDE_CODE_SETUP.md)).
-Full desktop behavior write-up: [DESKTOP_GUIDE.md](DESKTOP_GUIDE.md).
-Every keybind: [KEYBINDINGS.md](KEYBINDINGS.md). How to change any of
-this: [CUSTOMIZING.md](CUSTOMIZING.md).
+(+ powermenu.sh script), picom, dunst, fastfetch, kitty, neovim
+(kickstart.nvim fork), yazi (with the `catppuccin-mocha` flavor),
+greenclip, betterlockscreen, and Claude Code (`~/.claude/`, see
+[CLAUDE_CODE_SETUP.md](CLAUDE_CODE_SETUP.md)). Full desktop behavior
+write-up: [DESKTOP_GUIDE.md](DESKTOP_GUIDE.md). Every keybind:
+[KEYBINDINGS.md](KEYBINDINGS.md). How to change any of this:
+[CUSTOMIZING.md](CUSTOMIZING.md).
+
+i3/polybar/rofi/picom/dunst are modeled on
+[vari-sh/Catppuccin-i3-dotfiles](https://github.com/vari-sh/Catppuccin-i3-dotfiles)
+(re-vendored from an earlier, differently-sourced version — see git
+history "Re-vendor i3/polybar/rofi"). kitty is themed against the
+official [catppuccin/kitty](https://github.com/catppuccin/kitty)
+mocha.conf; fastfetch's layout is ported from
+[Nukecraft5419/fastfetch](https://github.com/Nukecraft5419/fastfetch).
+
+## Catppuccin-themed CLI/TUI tools (chezmoi, config only)
+
+Every apt/manual-install tool with an official
+[catppuccin org repo](https://github.com/orgs/catppuccin/repositories)
+got Mocha theming vendored in (see git history "Catppuccin Mocha for
+bat, delta, eza, fzf, tmux, ..."). Application itself installed
+elsewhere in this doc — these are config-only additions:
+
+| Tool | Config | Mechanism |
+|---|---|---|
+| bat | `chezmoi/dot_config/bat/` | vendored `.tmTheme`, needs `bat cache --build` once per machine |
+| git-delta | `chezmoi/dot_gitconfig`, `chezmoi/dot_config/delta/` | `core.pager`/`interactive.diffFilter` + `[delta] features` — first time git itself was brought under chezmoi |
+| eza | `chezmoi/dot_config/eza/theme.yml` | auto-discovered |
+| fzf | `chezmoi/dot_zshrc` (`$FZF_DEFAULT_OPTS`) | no native theme file, colors are a CLI flag string |
+| tmux | `chezmoi/dot_tmux.conf.local`, `chezmoi/dot_config/tmux/plugins/catppuccin/` | vendored plugin script, sourced via `run-shell` (no TPM in this repo) |
+| btop | `chezmoi/dot_config/btop/` | `.theme` file + `color_theme` key |
+| cava | `chezmoi/dot_config/cava/config` | inline `[color]` block |
+| zathura | `chezmoi/dot_config/zathura/` | `include catppuccin-mocha` |
+| mpv | `chezmoi/dot_config/mpv/mpv.conf` | OSD/UOSC color options |
+| newsboat | `chezmoi/dot_config/newsboat/config` | inline `color`/`highlight` directives |
+| aerc | `chezmoi/dot_config/aerc/` | styleset file + `styleset-name` key (no account config added) |
+| atuin | `chezmoi/dot_config/atuin/` | theme file + `[theme]` key (no sync-server config added) |
+| ncspot | `chezmoi/dot_config/ncspot/config.toml` | inline `[theme]` block (no Spotify credentials added) |
+| lazygit | `chezmoi/dot_config/lazygit/config.yml` | `gui.theme` block |
+| zellij | `chezmoi/dot_config/zellij/` | `.kdl` theme file + `theme` key |
+| qt5ct | `ansible/roles/theme/tasks/main.yml` (NOT chezmoi) | color-scheme `.conf` fetched + `ini_file` task, alongside the existing Kvantum widget-style task |
+
+See [CUSTOMIZING.md](CUSTOMIZING.md#add-catppuccin-theming-to-a-newly-installed-tool)
+for the pattern to extend this to a new tool.
 
 ## Not automated (known gap, see `packages.yml` comment block)
 
