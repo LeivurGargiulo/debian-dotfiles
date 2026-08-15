@@ -10,7 +10,7 @@ exec --no-startup-id picom --config ~/.config/picom/i3.conf &
 exec --no-startup-id flameshot &
 exec --no-startup-id nm-applet &
 exec --no-startup-id blueman-applet &
-exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
+exec --no-startup-id /usr/bin/lxpolkit &
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status

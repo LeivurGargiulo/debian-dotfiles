@@ -122,7 +122,7 @@ i3_packages:
   - network-manager-gnome
   - blueman
   - flameshot
-  - policykit-1-gnome
+  - lxpolkit
   - lxappearance
   - qt5ct
   - thunar
