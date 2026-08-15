@@ -1,12 +1,12 @@
 ---
-- name: Install Plasma desktop packages
+- name: Install i3 desktop stack packages
   ansible.builtin.apt:
-    name: "{{ plasma_packages }}"
+    name: "{{ i3_packages }}"
     state: present
 
-- name: Enable sddm service
+- name: Enable lightdm service
   ansible.builtin.systemd:
-    name: sddm
+    name: lightdm
     enabled: true
 
 - name: Set default systemd target to graphical
@@ -14,27 +14,3 @@
     src: /usr/lib/systemd/system/graphical.target
     dest: /etc/systemd/system/default.target
     state: link
-
-- name: Install build deps for Polonium KWin tiling script
-  ansible.builtin.apt:
-    name:
-      - nodejs
-      - npm
-      - zip
-      - make
-    state: present
-
-- name: Clone Polonium KWin tiling script (Bismuth successor, Plasma 6 native)
-  ansible.builtin.git:
-    repo: https://github.com/zeroxoneafour/polonium.git
-    dest: /tmp/polonium-build
-    depth: 1
-  become: false
-  register: polonium_clone
-
-- name: Build and install Polonium
-  ansible.builtin.command: make
-  args:
-    chdir: /tmp/polonium-build
-  become: false
-  when: polonium_clone.changed
