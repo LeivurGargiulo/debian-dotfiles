@@ -59,7 +59,7 @@
 
 - name: Fetch a Catppuccin Mocha wallpaper
   ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/catppuccin/wallpapers/main/minimalistic/mocha-4k.png
+    url: https://raw.githubusercontent.com/iQuickDev/catppuccin-wallpapers/master/minimalistic/mauve-cat.png
     dest: /usr/share/wallpapers/catppuccin-mocha.png
     mode: "0644"
 
