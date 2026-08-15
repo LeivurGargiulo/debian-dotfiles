@@ -17,16 +17,16 @@ configuration {
     kb-mode-previous: "Shift+Left,Control+ISO_Left_Tab";
 }
 
-/* --- THEME: CATPPUCCIN MOCHA (MAUVE EDITION) --- */
+/* --- THEME: ORANGE NEON GLASS --- */
 * {
-    bg-col:  #1e1e2e;
-    bg-col-light: #1e1e2e;
-    border-col: #1e1e2e;
-    selected-col: #1e1e2e;
-    mauve: #cba6f7;
-    fg-col: #cdd6f4;
+    bg-col:  #0d0704cc;
+    bg-col-light: #1f120acc;
+    border-col: #ff6a00;
+    selected-col: #0d0704;
+    mauve: #ff6a00;
+    fg-col: #ffedd5;
     fg-col2: #f38ba8; /* Red for urgent */
-    grey: #6c7086;
+    grey: #6b4a30;
 
     width: 600;
     font: "CaskaydiaCove Nerd Font 12";

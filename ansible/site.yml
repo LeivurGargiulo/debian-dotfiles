@@ -29,7 +29,6 @@
   roles:
     - packages
     - desktop
-    - theme
     - dotfiles
     - shell-env
     - dev-tools

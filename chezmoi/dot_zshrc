@@ -30,11 +30,11 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="fdfind --type d --hidden --exclude .git"
 # Catppuccin Mocha (https://github.com/catppuccin/fzf)
 export FZF_DEFAULT_OPTS=" \
---color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
---color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
---color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
---color=selected-bg:#45475a \
---color=border:#6c7086,label:#cdd6f4"
+--color=bg+:#1f120a,bg:#0d0704,spinner:#ffcf9c,hl:#f38ba8 \
+--color=fg:#ffedd5,header:#f38ba8,info:#ff6a00,pointer:#ffcf9c \
+--color=marker:#ffd9a0,fg+:#ffedd5,prompt:#ff6a00,hl+:#f38ba8 \
+--color=selected-bg:#2e1c0f \
+--color=border:#6b4a30,label:#ffedd5"
 
 # quick nav
 alias ..="cd .."

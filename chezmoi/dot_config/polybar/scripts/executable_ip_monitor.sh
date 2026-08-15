@@ -14,6 +14,6 @@ ip_regex='^[0-9a-fA-F:.]+$'
 while true; do
     ip=$(curl -s --connect-timeout 2 https://api.ipify.org)
     [[ "$ip" =~ $ip_regex ]] || ip="offline"
-    echo "%{F#89dceb}$(vpn_icon)%{F-} ${ip}"
+    echo "%{F#ffa057}$(vpn_icon)%{F-} ${ip}"
     sleep 300
 done

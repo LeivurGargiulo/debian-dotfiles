@@ -1,5 +1,5 @@
 [global]
-frame_color = "#cba6f7"
+frame_color = "#ff6a00"
 separator_color= frame
 scale = 1.2
 icon_corner_radius = 5
@@ -26,16 +26,16 @@ icon_path = /usr/share/icons/Papirus-Dark/16x16/actions:/usr/share/icons/Papirus
     format = "<span size="250%">%s</span>\n%b"
 
 [urgency_low]
-background = "#1e1e2eb0"
-foreground = "#cdd6f4"
+background = "#0d070480"
+foreground = "#ffedd5"
 timeout=3
 
 [urgency_normal]
-background = "#1e1e2eb0"
-foreground = "#cdd6f4"
+background = "#0d070480"
+foreground = "#ffedd5"
 timeout=3
 
 [urgency_critical]
-background = "#1e1e2eb0"
-foreground = "#cdd6f4"
-frame_color = "#fab387b0"
+background = "#0d070480"
+foreground = "#ffedd5"
+frame_color = "#ff950099"

@@ -200,10 +200,6 @@ i3_packages:
   - neovim
   - fastfetch
 
-theme_packages:
-  - papirus-icon-theme
-  - qt-style-kvantum
-
 # picom is built from source (pijulius/picom, implement-window-animations
 # branch — adds animations, no Debian package exists for this fork).
 # betterlockscreen is fetched as a raw script (no packaged release asset).

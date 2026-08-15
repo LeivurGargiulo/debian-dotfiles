@@ -1,51 +1,51 @@
 *.default=true
 *.normal=true
 
-default.fg=#cdd6f4
+default.fg=#ffedd5
 
 error.fg=#f38ba8
-warning.fg=#fab387
+warning.fg=#ff9500
 success.fg=#a6e3a1
 
-tab.fg=#6c7086
-tab.bg=#181825
-tab.selected.fg=#cdd6f4
-tab.selected.bg=#1e1e2e
+tab.fg=#6b4a30
+tab.bg=#0a0503
+tab.selected.fg=#ffedd5
+tab.selected.bg=#0d0704
 tab.selected.bold=true
 
-border.fg=#11111b
+border.fg=#060302
 border.bold=true
 
 msglist_unread.bold=true
 msglist_flagged.fg=#f9e2af
 msglist_flagged.bold=true
-msglist_result.fg=#89b4fa
+msglist_result.fg=#ffc266
 msglist_result.bold=true
 msglist_*.selected.bold=true
-msglist_*.selected.bg=#313244
+msglist_*.selected.bg=#1f120a
 
 dirlist_*.selected.bold=true
-dirlist_*.selected.bg=#313244
+dirlist_*.selected.bg=#1f120a
 
-statusline_default.fg=#9399b2
-statusline_default.bg=#313244
+statusline_default.fg=#a8703f
+statusline_default.bg=#1f120a
 statusline_error.bold=true
 statusline_success.bold=true
 
-selector_focused.bg=#313244
+selector_focused.bg=#1f120a
 
-completion_default.selected.bg=#313244
+completion_default.selected.bg=#1f120a
 
 [viewer]
-url.fg=#89b4fa
+url.fg=#ffc266
 url.underline=true
 header.bold=true
 signature.dim=true
 diff_meta.bold=true
-diff_chunk.fg=#89b4fa
-diff_chunk_func.fg=#89b4fa
+diff_chunk.fg=#ffc266
+diff_chunk_func.fg=#ffc266
 diff_chunk_func.bold=true
 diff_add.fg=#a6e3a1
 diff_del.fg=#f38ba8
-quote_*.fg=#6c7086
-quote_1.fg=#9399b2
+quote_*.fg=#6b4a30
+quote_1.fg=#a8703f
