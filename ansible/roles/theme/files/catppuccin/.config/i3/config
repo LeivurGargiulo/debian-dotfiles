@@ -1,5 +1,5 @@
 # i3 config file (v4)
-# Catppuccin Mocha, modeled on vari-sh/Catppuccin-i3-dotfiles
+# Catppuccin Mocha Mauve, modeled on vari-sh/Catppuccin-i3-dotfiles
 
 set $mod Mod4
 
