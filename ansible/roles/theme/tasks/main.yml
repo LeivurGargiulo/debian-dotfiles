@@ -55,6 +55,7 @@
   become: false
   environment:
     XDG_RUNTIME_DIR: "/run/user/{{ invoking_uid.stdout }}"
+    WAYLAND_DISPLAY: "wayland-0"
 
 - name: Fetch a Catppuccin Mocha wallpaper
   ansible.builtin.get_url:
@@ -67,6 +68,7 @@
   become: false
   environment:
     XDG_RUNTIME_DIR: "/run/user/{{ invoking_uid.stdout }}"
+    WAYLAND_DISPLAY: "wayland-0"
 
 - name: Clone catppuccin-kde (Global Theme, window decoration, splash)
   ansible.builtin.git:
@@ -82,6 +84,7 @@
   become: false
   environment:
     XDG_RUNTIME_DIR: "/run/user/{{ invoking_uid.stdout }}"
+    WAYLAND_DISPLAY: "wayland-0"
   when: catppuccin_kde_clone.changed
 
 - name: Create Kvantum theme directory
