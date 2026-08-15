@@ -85,7 +85,7 @@ apt_packages:
   #   bandwhich, yazi, bluetuith, steam-tui, glow, lazydocker,
   #   amdgpu_top, taskwarrior-tui, gophertube, wden, wtfutil (github
   #   releases below), jrnl, rofi-rbw (pip), bitwarden-cli,
-  #   claude-code CLI (npm),
+  #   claude-code CLI (official installer script, see dev-tools role),
   #   barrier (dropped, unmaintained upstream — see input-leap flatpak),
   #   prismlauncher, osu!, rustdesk (flatpak)
   #   tremc (dropped, pip release requires Python <3.10, incompatible
@@ -164,7 +164,7 @@ github_release_binaries:
     direct_binary: true
 
 flatpak_apps:
-  - io.github.zen_browser.zen
+  - app.zen_browser.zen
   - sh.ppy.osu
   - com.rustdesk.RustDesk
   - dev.vencord.Vesktop
@@ -262,7 +262,6 @@ pip_user_packages:
 
 npm_global_packages:
   - "@bitwarden/cli"
-  - "@anthropic-ai/claude-code"
 
 # Claude Code marketplaces + plugins (mirrors ~/.claude/settings.json
 # extraKnownMarketplaces / enabledPlugins on this machine).

@@ -44,8 +44,8 @@ exec_always --no-startup-id xrandr --auto
 exec_always --no-startup-id xsetroot -cursor_name left_ptr
 
 # Border
-default_border pixel 1
-default_floating_border pixel 1
+default_border pixel 0
+default_floating_border pixel 0
 
 # Activate smart borders
 smart_borders on
@@ -114,7 +114,6 @@ bindsym $mod+q kill
 
 # start rofi (a program launcher)
 bindsym $mod+d exec --no-startup-id "rofi -show drun -show-icons"
-bindsym --release Super_L exec --no-startup-id "rofi -show drun -show-icons"
 
 # power menu
 bindsym $mod+Shift+e exec --no-startup-id ~/.local/share/rofi/scripts/powermenu.sh

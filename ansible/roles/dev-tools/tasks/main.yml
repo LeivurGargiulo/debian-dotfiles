@@ -12,6 +12,18 @@
   loop: "{{ npm_global_packages }}"
   when: npm_global_packages | length > 0
 
+- name: Check if Claude Code is installed
+  ansible.builtin.command: which claude
+  register: claude_check
+  ignore_errors: true
+  changed_when: false
+  become: false
+
+- name: Install Claude Code via official installer
+  ansible.builtin.shell: curl -fsSL https://claude.ai/install.sh | bash
+  become: false
+  when: claude_check.rc != 0
+
 - name: Add Claude Code plugin marketplaces
   ansible.builtin.command: claude plugin marketplace add {{ item }}
   loop: "{{ claude_marketplaces }}"

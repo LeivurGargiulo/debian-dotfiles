@@ -133,47 +133,12 @@
   ansible.builtin.command: papirus-folders -C orange --theme Papirus-Dark
   when: dotfiles_theme == 'orange'
 
-- name: Create Kvantum theme directory
-  ansible.builtin.file:
-    path: "{{ invoking_home }}/.config/Kvantum/catppuccin-mocha-mauve"
-    state: directory
-    mode: "0755"
-  become: false
-  when: dotfiles_theme == 'catppuccin'
-
-- name: Fetch Catppuccin Kvantum theme files
-  ansible.builtin.get_url:
-    url: "https://raw.githubusercontent.com/catppuccin/kvantum/main/themes/catppuccin-mocha-mauve/{{ item }}"
-    dest: "{{ invoking_home }}/.config/Kvantum/catppuccin-mocha-mauve/{{ item }}"
-    mode: "0644"
-  become: false
-  loop:
-    - catppuccin-mocha-mauve.kvconfig
-    - catppuccin-mocha-mauve.svg
-  when: dotfiles_theme == 'catppuccin'
-
 - name: Select Catppuccin theme in Kvantum
   community.general.ini_file:
     path: "{{ invoking_home }}/.config/Kvantum/kvantum.kvconfig"
     section: General
     option: theme
     value: catppuccin-mocha-mauve
-    mode: "0644"
-  become: false
-  when: dotfiles_theme == 'catppuccin'
-
-- name: Create qt5ct color scheme directory
-  ansible.builtin.file:
-    path: "{{ invoking_home }}/.config/qt5ct/colors"
-    state: directory
-    mode: "0755"
-  become: false
-  when: dotfiles_theme == 'catppuccin'
-
-- name: Fetch Catppuccin Mocha Mauve qt5ct color scheme
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/catppuccin/qt5ct/main/themes/catppuccin-mocha-mauve.conf
-    dest: "{{ invoking_home }}/.config/qt5ct/colors/catppuccin-mocha-mauve.conf"
     mode: "0644"
   become: false
   when: dotfiles_theme == 'catppuccin'
@@ -201,22 +166,6 @@
       value: "true"
     - option: color_scheme_path
       value: "{{ invoking_home }}/.config/qt5ct/colors/catppuccin-mocha-mauve.conf"
-  when: dotfiles_theme == 'catppuccin'
-
-- name: Fetch Catppuccin GTK theme
-  ansible.builtin.get_url:
-    url: "https://github.com/catppuccin/gtk/releases/download/v1.0.3/catppuccin-mocha-mauve-standard+default.zip"
-    dest: /tmp/catppuccin-mocha-mauve-gtk.zip
-    mode: "0644"
-  when: dotfiles_theme == 'catppuccin'
-
-- name: Extract Catppuccin GTK theme
-  ansible.builtin.unarchive:
-    src: /tmp/catppuccin-mocha-mauve-gtk.zip
-    dest: "{{ invoking_home }}/.local/share/themes/"
-    remote_src: true
-    creates: "{{ invoking_home }}/.local/share/themes/catppuccin-mocha-mauve-standard+default"
-  become: false
   when: dotfiles_theme == 'catppuccin'
 
 - name: Create GTK settings directories
