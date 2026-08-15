@@ -43,6 +43,15 @@ cat > "$HOME/.icons/default/index.theme" <<EOF
 [Icon Theme]
 Inherits=$CURSOR_THEME
 EOF
+
+# There's no xsettings daemon in this bare-i3 setup broadcasting the
+# cursor theme, and XCURSOR_THEME is never exported anywhere, so
+# already-running (and even newly spawned) non-GTK apps won't notice a
+# gsettings or ~/.icons/default change alone. xrdb's Xcursor.theme
+# resource is what raw libXcursor apps actually re-query live.
+if command -v xrdb >/dev/null 2>&1; then
+  printf 'Xcursor.theme: %s\nXcursor.size: 24\n' "$CURSOR_THEME" | xrdb -merge -
+fi
 command -v xsetroot >/dev/null 2>&1 && xsetroot -cursor_name left_ptr
 
 command -v betterlockscreen >/dev/null 2>&1 && betterlockscreen -u "$WALLPAPER" >/dev/null 2>&1 &
