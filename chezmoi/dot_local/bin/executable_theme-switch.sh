@@ -36,11 +36,24 @@ command -v gsettings >/dev/null 2>&1 && gsettings set org.gnome.desktop.interfac
 
 command -v betterlockscreen >/dev/null 2>&1 && betterlockscreen -u "$WALLPAPER" >/dev/null 2>&1 &
 
-# don't rely on i3 exec_always firing reliably on reload - drive the
-# per-app restarts directly instead.
+# don't rely on i3 exec_always/exec firing reliably on reload - drive
+# every themed daemon's restart directly instead. dunst and picom are
+# `exec` (once-only) in i3's config, and dunst has no config-reload
+# command in this version, so both need an explicit kill+respawn or
+# they keep rendering the previous theme's colors indefinitely.
 command -v nitrogen >/dev/null 2>&1 && nitrogen --restore &
 if [ -x "$HOME/.config/polybar/launch.sh" ]; then
   "$HOME/.config/polybar/launch.sh" &
+fi
+if command -v dunst >/dev/null 2>&1; then
+  pkill -x dunst 2>/dev/null || true
+  nohup dunst >/dev/null 2>&1 &
+  disown
+fi
+if command -v picom >/dev/null 2>&1; then
+  pkill -x picom 2>/dev/null || true
+  nohup picom --config "$HOME/.config/picom/i3.conf" -b >/dev/null 2>&1 &
+  disown
 fi
 command -v i3-msg >/dev/null 2>&1 && i3-msg reload >/dev/null
 
