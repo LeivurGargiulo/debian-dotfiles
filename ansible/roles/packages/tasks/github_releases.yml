@@ -1,7 +1,15 @@
 ---
+- name: Look up a GitHub token to raise the API rate limit (60/hr unauthenticated vs 5000/hr)
+  ansible.builtin.command: gh auth token
+  become: false
+  register: gh_token
+  changed_when: false
+  failed_when: false
+
 - name: Fetch latest release info for GitHub binaries
   ansible.builtin.uri:
     url: "https://api.github.com/repos/{{ item.repo }}/releases/latest"
+    headers: "{{ {'Authorization': 'Bearer ' + gh_token.stdout} if gh_token.rc == 0 and gh_token.stdout | length > 0 else {} }}"
     return_content: true
   loop: "{{ github_release_binaries }}"
   loop_control:
