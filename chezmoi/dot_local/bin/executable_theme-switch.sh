@@ -34,6 +34,17 @@ EOF
 
 command -v gsettings >/dev/null 2>&1 && gsettings set org.gnome.desktop.interface cursor-theme "$CURSOR_THEME" 2>/dev/null || true
 
+# GTK apps read cursor-theme via gsettings above, but the X root window
+# (i.e. the cursor shown over tiles/gaps) resolves through
+# ~/.icons/default - neither theme's vendored tree ships this file, so
+# it never updated and stayed stuck on whichever theme set it last.
+mkdir -p "$HOME/.icons/default"
+cat > "$HOME/.icons/default/index.theme" <<EOF
+[Icon Theme]
+Inherits=$CURSOR_THEME
+EOF
+command -v xsetroot >/dev/null 2>&1 && xsetroot -cursor_name left_ptr
+
 command -v betterlockscreen >/dev/null 2>&1 && betterlockscreen -u "$WALLPAPER" >/dev/null 2>&1 &
 
 # don't rely on i3 exec_always/exec firing reliably on reload - drive
