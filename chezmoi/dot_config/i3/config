@@ -107,7 +107,7 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec kitty
-bindsym $mod+Shift+t exec kitty
+bindsym $mod+t exec kitty
 
 # kill focused window
 bindsym $mod+q kill
@@ -160,8 +160,8 @@ bindsym $mod+e layout toggle split
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
 
-# change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+# start rofi (a program launcher)
+bindsym $mod+space exec --no-startup-id "rofi -show drun -show-icons"
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -187,8 +187,8 @@ set $ws8 "8:"
 set $ws9 "9:"
 set $ws10 "10:"
 
-# scroll workspaces
-bindsym $mod+Tab workspace next
+# switch between tiled windows
+bindsym $mod+Tab exec --no-startup-id "rofi -show window"
 bindsym $mod+Shift+Tab workspace prev
 
 # switch to workspace

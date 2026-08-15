@@ -241,6 +241,13 @@
     - gtk-3.0
     - gtk-4.0
 
+- name: Create nitrogen config directory
+  ansible.builtin.file:
+    path: "{{ invoking_home }}/.config/nitrogen"
+    state: directory
+    mode: "0755"
+  become: false
+
 - name: Set nitrogen wallpaper for orange theme
   ansible.builtin.copy:
     dest: "{{ invoking_home }}/.config/nitrogen/bg-saved.cfg"
@@ -258,14 +265,6 @@
     url: https://raw.githubusercontent.com/iQuickDev/catppuccin-wallpapers/master/minimalistic/mauve-cat.png
     dest: /usr/share/wallpapers/catppuccin-mocha.png
     mode: "0644"
-  when: dotfiles_theme == 'catppuccin'
-
-- name: Create nitrogen config directory
-  ansible.builtin.file:
-    path: "{{ invoking_home }}/.config/nitrogen"
-    state: directory
-    mode: "0755"
-  become: false
   when: dotfiles_theme == 'catppuccin'
 
 - name: Seed nitrogen's saved background to the Catppuccin wallpaper
