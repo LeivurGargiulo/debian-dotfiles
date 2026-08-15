@@ -50,7 +50,8 @@ imagemagick, git-delta, duf, smartmontools, hdparm, ncdu, btop, chafa
 (terminal image viewer), lftp (SFTP/FTP client), rclone (Nextcloud/WebDAV
 sync), pulsemixer (PulseAudio mixer), mangohud (gaming perf overlay),
 taskwarrior (task manager), calcurse (TUI calendar), xclip (X11
-clipboard CLI), playerctl (media-key control)
+clipboard CLI), playerctl (media-key control), udiskie (USB
+automount), aerc (TUI email client), newsboat (TUI RSS reader)
 
 ## TUI-first picks (`apt_packages`)
 
@@ -100,18 +101,24 @@ Installed by downloading the latest GitHub release asset straight to
 - yazi
 - bluetuith
 - steam-tui (see Gaming above)
+- glow (TUI markdown reader)
+- lazydocker (TUI for Docker/Compose, already installed under `docker.io`)
+- amdgpu_top (AMD GPU monitor — AMD-hardware only)
 
 ## Installed via official install scripts (`official_scripts.yml`)
 
 - starship (prompt)
 - tailscale (VPN)
 - chezmoi (dotfile manager — this repo's config is applied by it)
+- uv (Python package/project manager, user-scoped install)
 
 ## Flatpak apps (`flatpak_apps`, via Flathub)
 
 - Zen Browser (FOSS Firefox fork, replaces Google Chrome — see Not FOSS /
   removed below)
 - osu! (see Gaming above)
+- RustDesk (ad-hoc P2P remote access — distinct job from Remmina's
+  RDP/VNC client role above)
 - Vesktop (Discord client)
 - Telegram Desktop
 - ZapZap (WhatsApp client)
@@ -129,7 +136,7 @@ websockets, pytest, tremc, jrnl
 
 ## npm global packages (`npm_global_packages`)
 
-@bitwarden/cli
+@bitwarden/cli, @anthropic-ai/claude-code
 
 ## Shell environment (`shell-env` role, not apt/pip/npm)
 
@@ -148,12 +155,17 @@ picom, dunst, fastfetch, kitty, neovim (kickstart.nvim fork), yazi
 ## Not automated (known gap, see `packages.yml` comment block)
 
 - scrcpy — not resolving on this apt mirror, check `sources.list`
-- glow, openrgb, reaper — no install task anywhere in this repo yet,
-  install manually if needed
+- openrgb, reaper — no install task anywhere in this repo yet, install
+  manually if needed
 - barrier — dropped, unmaintained upstream; input-leap (flatpak, above)
   replaces it
 - LocalSend, HandBrake, ProtonUp-Qt/protontricks/lutris — raised during
   the oldpackages review, not confirmed wanted, left out
+- ollama — raised during the oldpackages review (local LLM runner), not
+  yet confirmed wanted
+- taskwarrior-tui, gurk (Signal), weather TUI, Posting, cmus/termusic,
+  YouTube-TUI browser — surfaced from the awesome-tuis/best-TUI-apps
+  web search, awaiting a decision on which (if any) to add
 
 ## Dropped for non-FOSS / build-size (this pass)
 

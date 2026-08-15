@@ -28,3 +28,14 @@
 - name: Install chezmoi via official script
   ansible.builtin.shell: sh -c "$(curl -fsLS get.chezmoi.io)" -- -b /usr/local/bin
   when: chezmoi_check.rc != 0
+
+- name: Check if uv is installed
+  ansible.builtin.command: which uv
+  register: uv_check
+  ignore_errors: true
+  changed_when: false
+
+- name: Install uv via official script
+  ansible.builtin.shell: curl -LsSf https://astral.sh/uv/install.sh | sh
+  become: false
+  when: uv_check.rc != 0

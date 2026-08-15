@@ -41,6 +41,9 @@ apt_packages:
   - calcurse
   - xclip
   - playerctl
+  - udiskie
+  - aerc
+  - newsboat
 
   # TUI-first picks
   - zathura
@@ -66,15 +69,16 @@ apt_packages:
   - steam-installer
 
   # not in Debian apt — installed separately (see packages_manual role tasks):
-  #   starship, tailscale, chezmoi, ncspot, lazygit,
-  #   yt-dlp, atuin, jrnl, glow, ventoy,
+  #   starship, tailscale, chezmoi, ncspot, lazygit, uv,
+  #   yt-dlp, atuin, ventoy,
   #   vesktop, telegram, zapzap, easyeffects (flatpak), gnome-boxes,
   #   openrgb, reaper, catppuccin-cursors, catppuccin-papirus-folders,
   #   scrcpy (not resolving on this apt mirror, check sources.list),
-  #   bandwhich, yazi, bluetuith, steam-tui (github releases below),
-  #   tremc, jrnl (pip), bitwarden-cli (npm), barrier (dropped,
-  #   unmaintained upstream — see input-leap flatpak), prismlauncher,
-  #   osu! (flatpak)
+  #   bandwhich, yazi, bluetuith, steam-tui, glow, lazydocker,
+  #   amdgpu_top (github releases below),
+  #   tremc, jrnl (pip), bitwarden-cli, claude-code CLI (npm),
+  #   barrier (dropped, unmaintained upstream — see input-leap flatpak),
+  #   prismlauncher, osu!, rustdesk (flatpak)
 
 github_release_binaries:
   - repo: jesseduffield/lazygit
@@ -106,10 +110,20 @@ github_release_binaries:
     asset_pattern: "steam-tui"
     binary_name: steam-tui
     direct_binary: true
+  - repo: charmbracelet/glow
+    asset_pattern: "glow_.*_linux_amd64.tar.gz"
+    binary_name: glow
+  - repo: jesseduffield/lazydocker
+    asset_pattern: "lazydocker_.*_Linux_x86_64.tar.gz"
+    binary_name: lazydocker
+  - repo: Umio-Yasuno/amdgpu_top
+    asset_pattern: "amdgpu_top-.*-x86_64-unknown-linux-gnu.tar.gz"
+    binary_name: amdgpu_top
 
 flatpak_apps:
   - io.github.zen_browser.zen
   - sh.ppy.osu
+  - com.rustdesk.RustDesk
   - dev.vencord.Vesktop
   - org.telegram.desktop
   - com.rtosta.zapzap
@@ -173,3 +187,4 @@ pip_user_packages:
 
 npm_global_packages:
   - "@bitwarden/cli"
+  - "@anthropic-ai/claude-code"
