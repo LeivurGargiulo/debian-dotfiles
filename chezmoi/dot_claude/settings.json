@@ -1,0 +1,131 @@
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "PONYTAIL_SUBAGENT_MATCHER": "general-purpose|architect|builder|code-simplifier"
+  },
+  "permissions": {
+    "allow": [
+      "mcp__serena__read_memory"
+    ]
+  },
+  "model": "sonnet",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/zshrc-zoxide-guard.sh"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/bin/notify-send 'Claude Code' \"$(cat | jq -r '.message // \"Needs input\"')\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/bin/notify-send 'Claude Code' 'Task finished'"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"$HOME/.claude/statusline-command.sh\""
+  },
+  "enabledPlugins": {
+    "pyright-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": false,
+    "code-review@claude-plugins-official": false,
+    "claude-md-management@claude-plugins-official": false,
+    "ponytail@ponytail": true,
+    "frontend-design@claude-plugins-official": false,
+    "superpowers@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": false,
+    "code-simplifier@claude-plugins-official": false,
+    "feature-dev@claude-plugins-official": false,
+    "ralph-loop@claude-plugins-official": false,
+    "claude-code-setup@claude-plugins-official": true,
+    "remember@claude-plugins-official": false,
+    "andrej-karpathy-skills@karpathy-skills": true,
+    "caveman@caveman": true,
+    "playwright@claude-plugins-official": true,
+    "serena@claude-plugins-official": true,
+    "hookify@claude-plugins-official": false,
+    "agnix@claude-community": true,
+    "claude-mem@thedotmack": false,
+    "tailwind-design-system@claude-community": false,
+    "dependency-evaluator@claude-community": false,
+    "perf@claude-community": false,
+    "git-weekly-changelog@claude-community": false,
+    "tailtest@claude-community": false,
+    "design-with-claude@claude-community": false,
+    "brand-md@claude-community": false,
+    "designs-drift@claude-community": false
+  },
+  "extraKnownMarketplaces": {
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
+    },
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    },
+    "karpathy-skills": {
+      "source": {
+        "source": "github",
+        "repo": "forrestchang/andrej-karpathy-skills"
+      }
+    },
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
+    },
+    "claude-community": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-community"
+      }
+    }
+  },
+  "effortLevel": "medium",
+  "awaySummaryEnabled": false,
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark",
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true
+}
