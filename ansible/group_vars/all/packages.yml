@@ -36,6 +36,11 @@ apt_packages:
   - lftp
   - rclone
   - pulsemixer
+  - mangohud
+  - taskwarrior
+  - calcurse
+  - xclip
+  - playerctl
 
   # TUI-first picks
   - zathura
@@ -56,15 +61,20 @@ apt_packages:
   - obs-studio
   - libnotify-bin
 
+  # gaming (needs contrib + non-free-firmware + i386 multiarch, see
+  # steam_prereqs.yml)
+  - steam-installer
+
   # not in Debian apt — installed separately (see packages_manual role tasks):
   #   starship, tailscale, chezmoi, ncspot, lazygit,
-  #   yt-dlp, atuin, jrnl, glow, mangohud, ventoy,
+  #   yt-dlp, atuin, jrnl, glow, ventoy,
   #   vesktop, telegram, zapzap, easyeffects (flatpak), gnome-boxes,
   #   openrgb, reaper, catppuccin-cursors, catppuccin-papirus-folders,
   #   scrcpy (not resolving on this apt mirror, check sources.list),
-  #   bandwhich, yazi, bluetuith (github releases below),
-  #   tremc (pip), bitwarden-cli (npm), barrier (dropped, unmaintained
-  #   upstream — see input-leap flatpak), prismlauncher (flatpak)
+  #   bandwhich, yazi, bluetuith, steam-tui (github releases below),
+  #   tremc, jrnl (pip), bitwarden-cli (npm), barrier (dropped,
+  #   unmaintained upstream — see input-leap flatpak), prismlauncher,
+  #   osu! (flatpak)
 
 github_release_binaries:
   - repo: jesseduffield/lazygit
@@ -92,9 +102,14 @@ github_release_binaries:
   - repo: darkhz/bluetuith
     asset_pattern: "bluetuith_.*_Linux_x86_64.tar.gz"
     binary_name: bluetuith
+  - repo: dmadisetti/steam-tui
+    asset_pattern: "steam-tui"
+    binary_name: steam-tui
+    direct_binary: true
 
 flatpak_apps:
   - io.github.zen_browser.zen
+  - sh.ppy.osu
   - dev.vencord.Vesktop
   - org.telegram.desktop
   - com.rtosta.zapzap
@@ -154,6 +169,7 @@ pip_user_packages:
   - websockets
   - pytest
   - tremc
+  - jrnl
 
 npm_global_packages:
   - "@bitwarden/cli"

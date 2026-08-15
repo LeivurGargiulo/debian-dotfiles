@@ -27,7 +27,7 @@ flatpak-apps.txt), `Win` (oldpackages/windows-inventory/).
 | Audio production | FL Studio (via Wine/Bottles, out of scope here) | GUI | Win |
 | Raster editor | gimp | GUI | Arch, PopOS, Win |
 | Screen recording | obs-studio | GUI | Arch, PopOS, Win |
-| Gaming | steam (+ steam-tui launcher) | GUI+TUI | Arch, Win |
+| Gaming | steam + steam-tui launcher + mangohud overlay + osu! | GUI+TUI | Arch, Win |
 | Editor | Neovim (NvChad) | TUI | GNOME, all |
 | Terminal multiplexer | tmux (gpakosz base) | TUI | GNOME |
 | Terminal emulator | kitty | GUI (kept from repo) | GNOME |

@@ -1,4 +1,7 @@
 ---
+- name: Enable Steam's apt prerequisites (contrib, non-free-firmware, i386)
+  ansible.builtin.include_tasks: steam_prereqs.yml
+
 - name: Update apt cache
   ansible.builtin.apt:
     update_cache: true

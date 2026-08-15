@@ -1,0 +1,20 @@
+---
+# steam-installer needs contrib + non-free-firmware components and i386
+# multiarch (Steam itself and many of its dependencies are still 32-bit).
+# Untested against deb822-format sources.list (Debian 12+ default) — verify
+# during bare-metal testing, see docs/BARE_METAL_TESTING.md.
+
+- name: Add i386 architecture for Steam's 32-bit dependencies
+  ansible.builtin.command: dpkg --add-architecture i386
+  register: dpkg_i386
+  changed_when: dpkg_i386.rc == 0
+  failed_when: false
+
+- name: Enable contrib and non-free-firmware components
+  ansible.builtin.apt_repository:
+    repo: "deb http://deb.debian.org/debian {{ ansible_distribution_release }} main contrib non-free non-free-firmware"
+    state: present
+
+- name: Refresh apt cache after adding components/architecture
+  ansible.builtin.apt:
+    update_cache: true

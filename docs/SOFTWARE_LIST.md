@@ -48,7 +48,9 @@ zsh, p7zip-full, unrar-free, ffmpeg, python3, python3-pip, python3-venv,
 openjdk-21-jdk, openssh-server, docker.io, docker-compose, unzip,
 imagemagick, git-delta, duf, smartmontools, hdparm, ncdu, btop, chafa
 (terminal image viewer), lftp (SFTP/FTP client), rclone (Nextcloud/WebDAV
-sync), pulsemixer (PulseAudio mixer)
+sync), pulsemixer (PulseAudio mixer), mangohud (gaming perf overlay),
+taskwarrior (task manager), calcurse (TUI calendar), xclip (X11
+clipboard CLI), playerctl (media-key control)
 
 ## TUI-first picks (`apt_packages`)
 
@@ -70,6 +72,20 @@ obs-studio, libnotify-bin
 > pass — see git history. filezilla → lftp, nextcloud-desktop → rclone,
 > pavucontrol → pulsemixer, all listed under Core CLI tools above.
 
+## Gaming (`apt_packages` + `github_release_binaries` + `flatpak_apps`)
+
+- **steam-installer** (apt) — needs `contrib`/`non-free-firmware`
+  components and i386 multiarch, enabled by the new
+  `steam_prereqs.yml` task (untested against deb822-format
+  `sources.list`, verify on bare metal)
+- **mangohud** (apt) — in-game perf overlay
+- **steam-tui** (GitHub release, `dmadisetti/steam-tui`) — TUI wrapper
+  around your Steam library; still needs the real Steam install above,
+  this is just the launcher UI. Upstream is stale (last release 2024)
+- **osu!** (flatpak, `sh.ppy.osu`) — rhythm/aim-practice game
+- PrismLauncher (Minecraft launcher) — already listed under Flatpak
+  apps below
+
 ## GitHub-release binaries (`github_release_binaries`)
 
 Installed by downloading the latest GitHub release asset straight to
@@ -83,6 +99,7 @@ Installed by downloading the latest GitHub release asset straight to
 - bandwhich
 - yazi
 - bluetuith
+- steam-tui (see Gaming above)
 
 ## Installed via official install scripts (`official_scripts.yml`)
 
@@ -94,6 +111,7 @@ Installed by downloading the latest GitHub release asset straight to
 
 - Zen Browser (FOSS Firefox fork, replaces Google Chrome — see Not FOSS /
   removed below)
+- osu! (see Gaming above)
 - Vesktop (Discord client)
 - Telegram Desktop
 - ZapZap (WhatsApp client)
@@ -107,7 +125,7 @@ Installed by downloading the latest GitHub release asset straight to
 beautifulsoup4, curl_cffi, git-filter-repo, numpy, pandas, peewee,
 pillow, prompt_toolkit, protobuf, pyarrow, python-dateutil,
 python-dotenv, pytz, questionary, SQLAlchemy, six, soupsieve,
-websockets, pytest, tremc
+websockets, pytest, tremc, jrnl
 
 ## npm global packages (`npm_global_packages`)
 
@@ -130,10 +148,12 @@ picom, dunst, fastfetch, kitty, neovim (kickstart.nvim fork), yazi
 ## Not automated (known gap, see `packages.yml` comment block)
 
 - scrcpy — not resolving on this apt mirror, check `sources.list`
-- jrnl, glow, mangohud, openrgb, reaper — no install task anywhere in
-  this repo yet, install manually if needed
+- glow, openrgb, reaper — no install task anywhere in this repo yet,
+  install manually if needed
 - barrier — dropped, unmaintained upstream; input-leap (flatpak, above)
   replaces it
+- LocalSend, HandBrake, ProtonUp-Qt/protontricks/lutris — raised during
+  the oldpackages review, not confirmed wanted, left out
 
 ## Dropped for non-FOSS / build-size (this pass)
 
