@@ -18,10 +18,10 @@
   become: false
 
 - name: Configure picom build
-  ansible.builtin.command: meson setup --buildtype=release build
+  ansible.builtin.command: meson setup --buildtype=release -Dregex=false build
   args:
     chdir: /tmp/picom-src
-    creates: /tmp/picom-src/build
+    creates: /tmp/picom-src/build/build.ninja
   become: false
 
 - name: Build picom

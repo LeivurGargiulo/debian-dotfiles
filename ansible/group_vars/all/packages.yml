@@ -227,6 +227,7 @@ picom_build_deps:
   - libxcb-shape0-dev
   - libxcb-util-dev
   - libxcb-xfixes0-dev
+  - libxcb-xinerama0-dev
   - meson
   - ninja-build
   - uthash-dev
