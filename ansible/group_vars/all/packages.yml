@@ -156,6 +156,10 @@ github_release_binaries:
   - repo: YS-L/csvlens
     asset_pattern: "csvlens-x86_64-unknown-linux-gnu.tar.xz"
     binary_name: csvlens
+  - repo: erebe/greenclip
+    asset_pattern: "greenclip$"
+    binary_name: greenclip
+    direct_binary: true
 
 flatpak_apps:
   - io.github.zen_browser.zen
@@ -176,7 +180,6 @@ i3_packages:
   - i3lock
   - polybar
   - rofi
-  - picom
   - dunst
   - lightdm
   - lightdm-gtk-greeter
@@ -198,6 +201,36 @@ i3_packages:
 theme_packages:
   - papirus-icon-theme
   - qt-style-kvantum
+
+# picom is built from source (pijulius/picom, implement-window-animations
+# branch — adds animations, no Debian package exists for this fork).
+# betterlockscreen is fetched as a raw script (no packaged release asset).
+picom_build_deps:
+  - libconfig-dev
+  - libdbus-1-dev
+  - libegl-dev
+  - libev-dev
+  - libgl-dev
+  - libepoxy-dev
+  - libpcre2-dev
+  - libpixman-1-dev
+  - libx11-xcb-dev
+  - libxcb1-dev
+  - libxcb-composite0-dev
+  - libxcb-damage0-dev
+  - libxcb-glx0-dev
+  - libxcb-image0-dev
+  - libxcb-present-dev
+  - libxcb-randr0-dev
+  - libxcb-render0-dev
+  - libxcb-render-util0-dev
+  - libxcb-shape0-dev
+  - libxcb-util-dev
+  - libxcb-xfixes0-dev
+  - meson
+  - ninja-build
+  - uthash-dev
+  - cmake
 
 pip_user_packages:
   - beautifulsoup4

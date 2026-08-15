@@ -4,6 +4,45 @@
     name: "{{ i3_packages }}"
     state: present
 
+- name: Install picom build dependencies
+  ansible.builtin.apt:
+    name: "{{ picom_build_deps }}"
+    state: present
+
+- name: Clone picom (pijulius fork, animations branch)
+  ansible.builtin.git:
+    repo: https://github.com/pijulius/picom.git
+    dest: /tmp/picom-src
+    version: implement-window-animations
+    depth: 1
+  become: false
+
+- name: Configure picom build
+  ansible.builtin.command: meson setup --buildtype=release build
+  args:
+    chdir: /tmp/picom-src
+    creates: /tmp/picom-src/build
+  become: false
+
+- name: Build picom
+  ansible.builtin.command: ninja -C build
+  args:
+    chdir: /tmp/picom-src
+    creates: /tmp/picom-src/build/src/picom
+  become: false
+
+- name: Install picom to /usr/local/bin
+  ansible.builtin.command: ninja -C build install
+  args:
+    chdir: /tmp/picom-src
+    creates: /usr/local/bin/picom
+
+- name: Fetch betterlockscreen script
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/betterlockscreen
+    dest: /usr/local/bin/betterlockscreen
+    mode: "0755"
+
 - name: Enable lightdm service
   ansible.builtin.systemd:
     name: lightdm
