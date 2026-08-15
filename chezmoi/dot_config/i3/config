@@ -11,6 +11,8 @@ exec --no-startup-id flameshot &
 exec --no-startup-id nm-applet &
 exec --no-startup-id blueman-applet &
 exec --no-startup-id /usr/bin/lxpolkit &
+exec --no-startup-id greenclip daemon &
+exec --no-startup-id kitty --class dropdown_term
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -52,9 +54,6 @@ bindsym $mod+f exec $browser
 # open the file manager
 bindsym $mod+e exec $files
 
-# open discord
-bindsym $mod+d exec --no-startup-id discord &
-
 # kill focused window
 bindsym $mod+q kill
 
@@ -63,6 +62,30 @@ bindsym $mod+a exec $launcher
 
 # open the wallpaper manager
 bindsym $mod+n exec $wall
+
+# lock the screen
+bindsym $mod+Ctrl+l exec --no-startup-id ~/.local/share/i3/scripts/lock.sh
+
+# toggle picom (compositor effects) on/off
+bindsym $mod+p exec --no-startup-id ~/.local/share/i3/scripts/toggle_picom.sh
+
+# clipboard history
+bindsym $mod+c exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+
+# toggle dropdown terminal
+bindsym $mod+grave [instance="dropdown_term"] scratchpad show
+
+# window switcher (jump to any open window)
+bindsym $mod+Tab exec --no-startup-id rofi -show window -config ~/.config/rofi/config/i3.rasi
+
+# audio output/input device switcher
+bindsym $mod+o exec --no-startup-id rofi -show audio -modi "audio:~/.local/share/rofi/scripts/audio-switch" -config ~/.config/rofi/config/i3.rasi
+
+# curated TUI app launcher
+bindsym $mod+Shift+a exec --no-startup-id rofi -show tui -modi "tui:~/.local/share/rofi/scripts/tui-menu" -config ~/.config/rofi/config/i3.rasi
+
+# keybind cheat-sheet
+bindsym $mod+slash exec --no-startup-id rofi -show keybinds -modi "keybinds:~/.local/share/rofi/scripts/keybind-help" -config ~/.config/rofi/config/i3.rasi
 
 ######################################################
 #####################flameshot########################
@@ -115,12 +138,12 @@ bindsym $mod+h split h
 bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
-# bindsym $mod+f fullscreen toggle
+bindsym $mod+z fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-# bindsym $mod+s layout stacking
-# bindsym $mod+w layout tabbed
-# bindsym $mod+e layout toggle split
+bindsym $mod+s layout stacking
+bindsym $mod+t layout tabbed
+bindsym $mod+g layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+w floating toggle
@@ -143,16 +166,16 @@ bindsym $mod+minus scratchpad show
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
+set $ws1 "1:󰆍"
+set $ws2 "2:󰖟"
+set $ws3 "3:󰉋"
+set $ws4 "4:󰅩"
+set $ws5 "5:"
+set $ws6 "6:"
+set $ws7 "7:"
+set $ws8 "8:"
+set $ws9 "9:"
+set $ws10 "10:"
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -216,5 +239,8 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 for_window [class=".*"] border pixel 0
+
+for_window [instance="dropdown_term"] floating enable, resize set 1200 700, move position center, move scratchpad, scratchpad show
+
 gaps inner 10px
 gaps outer 5px
