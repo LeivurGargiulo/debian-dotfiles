@@ -8,20 +8,20 @@ dim_level=40
 wallpaper_cmd="feh --bg-fill"
 quiet=false
 
-loginbox=0A0A0A66
+loginbox=0D070466
 loginshadow=00000000
-bgcolor=0A0A0Aff
+bgcolor=0D0704ff
 
 locktext="Type Password..."
 font="CaskaydiaCove Nerd Font"
-timecolor=E8E8E8ff
+timecolor=FFEDD5ff
 time_format="%H:%M:%S"
-greetercolor=E8E8E8ff
-layoutcolor=E8E8E8ff
+greetercolor=FFEDD5ff
+layoutcolor=FFEDD5ff
 
-insidewrongcolor=FF4500ff
-ringwrongcolor=FF4500ff
-insidevercolor=FF7A00ff
-ringvercolor=FF7A00ff
-insidecolor=0A0A0A00
-ringcolor=3A3A3Aff
+insidewrongcolor=F38BA8ff
+ringwrongcolor=F38BA8ff
+insidevercolor=FF6A00ff
+ringvercolor=FF6A00ff
+insidecolor=0D070400
+ringcolor=1F120Aff
