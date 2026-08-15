@@ -31,6 +31,29 @@ files change — it's a snapshot, not a generated artifact.
 | neovim | editor (also see dotfile config below) |
 | fastfetch | system info banner |
 
+**picom is no longer in this list** — it's built from source (see
+"Built from source" below) since the animation-fork used here has no
+Debian package. `greenclip` (clipboard manager) and
+`betterlockscreen` (screen lock) are also new to the desktop stack but
+installed differently — see their own sections below. All three are
+documented in [DESKTOP_GUIDE.md](DESKTOP_GUIDE.md) and
+[KEYBINDINGS.md](KEYBINDINGS.md).
+
+## Built from source (`ansible/roles/desktop`)
+
+- **picom** (`pijulius/picom`, `implement-window-animations` branch) —
+  compositor with window-animation support the stock apt package
+  lacks. Build deps declared as `picom_build_deps` in `packages.yml`
+  (meson/ninja + the usual X11/xcb/pixman headers). Installed to
+  `/usr/local/bin/picom`, shadowing the apt package name if one is
+  ever reinstalled — check `which picom` if behavior looks wrong.
+
+## Fetched scripts (`ansible/roles/desktop`)
+
+- **betterlockscreen** — no packaged release asset, fetched as a raw
+  script from its GitHub `main` branch to `/usr/local/bin`. Config:
+  `chezmoi/dot_config/betterlockscreen/betterlockscreenrc`.
+
 ## Theming (`theme_packages` + fetched assets, `theme` role)
 
 - papirus-icon-theme, qt-style-kvantum (apt)
@@ -58,8 +81,9 @@ oathtool (TOTP/HOTP code generator)
 
 ## TUI-first picks (`apt_packages`)
 
-zathura (PDF), mpv (video), transmission-cli (torrent), cava (audio
-visualizer)
+zathura (PDF), mpv (video), rtorrent (BitTorrent client — replaced
+transmission-cli, has a built-in ncurses TUI and is packaged in apt),
+cava (audio visualizer)
 
 ## Firewall / disk / archive (`apt_packages`)
 
@@ -89,6 +113,11 @@ obs-studio, libnotify-bin
 - **osu!** (flatpak, `sh.ppy.osu`) — rhythm/aim-practice game
 - PrismLauncher (Minecraft launcher) — already listed under Flatpak
   apps below
+
+## Clipboard (`github_release_binaries`)
+
+- **greenclip** — clipboard-history daemon (Haskell binary release),
+  backs the `mod+c` rofi menu. Config: `chezmoi/dot_config/greenclip.toml`.
 
 ## GitHub-release binaries (`github_release_binaries`)
 
@@ -166,6 +195,16 @@ websockets, pytest, tremc, jrnl
 
 @bitwarden/cli, @anthropic-ai/claude-code
 
+## Claude Code plugins/marketplaces (`claude_marketplaces` + `claude_plugins`)
+
+Installed right after the Claude Code CLI itself, in the `dev-tools`
+role: 5 plugin marketplaces (`claude-plugins-official`, `ponytail`,
+`karpathy-skills`, `caveman`, `claude-community`) and 12 enabled
+plugins (pyright-lsp, typescript-lsp, security-guidance, ponytail,
+superpowers, context7, claude-code-setup, andrej-karpathy-skills,
+caveman, playwright, serena, agnix). Full detail, plus what's vendored
+from `~/.claude/` and why, in [CLAUDE_CODE_SETUP.md](CLAUDE_CODE_SETUP.md).
+
 ## Shell environment (`shell-env` role, not apt/pip/npm)
 
 - oh-my-zsh (+ zsh set as default shell)
@@ -176,9 +215,14 @@ websockets, pytest, tremc, jrnl
 
 ## Vendored dotfile configs (chezmoi, not installed packages)
 
-Config only, application itself installed above: i3, polybar, rofi,
+Config only, application itself installed above: i3, polybar, rofi
+(+ tui-menu/audio-switch/keybind-help/rofi-power-menu scripts),
 picom, dunst, fastfetch, kitty, neovim (kickstart.nvim fork), yazi
-(with the `catppuccin-mocha` flavor).
+(with the `catppuccin-mocha` flavor), greenclip, betterlockscreen, and
+Claude Code (`~/.claude/`, see [CLAUDE_CODE_SETUP.md](CLAUDE_CODE_SETUP.md)).
+Full desktop behavior write-up: [DESKTOP_GUIDE.md](DESKTOP_GUIDE.md).
+Every keybind: [KEYBINDINGS.md](KEYBINDINGS.md). How to change any of
+this: [CUSTOMIZING.md](CUSTOMIZING.md).
 
 ## Not automated (known gap, see `packages.yml` comment block)
 
