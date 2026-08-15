@@ -108,21 +108,34 @@ flatpak_apps:
   - org.prismlauncher.PrismLauncher
   - io.github.input_leap.input-leap
 
-plasma_packages:
-  - plasma-desktop
-  - sddm
-  - kwin-wayland
-  - plasma-nm
-  - bluedevil
-  - kde-spectacle
-  - konsole
-  - kitty
-  - kde-config-gtk-style
-  - kpackagetool6
+i3_packages:
+  - xserver-xorg
+  - xinit
+  - i3-wm
+  - i3lock
+  - polybar
+  - rofi
+  - picom
+  - dunst
+  - lightdm
+  - lightdm-gtk-greeter
+  - network-manager-gnome
+  - blueman
+  - flameshot
+  - policykit-1-gnome
+  - lxappearance
+  - qt5ct
+  - thunar
+  - thunar-archive-plugin
+  - nitrogen
+  - dex
+  - light
+  - pulseaudio-utils
+  - neovim
+  - fastfetch
 
 theme_packages:
   - papirus-icon-theme
-  - fonts-jetbrains-mono
   - qt-style-kvantum
 
 pip_user_packages:
