@@ -126,6 +126,12 @@
     remote_src: true
     creates: /usr/share/sddm/themes/catppuccin-mocha-mauve
 
+- name: Ensure /etc/sddm.conf.d exists (not shipped by the sddm package)
+  ansible.builtin.file:
+    path: /etc/sddm.conf.d
+    state: directory
+    mode: "0755"
+
 - name: Set Catppuccin as the SDDM login theme
   ansible.builtin.copy:
     dest: /etc/sddm.conf.d/theme.conf
