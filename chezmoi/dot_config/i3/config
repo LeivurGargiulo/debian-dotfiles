@@ -33,7 +33,7 @@ set $crust #11111b
 
 # Theming
 # target                 border   bg      text   indicator  child_border
-client.focused           $mauve   $base   $mauve $base      $mauve
+client.focused           $mauve   $base   $mauve $mauve     $mauve
 client.focused_inactive  $base    $base   $mauve $base      $base
 client.unfocused         $base    $mantle $text  $base      $base
 client.urgent            $peach   $base   $peach $peach     $peach
