@@ -46,6 +46,7 @@ mkcd() { mkdir -p "$1" && cd "$1"; }
 alias c="clear"
 alias h="history"
 alias reload="source ~/.zshrc"
+theme() { ansible-playbook ~/debian/ansible/site.yml --tags theme -e dotfiles_theme="$1" --ask-become-pass; }
 alias myip="curl -s ifconfig.me"
 alias ports="ss -tulpn"
 alias path='echo -e ${PATH//:/\\n}'

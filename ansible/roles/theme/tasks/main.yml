@@ -282,14 +282,10 @@
 
 - name: Generate betterlockscreen's cached lock wallpaper (orange)
   ansible.builtin.command: "betterlockscreen -u {{ invoking_home }}/.local/share/wallpapers/orange-neon-glass.png"
-  args:
-    creates: "{{ invoking_home }}/.cache/betterlockscreen"
   become: false
   when: dotfiles_theme == 'orange'
 
 - name: Generate betterlockscreen's cached lock wallpaper (catppuccin)
   ansible.builtin.command: betterlockscreen -u /usr/share/wallpapers/catppuccin-mocha.png
-  args:
-    creates: "{{ invoking_home }}/.cache/betterlockscreen"
   become: false
   when: dotfiles_theme == 'catppuccin'
