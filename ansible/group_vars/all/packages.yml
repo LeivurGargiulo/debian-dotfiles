@@ -46,7 +46,6 @@ apt_packages:
   - newsboat
   - cmus
   - ytfzf
-  - rbw
   - oathtool
 
   # TUI-first picks
@@ -118,7 +117,7 @@ github_release_binaries:
     binary_name: steam-tui
     direct_binary: true
   - repo: charmbracelet/glow
-    asset_pattern: "glow_.*_linux_amd64.tar.gz"
+    asset_pattern: "glow_.*_Linux_x86_64.tar.gz"
     binary_name: glow
   - repo: jesseduffield/lazydocker
     asset_pattern: "lazydocker_.*_Linux_x86_64.tar.gz"
@@ -137,6 +136,9 @@ github_release_binaries:
     asset_pattern: "wden-x86_64-unknown-linux-gnu"
     binary_name: wden
     direct_binary: true
+  - repo: doy/rbw
+    asset_pattern: "rbw_.*_linux_amd64.tar.gz"
+    binary_name: rbw
 
 cargo_packages:
   - raijin
