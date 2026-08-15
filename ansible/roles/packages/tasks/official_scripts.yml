@@ -19,6 +19,15 @@
   ansible.builtin.shell: curl -fsSL https://tailscale.com/install.sh | sh
   when: tailscale_check.rc != 0
 
+- name: Stop NetworkManager from managing the tailscale interface (avoids a stray VPN tray icon)
+  ansible.builtin.copy:
+    dest: /etc/NetworkManager/conf.d/99-tailscale.conf
+    content: |
+      [keyfile]
+      unmanaged-devices=interface-name:tailscale0
+    mode: "0644"
+  notify: reload NetworkManager
+
 - name: Check if chezmoi is installed
   ansible.builtin.command: which chezmoi
   register: chezmoi_check

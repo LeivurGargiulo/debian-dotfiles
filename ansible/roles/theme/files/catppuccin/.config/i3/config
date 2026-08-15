@@ -33,10 +33,10 @@ set $crust #11111b
 
 # Theming
 # target                 border   bg      text   indicator  child_border
-client.focused           $base    $base   $mauve $base      $mauve
+client.focused           $mauve   $base   $mauve $base      $mauve
 client.focused_inactive  $base    $base   $mauve $base      $base
 client.unfocused         $base    $mantle $text  $base      $base
-client.urgent            $base    $base   $peach $peach     $peach
+client.urgent            $peach   $base   $peach $peach     $peach
 client.background        $base
 
 # Resolution
@@ -52,7 +52,6 @@ smart_borders on
 # Gaps
 gaps inner 8
 gaps outer 0
-gaps top 30
 
 # Turn off bell
 exec --no-startup-id xset b off
