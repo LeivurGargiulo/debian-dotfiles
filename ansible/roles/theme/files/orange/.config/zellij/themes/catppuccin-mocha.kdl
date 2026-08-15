@@ -1,0 +1,15 @@
+themes {
+  catppuccin-mocha {
+    bg "#3d2716" // Surface2
+    fg "#ffedd5" // Text
+    red "#f38ba8"
+    green "#a6e3a1"
+    blue "#ffc266"
+    yellow "#f9e2af"
+    magenta "#ff9500" // Pink
+    orange "#ff9500" // Peach
+    cyan "#ffa057" // Sky
+    black "#0a0503" // Mantle
+    white "#ffedd5" // Text
+  }
+}

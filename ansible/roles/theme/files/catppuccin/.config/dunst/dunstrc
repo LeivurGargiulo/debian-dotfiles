@@ -1,0 +1,41 @@
+[global]
+frame_color = "#cba6f7"
+separator_color= frame
+scale = 1.2
+icon_corner_radius = 5
+font = "CaskaydiaCove Nerd Font 12"
+icon_theme = "Papirus-Dark"
+origin = top-right
+offset = (12,42)
+frame_width = 2
+corners = all
+corner_radius = 10
+format = "%s\n%b"
+sort = yes
+ignore_newline = no
+markup = full
+
+icon_path = /usr/share/icons/Papirus-Dark/16x16/actions:/usr/share/icons/Papirus-Dark/16x16/apps:/usr/share/icons/Papirus-Dark/16x16/devices:/usr/share/icons/Papirus-Dark/16x16/mimetypes:/usr/share/icons/Papirus-Dark/16x16/panel:/usr/share/icons/Papirus-Dark/16x16/places:/usr/share/icons/Papirus-Dark/16x16/status
+
+[Type-1]
+    appname = "t1"
+    format = "<b>%s</b>"
+
+[Type-2]
+    appname = "t2"
+    format = "<span size="250%">%s</span>\n%b"
+
+[urgency_low]
+background = "#1e1e2eb0"
+foreground = "#cdd6f4"
+timeout=3
+
+[urgency_normal]
+background = "#1e1e2eb0"
+foreground = "#cdd6f4"
+timeout=3
+
+[urgency_critical]
+background = "#1e1e2eb0"
+foreground = "#cdd6f4"
+frame_color = "#fab387b0"

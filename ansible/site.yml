@@ -30,6 +30,7 @@
     - packages
     - desktop
     - dotfiles
+    - theme
     - shell-env
     - dev-tools
     - vault
