@@ -25,6 +25,13 @@ extra tooling layer. Goal: reformat = clone this repo, run
   replacements for GUI apps that had a genuinely viable one (Discord
   → `endcord`, Telegram/WhatsApp → `nchat`, GNOME Boxes → `vm-curator`),
   and `claude-squad` for managing multiple Claude Code sessions.
+- `dotfiles/.config/hyde/themes/Monokai-Pro/` — the HyDE theme (palette
+  source for HyDE's wallbash engine, which propagates it to
+  waybar/rofi/dunst/GTK/Qt/hyprlock/kitty), activated by `install.sh` via
+  `hydectl theme set "Monokai-Pro"`. Every other themed CLI/TUI tool's
+  config lives under `dotfiles/.config/<tool>/`, same overlay mechanism as
+  everything else — see `docs/monokai-pro-palette.md` for the canonical
+  palette every config file was built from.
 - `install.sh`, `scripts/` — glue: package install, Node LTS via `nvm`,
   run HyDE's installer, apply the overlay.
 
