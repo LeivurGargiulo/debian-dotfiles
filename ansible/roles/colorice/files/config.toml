@@ -54,6 +54,11 @@ input = "rofi-colors.rasi"
 output = "~/.config/rofi/colorice-colors.rasi"
 
 [[templates]]
+name = "rofi-extended"
+input = "rofi-extended.rasi"
+output = "~/.config/rofi/colorice-extended.rasi"
+
+[[templates]]
 name = "cava"
 input = "cava.conf"
 output = "~/.config/cava/config"

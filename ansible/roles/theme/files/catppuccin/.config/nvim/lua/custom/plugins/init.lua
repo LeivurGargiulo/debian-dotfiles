@@ -2,6 +2,11 @@
 --  I promise not to create any merge conflicts in this directory :)
 --
 -- See the kickstart.nvim README for more information
+
+-- colorice — once you run `colorice <wallpaper> --apply`, this module
+-- exists and can be required by a colorscheme-setting plugin spec below
+pcall(require, "colorice-colors")
+
 return {
   {
     'catppuccin/nvim',

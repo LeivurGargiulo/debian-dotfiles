@@ -41,6 +41,7 @@
     - { src: i3-colorice-extended.conf, dest: .config/i3/colorice-extended.conf }
     - { src: polybar-colorice-colors.ini, dest: .config/polybar/colorice-colors.ini }
     - { src: polybar-colorice-extended.ini, dest: .config/polybar/colorice-extended.ini }
+    - { src: rofi-colorice-extended.rasi, dest: .config/rofi/colorice-extended.rasi }
 
 - name: Deploy colorice custom templates
   ansible.builtin.copy:
@@ -51,3 +52,4 @@
   loop:
     - i3-extended.conf
     - polybar-extended.ini
+    - rofi-extended.rasi

@@ -32,6 +32,10 @@ configuration {
     font: "CaskaydiaCove Nerd Font 12";
 }
 
+/* colorice — overrides the colors above once you run
+   `colorice <wallpaper> --apply` */
+@import "colorice-extended.rasi"
+
 element-text, element-icon , mode-switcher {
     background-color: inherit;
     text-color:       inherit;
