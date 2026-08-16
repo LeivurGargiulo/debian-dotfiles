@@ -59,6 +59,7 @@
     - bat.tmTheme
     - btop.theme
     - eza.yml
+    - fzf.zsh
     - lazygit.yml
     - mpv.conf
     - ncspot.toml

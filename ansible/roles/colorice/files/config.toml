@@ -100,6 +100,11 @@ input = "eza.yml"
 output = "~/.config/eza/theme.yml"
 
 [[templates]]
+name = "fzf"
+input = "fzf.zsh"
+output = "~/.config/fzf/colors.zsh"
+
+[[templates]]
 name = "lazygit"
 input = "lazygit.yml"
 output = "~/.config/lazygit/config.yml"
