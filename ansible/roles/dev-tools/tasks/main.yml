@@ -1,12 +1,4 @@
 ---
-- name: Install rustup (stable toolchain — needed for eww/prism-tui; apt's rustc is too old for prism-tui)
-  ansible.builtin.shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable --profile minimal
-  args:
-    creates: "{{ invoking_home }}/.cargo/bin/rustup"
-  become: false
-  environment:
-    HOME: "{{ invoking_home }}"
-
 - name: Install pip user packages
   ansible.builtin.pip:
     name: "{{ pip_user_packages }}"
