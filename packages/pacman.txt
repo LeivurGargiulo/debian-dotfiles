@@ -8,7 +8,6 @@ mesa
 vulkan-radeon
 vulkan-icd-loader
 libva-mesa-driver
-mesa-vdpau
 lib32-mesa
 lib32-vulkan-radeon
 
