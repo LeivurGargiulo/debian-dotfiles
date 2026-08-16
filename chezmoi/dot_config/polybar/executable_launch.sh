@@ -12,5 +12,6 @@ eww daemon
 # for a login-time launch script, revisit if `eww open` below ever races.
 sleep 0.5
 eww open nowplaying-popup
+eww open volume-popup
 
 polybar main &
