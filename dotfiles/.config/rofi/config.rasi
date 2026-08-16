@@ -1,0 +1,9 @@
+// Show each app's .desktop "Comment" (description) next to its name in
+// the drun launcher. HyDE ships only theme.rasi (colors) and relies on
+// rofi's own default config.rasi — this file supplies just the one
+// option, layered on top of HyDE's theme by rofi's normal config loading
+// (~/.config/rofi/config.rasi is read automatically, independent of
+// whatever -theme HyDE's launcher script passes).
+configuration {
+    drun-display-format: "{name} <span weight='light' size='small'><i>({comment})</i></span>";
+}
