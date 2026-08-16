@@ -76,6 +76,18 @@ apt_packages:
   # steam_prereqs.yml)
   - steam-installer
 
+  # eww build deps (crates/eww Cargo.toml + flake.nix buildInputs)
+  - pkg-config
+  - libgtk-3-dev
+  - librsvg2-dev
+  - libdbusmenu-gtk3-dev
+  # xwinwrap build deps (per its README)
+  - xorg-dev
+  - libx11-dev
+  - x11proto-xext-dev
+  - libxrender-dev
+  - libxext-dev
+
   # not in Debian apt — installed separately (see packages_manual role tasks):
   #   starship, tailscale, chezmoi, uv (official scripts),
   #   ncspot, lazygit,
@@ -92,9 +104,6 @@ apt_packages:
   #   tremc (dropped, pip release requires Python <3.10, incompatible
   #   with system Python 3.13; replaced by rtorrent, which has a
   #   built-in ncurses TUI and is packaged in apt)
-  #   xwinwrap (dropped, build-from-source only, no packaged release)
-  #   prism-tui (skipped, no packaged release, requires Rust 1.92+
-  #   toolchain via rustup — apt's rustc/cargo is only 1.85)
 
 github_release_binaries:
   - repo: jesseduffield/lazygit
@@ -163,6 +172,16 @@ github_release_binaries:
     asset_pattern: "greenclip$"
     binary_name: greenclip
     direct_binary: true
+
+cargo_git_builds:
+  - repo: elkowar/eww
+    tag: v0.6.0
+    binary_name: eww
+    cargo_args: "-p eww --no-default-features --features x11"
+  - repo: OneNoted/Prism-TUI
+    tag: v0.3.0
+    binary_name: prism-tui
+    cargo_args: ""
 
 flatpak_apps:
   - app.zen_browser.zen
