@@ -96,7 +96,7 @@ uv
 rustup
 nvm
 zellij
-ttf-cascadia-mono-nerd
+ttf-firacode-nerd
 
 # --- Python libraries (were pip user packages, now system-wide) ---
 python-beautifulsoup4
