@@ -56,6 +56,7 @@ apt_packages:
   - mpv
   - rtorrent
   - cava
+  - micro
 
   # firewall / disk / archive
   - ufw

@@ -4,13 +4,6 @@
     name: "{{ theme_packages }}"
     state: present
 
-- name: Copy catppuccin theme files into place
-  ansible.builtin.copy:
-    src: "catppuccin/"
-    dest: "{{ invoking_home }}/"
-    mode: preserve
-  become: false
-
 - name: Create fonts directory
   ansible.builtin.file:
     path: "{{ invoking_home }}/.local/share/fonts"

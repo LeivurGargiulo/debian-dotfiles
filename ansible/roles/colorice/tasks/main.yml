@@ -22,13 +22,6 @@
   become: false
   when: not colorice_config.stat.exists
 
-- name: Deploy colorice config.toml
-  ansible.builtin.copy:
-    src: config.toml
-    dest: "{{ invoking_home }}/.config/colorice/config.toml"
-    mode: "0644"
-  become: false
-
 - name: Seed placeholder colorice output files (never overwrites a real apply)
   ansible.builtin.copy:
     src: "seed/{{ item.src }}"
@@ -42,35 +35,3 @@
     - { src: polybar-colorice-colors.ini, dest: .config/polybar/colorice-colors.ini }
     - { src: polybar-colorice-extended.ini, dest: .config/polybar/colorice-extended.ini }
     - { src: rofi-colorice-extended.rasi, dest: .config/rofi/colorice-extended.rasi }
-
-- name: Deploy colorice custom templates
-  ansible.builtin.copy:
-    src: "templates/{{ item }}"
-    dest: "{{ invoking_home }}/.config/colorice/templates/{{ item }}"
-    mode: "0644"
-  become: false
-  loop:
-    - i3-extended.conf
-    - polybar-extended.ini
-    - rofi-extended.rasi
-    - fastfetch.jsonc
-    - atuin.toml
-    - atuin-theme.toml
-    - bat.tmTheme
-    - btop.theme
-    - eza.yml
-    - fzf.zsh
-    - lazygit.yml
-    - mpv.conf
-    - ncspot.toml
-    - starship.toml
-    - aerc-styleset
-    - betterlockscreen-colors
-    - delta.gitconfig
-
-- name: Deploy rice-refresh script
-  ansible.builtin.copy:
-    src: rice-refresh
-    dest: "{{ invoking_home }}/.local/bin/rice-refresh"
-    mode: "0755"
-  become: false

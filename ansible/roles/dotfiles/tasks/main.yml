@@ -1,4 +1,25 @@
 ---
+- name: Snapshot chezmoi-managed files before force-apply
+  ansible.builtin.shell: |
+    set -e
+    managed=$(chezmoi managed --path-style absolute 2>/dev/null || true)
+    if [ -n "$managed" ]; then
+      backup_dir="{{ invoking_home }}/.dotfiles-backup/$(date +%Y%m%d_%H%M%S)"
+      mkdir -p "$backup_dir"
+      echo "$managed" | while IFS= read -r f; do
+        [ -e "$f" ] || continue
+        rel="${f#{{ invoking_home }}/}"
+        mkdir -p "$backup_dir/$(dirname "$rel")"
+        cp -a "$f" "$backup_dir/$rel"
+      done
+    fi
+  become: true
+  become_user: "{{ invoking_user }}"
+  environment:
+    HOME: "{{ invoking_home }}"
+  changed_when: false
+  failed_when: false
+
 - name: Apply chezmoi source state
   ansible.builtin.command: chezmoi init --source "{{ playbook_dir }}/../chezmoi" --apply --force
   become: true
