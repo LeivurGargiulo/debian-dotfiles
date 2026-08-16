@@ -29,16 +29,46 @@ of its own Hyprland config — so it's already covered, just not via
 `install.sh` runs on real hardware; only add something here if HyDE
 *doesn't* cover it.
 
-## 2. Theming/config layer — pending the ricing task, not blocked
+## 2. Theming/config layer — mostly done (2026-08-16 ricing pass), residual gaps below
 
-All of debian's Catppuccin theming (Papirus icons + folder recoloring,
-Bibata cursor theme, CaskaydiaCove Nerd Font, wallpaper, qt5ct/GTK palette,
-per-tool Catppuccin configs for bat/delta/eza/fzf/tmux/btop/cava/zathura/
-mpv/newsboat/aerc/atuin/ncspot/lazygit/zellij/ducker/zen-browser/vesktop/
-zsh-syntax-highlighting/mangohud/GRUB) is **config**, not packages — it
-belongs in the `dotfiles/` overlay, same mechanism as
-`dotfiles/.config/hypr/monitors.conf`. Nothing to add to `packages/`;
-this is the "ricing" task, not a package gap.
+The ricing pass themed HyDE's own chrome (via `dotfiles/.config/hyde/themes/Monokai-Pro/`,
+HyDE's wallbash engine) plus 21 CLI/TUI tools Monokai-Pro-style: bat, eza,
+git-delta, fzf, tmux, zsh-syntax-highlighting, btop, cava, mangohud, yazi,
+gitui, lazygit, zathura, mpv/uosc, newsboat, aerc, atuin, ncspot, cmus,
+calcurse, taskwarrior. See `docs/monokai-pro-palette.md` for the canonical
+palette and `docs/superpowers/plans/2026-08-16-monokai-pro-ricing.md` for
+what was built.
+
+**Still open, real gaps (not deliberate skips):**
+- **Nerd Font package** — `dotfiles/.config/hyde/themes/Monokai-Pro/hypr.theme`
+  references `CaskaydiaCove Nerd Font Mono`, but no Nerd Font package
+  exists in `packages/pacman.txt` or `packages/aur.txt` (checked — neither
+  list has any `ttf-*`/`otf-*`/`nerd-font` entry). Add
+  `ttf-cascadia-code-nerd` (or check what HyDE's own installer already
+  pulls in — it may already cover this, verify on real hardware first).
+- **zellij** — debian-dotfiles has a Catppuccin zellij theme, but `zellij`
+  itself was never added to either package list here at all (not ported in
+  Task 2, not caught since). Add the package first if wanted, theme after.
+- **ducker** — installed (`packages/aur.txt`) but not in the ricing pass's
+  21-tool coverage list, so it has no Monokai Pro config. debian has one
+  (`chezmoi/dot_config/colorice/templates/ducker.yaml`) — straightforward
+  to port if wanted.
+
+**Deliberately deferred per the ricing spec** (not gaps, tracked
+decisions):
+- Icon theme (debian: Papirus + Catppuccin folder recolor) — out of scope,
+  relies on wallbash's dynamic GTK/Qt recolor instead of a bundled icon set.
+- Cursor theme (debian: Bibata, live-recolored per-hex) — `hypr.theme`
+  references `Bibata-Modern-Ice` as a placeholder name only; the actual
+  package/theme isn't installed or verified.
+- Real wallpaper — `wall.png` is a flat `#2d2a2e` placeholder, same
+  pattern as `monitors.conf`, pending real hardware.
+- GRUB boot theme — CachyOS may default to a different bootloader
+  (systemd-boot is common on Arch-based installers); verify what's
+  actually in use before assuming GRUB applies at all.
+- qt5ct/GTK palette — relies on HyDE's wallbash `gtk-css.dcol`/qtct
+  templates recoloring from `theme.dcol` automatically; not hand-verified
+  against a running system.
 
 ## 3. Dropped on purpose (non-FOSS), not a gap
 
