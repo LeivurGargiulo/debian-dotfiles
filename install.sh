@@ -49,6 +49,15 @@ if command -v hydectl >/dev/null 2>&1; then
     hydectl theme set "Monokai-Pro"
 fi
 
+echo "==> building Monokai Pro cursor theme (Bibata via cbmp)"
+"$repo_root/scripts/build-monokai-cursor.sh"
+
+echo "==> building Monokai Pro icon theme (Papirus folders)"
+"$repo_root/scripts/build-monokai-icons.sh"
+
+echo "==> applying Monokai Pro Firefox theme"
+"$repo_root/scripts/apply-firefox-theme.sh"
+
 cat <<'EOF'
 
 ==> done.

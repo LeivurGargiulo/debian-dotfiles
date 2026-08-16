@@ -34,6 +34,10 @@ extra tooling layer. Goal: reformat = clone this repo, run
   config lives under `dotfiles/.config/<tool>/`, same overlay mechanism as
   everything else — see `docs/monokai-pro-palette.md` for the canonical
   palette every config file was built from.
+- `firefox/` — `userChrome.css` + `user.js`, applied to Firefox's default
+  profile by `scripts/apply-firefox-theme.sh` (lives at the repo root, not
+  under `dotfiles/`, because Firefox profile directory names are
+  randomized and can't be a static symlink target).
 - `install.sh`, `scripts/` — glue: package install, Node LTS via `nvm`,
   run HyDE's installer, apply the overlay.
 
@@ -89,6 +93,10 @@ This overwrites both files from the live system's `pacman -Qqe`/`-Qqm`
 — it drops the hand-written `#` category comments from the original
 curated lists. Re-add comments by hand if you want them back, or just
 let the plain list stand.
+
+See `docs/SOFTWARE_LIST.md` for what every installed package is actually
+for — update it by hand alongside `packages/` changes, same as this
+README, it's not generated.
 
 ## Not automated yet
 

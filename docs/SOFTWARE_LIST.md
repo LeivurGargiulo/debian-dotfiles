@@ -133,6 +133,9 @@ those change, it's a snapshot, not a generated artifact.
 | nvm | Node Version Manager |
 | zellij | terminal workspace/multiplexer (tmux alternative) |
 | ttf-firacode-nerd | FiraCode font patched with Nerd Fonts glyphs, terminal/code font |
+| yarn | JS package manager, build dependency for the Monokai Pro cursor theme (`scripts/build-monokai-cursor.sh`) |
+| papirus-icon-theme | icon theme, recolored per-folder to Monokai Pro by `scripts/build-monokai-icons.sh` |
+| firefox | web browser, themed via `scripts/apply-firefox-theme.sh` (`firefox/userChrome.css`), replaces Zen Browser |
 
 ## Python libraries, system-wide (`packages/pacman.txt` + `packages/aur.txt`)
 
@@ -239,8 +242,14 @@ ruled out and why.
 
 | Package | Purpose |
 |---|---|
-| zen-browser-bin | Zen Browser, FOSS Firefox fork |
 | rustdesk-bin | ad-hoc P2P remote desktop access |
+
+## Monokai Pro cursor/icon theme build tooling (`packages/aur.txt`)
+
+| Package | Purpose |
+|---|---|
+| python-clickgen | provides `ctgen`, builds the Monokai Pro cursor theme (`scripts/build-monokai-cursor.sh`) |
+| papirus-folders | recolors Papirus folder icons, used by `scripts/build-monokai-icons.sh` |
 
 ## Gaming / disk tools, AUR -bin builds (`packages/aur.txt`)
 

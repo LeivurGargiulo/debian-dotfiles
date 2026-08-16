@@ -30,12 +30,15 @@ tmux-plugin-manager
 zsh-theme-powerlevel10k
 
 # --- browsers / chat (AUR -bin builds) ---
-zen-browser-bin
 rustdesk-bin
 
 # --- gaming / disk tools (AUR -bin builds) ---
 steam-tui-bin
 ventoy-bin
+
+# --- Monokai Pro cursor/icon theme build tooling ---
+python-clickgen
+papirus-folders
 
 # --- ratatui TUI picks, no official-repo package (github.com/ratatui/awesome-ratatui) ---
 mirro-rs-git

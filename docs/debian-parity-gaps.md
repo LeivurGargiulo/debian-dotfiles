@@ -71,13 +71,24 @@ already-working `colorice` templates (fastfetch, rtorrent, starship, glow)
 with palette placeholders substituted for the canonical Monokai Pro hex
 values.
 
+**Closed (icon/cursor/browser, later pass):** Icon theme —
+`papirus-icon-theme` + `papirus-folders`, `scripts/build-monokai-icons.sh`
+recolors Papirus's stock folder SVGs to exact Monokai Pro hex (same
+technique catppuccin/papirus-folders uses — verified against
+papirus-folders' real source, not guessed). Cursor theme —
+`scripts/build-monokai-cursor.sh` builds a real Monokai-Pro-colored Bibata
+set via `cbmp`/`ctgen` (`yarn` + `python-clickgen` as build tooling, no
+pre-built Monokai cursor theme exists anywhere so this had to be built,
+not just installed). Firefox — swapped in for Zen Browser per explicit
+request; `scripts/apply-firefox-theme.sh` parses `profiles.ini` and
+installs `firefox/userChrome.css` + `firefox/user.js`, mechanism verified
+against Mozilla's own docs and a real reference implementation
+(black7375/Firefox-UI-Fix). None of these three scripts could be
+live-tested in this sandbox (no Hyprland/X session, Papirus/Bibata/Firefox
+aren't installed here) — verify on real hardware.
+
 **Deliberately deferred per the ricing spec** (not gaps, tracked
 decisions):
-- Icon theme (debian: Papirus + Catppuccin folder recolor) — out of scope,
-  relies on wallbash's dynamic GTK/Qt recolor instead of a bundled icon set.
-- Cursor theme (debian: Bibata, live-recolored per-hex) — `hypr.theme`
-  references `Bibata-Modern-Ice` as a placeholder name only; the actual
-  package/theme isn't installed or verified.
 - Real wallpaper — `wall.png` is a flat `#2d2a2e` placeholder, same
   pattern as `monitors.conf`, pending real hardware.
 - GRUB boot theme — CachyOS may default to a different bootloader

@@ -6,7 +6,9 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 bash -n "$repo_root/install.sh"
 echo "syntax OK"
 
-for f in packages/pacman.txt packages/aur.txt vendor/hyde/Scripts/install.sh scripts/symlink-dotfiles.sh; do
+for f in packages/pacman.txt packages/aur.txt vendor/hyde/Scripts/install.sh \
+    scripts/symlink-dotfiles.sh scripts/build-monokai-cursor.sh \
+    scripts/build-monokai-icons.sh scripts/apply-firefox-theme.sh; do
     if [[ ! -f "$repo_root/$f" ]]; then
         echo "FAIL: install.sh depends on missing file: $f" >&2
         exit 1

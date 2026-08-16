@@ -96,6 +96,9 @@ rustup
 nvm
 zellij
 ttf-firacode-nerd
+yarn
+papirus-icon-theme
+firefox
 
 # --- Python libraries (were pip user packages, now system-wide) ---
 python-beautifulsoup4
