@@ -55,6 +55,8 @@ neovim
 fastfetch
 pulsemixer
 aerc
+git-filter-repo
+jrnl
 
 # --- TUI-first picks ---
 zathura
@@ -92,3 +94,22 @@ starship
 tailscale
 uv
 rustup
+
+# --- Python libraries (were pip user packages, now system-wide) ---
+python-beautifulsoup4
+python-curl_cffi
+python-dateutil
+python-dotenv
+python-numpy
+python-pandas
+python-peewee
+python-pillow
+python-prompt_toolkit
+python-protobuf
+python-pyarrow
+python-pytest
+python-pytz
+python-six
+python-soupsieve
+python-sqlalchemy
+python-websockets

@@ -78,12 +78,13 @@ These were part of the prior (Debian) setup and aren't wired into
 `install.sh` — install manually for now, promote into the automated
 flow later if it's worth it:
 
-- pip user packages (`beautifulsoup4`, `pandas`, `pytest`, etc. — see
-  `../debian-dotfiles/docs/SOFTWARE_LIST.md` for the full list)
-- npm globals (`@anthropic-ai/claude-code`, `@bitwarden/cli`)
-- `oh-my-zsh` + its custom plugins, `nvm`-installed Node LTS, `tmux`
-  plugin manager (tpm) — shell-environment setup scripts, not packages
-- Cargo-only tools (e.g. Raijin weather TUI, no pre-built binary)
+- `@anthropic-ai/claude-code` (npm) — an unofficial `claude-code` AUR
+  package exists, deliberately not used; stick to the official npm/curl
+  install for the tool actually running these sessions
+- `nvm`-installed Node LTS — an `nvm` runtime operation, not a package
+  (the `nvm` tool itself is in `packages/aur.txt`)
+- Cargo-only tools (e.g. Raijin weather TUI, no pre-built binary or
+  AUR package found)
 - Flatpak apps (Zen Browser, RustDesk, Vesktop, Telegram, ZapZap,
   EasyEffects, GNOME Boxes, PrismLauncher, input-leap, osu!) — `flatpak`
   itself is in `packages/pacman.txt`; install apps with `flatpak install

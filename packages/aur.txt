@@ -12,10 +12,19 @@ gophertube
 wden
 ytfzf
 nvm
+tremc
 
 # --- password / 2FA ---
 rbw
 rofi-rbw
+bitwarden-cli-bin
+
+# --- Python libraries (AUR-only) ---
+python-questionary
+
+# --- shell environment ---
+oh-my-zsh-git
+tmux-plugin-manager
 
 # --- browsers / chat (AUR -bin builds) ---
 zen-browser-bin
