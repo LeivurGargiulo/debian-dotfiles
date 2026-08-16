@@ -1,0 +1,19 @@
+(defwidget volume [json visible]
+  (revealer :transition "slideup"
+            :duration "250ms"
+            :reveal visible
+    (box :class "volume-popup"
+         :orientation "vertical"
+         :space-evenly false
+      (box :class "volume-row"
+           :orientation "horizontal"
+           :space-evenly false
+        (button :class "volume-mute-btn eww-fade-hover"
+                :onclick "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+                {json.muted ? "󰝟" : "󰕾"})
+        (scale :class "volume-scale"
+               :value {json.volume}
+               :min 0
+               :max 100
+               :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%"))
+      (label :class "volume-label" :text "${json.volume}%"))))

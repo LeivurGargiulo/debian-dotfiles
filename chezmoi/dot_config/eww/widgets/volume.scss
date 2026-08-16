@@ -1,0 +1,27 @@
+.volume-popup {
+  background-color: $base;
+  color: $text;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.volume-row {
+  margin-bottom: 4px;
+}
+
+.volume-mute-btn {
+  background-color: $surface0;
+  color: $mauve;
+  border-radius: 6px;
+  padding: 4px 8px;
+  margin-right: 8px;
+}
+
+.volume-scale {
+  min-width: 140px;
+}
+
+.volume-label {
+  color: $overlay1;
+  font-size: 0.8em;
+}
