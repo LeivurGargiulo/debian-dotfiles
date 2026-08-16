@@ -30,6 +30,14 @@ grep -vE '^\s*#|^\s*$' "$repo_root/packages/pacman.txt" | sudo pacman -S --neede
 echo "==> installing packages/aur.txt"
 grep -vE '^\s*#|^\s*$' "$repo_root/packages/aur.txt" | yay -S --needed --noconfirm -
 
+echo "==> installing Node LTS via nvm"
+export NVM_DIR="$HOME/.nvm"
+set +u
+# shellcheck disable=SC1091
+source /usr/share/nvm/init-nvm.sh
+nvm install --lts
+set -u
+
 echo "==> running vendor/hyde/Scripts/install.sh (HyDE's own installer)"
 (cd "$repo_root/vendor/hyde/Scripts" && ./install.sh)
 

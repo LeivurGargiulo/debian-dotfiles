@@ -11,13 +11,15 @@ taskwarrior-tui
 gophertube
 wden
 ytfzf
-nvm
 tremc
 
 # --- password / 2FA ---
 rbw
 rofi-rbw
 bitwarden-cli-bin
+
+# --- dev tools (unofficial AUR builds) ---
+claude-code
 
 # --- Python libraries (AUR-only) ---
 python-questionary

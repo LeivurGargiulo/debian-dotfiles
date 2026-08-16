@@ -94,6 +94,7 @@ starship
 tailscale
 uv
 rustup
+nvm
 
 # --- Python libraries (were pip user packages, now system-wide) ---
 python-beautifulsoup4

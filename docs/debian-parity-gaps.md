@@ -6,22 +6,7 @@ the list *was* portable and already got ported (see `packages/` +
 `README.md`'s "Not automated yet" section for the small residual). This
 file is the rest: things that don't map cleanly.
 
-## 1. No Arch/AUR package exists (genuinely not installable)
-
-- **Raijin** (weather TUI) — cargo-only upstream, no pre-built binary, no
-  AUR package found (checked). Stays cargo-install-only, same as debian.
-
-## 2. Installable, but deliberately left manual
-
-- **`@anthropic-ai/claude-code`** — an AUR `claude-code` package exists but
-  is community-maintained, not published by Anthropic. Ruling: keep the
-  official npm/curl install for the tool running these sessions rather
-  than trust an unofficial rebuild.
-- **`nvm`-installed Node LTS** — `nvm` itself is packaged (`packages/aur.txt`),
-  but "install the current LTS via nvm" is a runtime operation, not a
-  package — nothing to add to a package list.
-
-## 3. Superseded by Hyprland/HyDE (X11-only, no port needed)
+## 1. Superseded by Hyprland/HyDE (X11-only, no port needed)
 
 debian-dotfiles targets i3 (X11). HyDE already provides the Wayland/Hyprland
 equivalent of each of these, so none were ported — installing them
@@ -44,7 +29,7 @@ of its own Hyprland config — so it's already covered, just not via
 `install.sh` runs on real hardware; only add something here if HyDE
 *doesn't* cover it.
 
-## 4. Theming/config layer — pending the ricing task, not blocked
+## 2. Theming/config layer — pending the ricing task, not blocked
 
 All of debian's Catppuccin theming (Papirus icons + folder recoloring,
 Bibata cursor theme, CaskaydiaCove Nerd Font, wallpaper, qt5ct/GTK palette,
@@ -55,14 +40,14 @@ belongs in the `dotfiles/` overlay, same mechanism as
 `dotfiles/.config/hypr/monitors.conf`. Nothing to add to `packages/`;
 this is the "ricing" task, not a package gap.
 
-## 5. Dropped on purpose (non-FOSS), not a gap
+## 3. Dropped on purpose (non-FOSS), not a gap
 
 - **google-chrome-stable** — proprietary; Zen Browser (flatpak, already in
   README's not-automated list) replaces it, same call debian made.
 - **VS Code** (`code`) — proprietary build + telemetry; Neovim is the sole
   editor, same call debian made.
 
-## 6. Carried over unresolved from debian itself
+## 4. Carried over unresolved from debian itself
 
 debian-dotfiles never installed these either (raised, not confirmed
 wanted, or blocked on its own apt mirror) — still open, still nothing

@@ -20,8 +20,12 @@ extra tooling layer. Goal: reformat = clone this repo, run
 - `packages/pacman.txt` / `packages/aur.txt` — everything beyond what
   HyDE's own installer already pulls in: the AMD driver stack and the
   CLI/TUI tools ported from a previous (Debian) dotfiles setup.
-- `install.sh`, `scripts/` — glue: package install, run HyDE's
-  installer, apply the overlay.
+- `install.sh`, `scripts/` — glue: package install, Node LTS via `nvm`,
+  run HyDE's installer, apply the overlay.
+
+`packages/aur.txt`'s `claude-code` entry is a community-maintained AUR
+build, not published by Anthropic — review its PKGBUILD before trusting
+it if that matters to you.
 
 ## CachyOS vs vanilla Arch
 
@@ -78,13 +82,6 @@ These were part of the prior (Debian) setup and aren't wired into
 `install.sh` — install manually for now, promote into the automated
 flow later if it's worth it:
 
-- `@anthropic-ai/claude-code` (npm) — an unofficial `claude-code` AUR
-  package exists, deliberately not used; stick to the official npm/curl
-  install for the tool actually running these sessions
-- `nvm`-installed Node LTS — an `nvm` runtime operation, not a package
-  (the `nvm` tool itself is in `packages/aur.txt`)
-- Cargo-only tools (e.g. Raijin weather TUI, no pre-built binary or
-  AUR package found)
 - Flatpak apps (Zen Browser, RustDesk, Vesktop, Telegram, ZapZap,
   EasyEffects, GNOME Boxes, PrismLauncher, input-leap, osu!) — `flatpak`
   itself is in `packages/pacman.txt`; install apps with `flatpak install
