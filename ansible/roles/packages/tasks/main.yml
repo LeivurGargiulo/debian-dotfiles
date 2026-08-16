@@ -26,6 +26,13 @@
   ansible.builtin.include_tasks: github_releases.yml
   tags: github_releases
 
+- name: Build and install cargo git binaries (eww, prism-tui)
+  ansible.builtin.include_tasks: cargo_git_builds.yml
+  loop: "{{ cargo_git_builds }}"
+  loop_control:
+    label: "{{ item.binary_name }}"
+  tags: cargo_git_builds
+
 - name: Install packages via official install scripts
   ansible.builtin.include_tasks: official_scripts.yml
 
