@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+WALLPAPER=$(find ~/Pictures/Wallpapers -type f | shuf -n 1)
+nitrogen --set-zoom-fill "$WALLPAPER"
+colorice "$WALLPAPER" --apply --no-preview -q
+notify-send "Theme refreshed" "$(basename "$WALLPAPER")"

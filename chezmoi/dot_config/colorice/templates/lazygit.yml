@@ -1,30 +1,31 @@
+# colorice — generated from {wallpaper}
 gui:
   theme:
     activeBorderColor:
-      - '#cba6f7'
+      - "{color5.saturate_15}"
       - bold
     inactiveBorderColor:
-      - '#a6adc8'
+      - "{color15}"
     searchingActiveBorderColor:
-      - '#f9e2af'
+      - "{color3}"
     optionsTextColor:
-      - '#89b4fa'
+      - "{color4}"
     selectedLineBgColor:
-      - '#313244'
+      - "{color0}"
     inactiveViewSelectedLineBgColor:
-      - '#6c7086'
+      - "{color8}"
     cherryPickedCommitFgColor:
-      - '#cba6f7'
+      - "{color5.saturate_15}"
     cherryPickedCommitBgColor:
-      - '#45475a'
+      - "{color0}"
     markedBaseCommitFgColor:
-      - '#89b4fa'
+      - "{color4}"
     markedBaseCommitBgColor:
-      - '#f9e2af'
+      - "{color3}"
     unstagedChangesColor:
-      - '#f38ba8'
+      - "{color1}"
     defaultFgColor:
-      - '#cdd6f4'
+      - "{foreground}"
 
   authorColors:
-    '*': '#b4befe'
+    "*": "{color4.lighten_15.desaturate_10}"

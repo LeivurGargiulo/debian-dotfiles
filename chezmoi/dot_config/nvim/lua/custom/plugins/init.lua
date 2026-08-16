@@ -2,39 +2,17 @@
 --  I promise not to create any merge conflicts in this directory :)
 --
 -- See the kickstart.nvim README for more information
+
+-- colorice — once you run `colorice <wallpaper> --apply`, this module
+-- exists and can be required by a colorscheme-setting plugin spec below
+pcall(require, "colorice-colors")
+
 return {
   {
     'catppuccin/nvim',
     name = 'catppuccin',
     opts = {
       transparent_background = true,
-      color_overrides = {
-        mocha = {
-          base = '#0d0704',
-          mantle = '#0a0503',
-          crust = '#060302',
-          surface0 = '#1f120a',
-          surface1 = '#2e1c0f',
-          surface2 = '#3d2716',
-          overlay0 = '#6b4a30',
-          overlay1 = '#8a5a3a',
-          overlay2 = '#a8703f',
-          subtext0 = '#c98b52',
-          subtext1 = '#e0a465',
-          text = '#ffedd5',
-          rosewater = '#ffcf9c',
-          flamingo = '#ffb86c',
-          pink = '#ff9500',
-          mauve = '#ff6a00',
-          maroon = '#cc2400',
-          peach = '#ff9500',
-          teal = '#ff8c3d',
-          sky = '#ffa057',
-          sapphire = '#ff7a1a',
-          blue = '#ffc266',
-          lavender = '#ffd9a0',
-        },
-      },
     },
     priority = 1000,
     init = function()

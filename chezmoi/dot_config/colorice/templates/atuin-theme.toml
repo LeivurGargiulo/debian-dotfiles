@@ -1,0 +1,13 @@
+# colorice — generated from {wallpaper}
+[theme]
+name = "colorice"
+
+[colors]
+AlertInfo = "{color2}"
+AlertWarn = "{color3.darken_5.saturate_15}"
+AlertError = "{color1}"
+Annotation = "{color5.saturate_15}"
+Base = "{foreground}"
+Guidance = "{color7.darken_10}"
+Important = "{color1}"
+Title = "{color5.saturate_15}"

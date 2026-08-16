@@ -1,0 +1,18 @@
+# colorice — generated from {wallpaper}
+[theme]
+background = "{background}"
+primary = "{foreground}"
+secondary = "{color6}"
+title = "{color5.saturate_15}"
+playing = "{color2}"
+playing_bg = "{background}"
+highlight = "{foreground}"
+highlight_bg = "{color5.saturate_15.darken_10}"
+playing_selected = "{color2}"
+error = "{background}"
+error_bg = "{color1}"
+statusbar = "{color5.saturate_15}"
+statusbar_bg = "{color0}"
+statusbar_progress = "{color5.saturate_15}"
+cmdline = "{color5.saturate_15}"
+cmdline_bg = "{background.darken_5}"

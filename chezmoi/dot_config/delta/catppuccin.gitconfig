@@ -92,20 +92,20 @@
 	syntax-theme = Catppuccin Macchiato
 
 [delta "catppuccin-mocha"]
-	blame-palette = "#0d0704 #0a0503 #060302 #1f120a #2e1c0f"
-	commit-decoration-style = "#6b4a30" bold box ul
+	blame-palette = "#1e1e2e #181825 #11111b #313244 #45475a"
+	commit-decoration-style = "#6c7086" bold box ul
 	dark = true
-	file-decoration-style = "#6b4a30"
-	file-style = "#ffedd5"
-	hunk-header-decoration-style = "#6b4a30" box ul
+	file-decoration-style = "#6c7086"
+	file-style = "#cdd6f4"
+	hunk-header-decoration-style = "#6c7086" box ul
 	hunk-header-file-style = bold
-	hunk-header-line-number-style = bold "#c98b52"
+	hunk-header-line-number-style = bold "#a6adc8"
 	hunk-header-style = file line-number syntax
-	line-numbers-left-style = "#6b4a30"
+	line-numbers-left-style = "#6c7086"
 	line-numbers-minus-style = bold "#f38ba8"
 	line-numbers-plus-style = bold "#a6e3a1"
-	line-numbers-right-style = "#6b4a30"
-	line-numbers-zero-style = "#6b4a30"
+	line-numbers-right-style = "#6c7086"
+	line-numbers-zero-style = "#6c7086"
 	# 35% red 65% base
 	minus-emph-style = bold syntax "#694559"
 	# 20% red 80% base
