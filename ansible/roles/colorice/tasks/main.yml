@@ -35,3 +35,4 @@
     - { src: polybar-colorice-colors.ini, dest: .config/polybar/colorice-colors.ini }
     - { src: polybar-colorice-extended.ini, dest: .config/polybar/colorice-extended.ini }
     - { src: rofi-colorice-extended.rasi, dest: .config/rofi/colorice-extended.rasi }
+    - { src: eww-colorice-colors.scss, dest: .config/eww/colorice-colors.scss }

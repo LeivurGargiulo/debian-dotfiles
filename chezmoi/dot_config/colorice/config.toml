@@ -143,3 +143,9 @@ output = "~/.config/delta/colorice-colors.gitconfig"
 name = "yazi"
 input = "yazi-flavor.toml"
 output = "~/.config/yazi/flavors/colorice.yazi/flavor.toml"
+
+[[templates]]
+name = "eww-colors"
+input = "eww-colors.scss"
+output = "~/.config/eww/colorice-colors.scss"
+hook = "eww reload"
