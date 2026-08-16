@@ -1,0 +1,34 @@
+# Monokai Pro (rgb-cube/gray-ramp approximation — taskwarrior has no
+# direct hex support, see docs/monokai-pro-palette.md "Tools without hex
+# support". Mapping: pink->rgb512, orange->rgb521, yellow->rgb541,
+# green->rgb342, cyan->rgb244, purple->rgb335, bg->gray4, bg-darker->gray3,
+# fg->rgb555, dimmed-gray->gray14)
+color.label=
+color.header=rgb335
+color.footnote=gray14
+color.warning=bold rgb541
+color.error=white on rgb512
+
+color.active=rgb555 on gray4
+color.completed=gray14
+color.deleted=gray14
+color.blocked=white on gray3
+color.blocking=black on gray14
+
+color.due.today=rgb541
+color.due=rgb521
+color.overdue=rgb512
+
+color.tag.next=rgb342
+color.tagged=rgb244
+color.project.none=
+
+color.uda.priority.H=rgb512
+color.uda.priority.M=rgb541
+color.uda.priority.L=rgb342
+
+color.recurring=rgb244
+color.scheduled=on gray3
+
+color.undo.after=rgb342
+color.undo.before=rgb512

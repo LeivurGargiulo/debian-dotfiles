@@ -1,0 +1,4 @@
+# Monokai Pro approximation — calcurse only supports 8 ANSI names +
+# "default", one global pair for the whole UI (see
+# docs/monokai-pro-palette.md "Tools without hex support")
+appearance.theme=red on default
