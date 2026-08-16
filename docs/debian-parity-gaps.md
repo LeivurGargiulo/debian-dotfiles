@@ -39,6 +39,16 @@ calcurse, taskwarrior. See `docs/monokai-pro-palette.md` for the canonical
 palette and `docs/superpowers/plans/2026-08-16-monokai-pro-ricing.md` for
 what was built.
 
+**Deliberate deviation from debian, not a gap:** the zsh prompt is
+Powerlevel10k (`dotfiles/.p10k.zsh`, AUR `zsh-theme-powerlevel10k`), not
+debian's starship — user's explicit choice. Built from
+romkatv/powerlevel10k's real official "classic" style template
+(`config/p10k-classic.zsh`, fetched verbatim), with only the identity-color
+vars overridden to the same 256-color nearest-index mapping used for
+cmus/taskwarrior/newsboat elsewhere in this repo — not a from-scratch
+fabrication of the ~1700-line generated config. `packages/pacman.txt`'s
+`starship` and `dotfiles/.config/starship.toml` were removed.
+
 **Closed (2026-08-16, two passes):** every themeable tool in debian's own
 `chezmoi/dot_config/colorice/templates/` (23 files, the authoritative list
 of what debian actually themes) that has an arch-dotfiles equivalent

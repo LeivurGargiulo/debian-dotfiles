@@ -88,7 +88,6 @@ zsh-autosuggestions
 zsh-syntax-highlighting
 zsh-completions
 zsh-history-substring-search
-starship
 
 # --- misc, now packaged in official repos ---
 tailscale

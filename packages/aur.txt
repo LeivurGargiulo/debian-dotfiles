@@ -27,6 +27,7 @@ python-questionary
 # --- shell environment ---
 oh-my-zsh-git
 tmux-plugin-manager
+zsh-theme-powerlevel10k
 
 # --- browsers / chat (AUR -bin builds) ---
 zen-browser-bin
