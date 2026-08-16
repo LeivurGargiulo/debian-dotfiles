@@ -101,6 +101,14 @@ those change, it's a snapshot, not a generated artifact.
 | prismlauncher | Minecraft launcher (mod loaders, instances, accounts) |
 | deskflow | share one mouse/keyboard across multiple computers (input-leap's actively-maintained successor) |
 
+## Dev tools (`packages/pacman.txt`)
+
+| Package | Purpose |
+|---|---|
+| mitmproxy | TLS-intercepting proxy with a TUI console, for local dev-server traffic inspection |
+| lnav | advanced TUI log file navigator (multi-file, SQL queries over logs) |
+| python-pudb | full-screen TUI debugger for Python, drop-in `pdb` replacement |
+
 ## Gaming (`packages/pacman.txt`, multilib)
 
 | Package | Purpose |
@@ -262,6 +270,36 @@ ruled out and why.
 | ventoy-bin | multi-ISO bootable USB creator |
 | osu-lazer-bin | rhythm/aim-practice game (osu!lazer) |
 | prism-tui-bin | TUI for managing/launching PrismLauncher Minecraft instances |
+
+## Games (`packages/aur.txt`)
+
+| Package | Purpose |
+|---|---|
+| nsnake | terminal Snake |
+| bastet | "evil" Tetris clone that always picks your worst next piece |
+| 2048-cli-git | terminal 2048 |
+| brogue-ce | Brogue, a minimalist modern roguelike (community-maintained fork) |
+
+## Dashboards (`packages/aur.txt`)
+
+| Package | Purpose |
+|---|---|
+| gh-dash-bin | GitHub PR/issue/notification dashboard TUI, runs as a `gh` extension |
+| wtfutil-bin | personal dashboard (weather/calendar/tasks/news/git status panels) |
+
+## Music addons (`packages/aur.txt`)
+
+| Package | Purpose |
+|---|---|
+| sptlrx-bin | synchronized lyrics in the terminal, MPRIS-based (works with ncspot and cmus) |
+
+## Dev tools, no official-repo package (`packages/aur.txt`)
+
+| Package | Purpose |
+|---|---|
+| posting | terminal API client (Postman-style), keyboard-driven |
+| ptpython | Python REPL with autocompletion/syntax highlighting, builds on prompt_toolkit |
+| frogmouth | Markdown browser TUI (live rendering, TOC, can pull READMEs from GitHub) |
 
 ## Not automated (see README's "Not automated yet")
 

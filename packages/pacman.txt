@@ -79,6 +79,11 @@ easyeffects
 prismlauncher
 deskflow
 
+# --- dev tools ---
+mitmproxy
+lnav
+python-pudb
+
 # --- gaming (multilib) ---
 steam
 mangohud

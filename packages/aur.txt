@@ -37,6 +37,24 @@ ventoy-bin
 osu-lazer-bin
 prism-tui-bin
 
+# --- games ---
+nsnake
+bastet
+2048-cli-git
+brogue-ce
+
+# --- dashboards ---
+gh-dash-bin
+wtfutil-bin
+
+# --- music addons ---
+sptlrx-bin
+
+# --- dev tools, no official-repo package ---
+posting
+ptpython
+frogmouth
+
 # --- Monokai Pro cursor/icon theme build tooling ---
 python-clickgen
 papirus-folders
