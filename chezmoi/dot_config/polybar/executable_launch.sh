@@ -3,6 +3,7 @@
 killall -q polybar
 pkill -f mpris-daemon.sh
 eww kill 2>/dev/null
+while pgrep -x eww >/dev/null; do sleep 0.2; done
 
 while pgrep -x polybar >/dev/null; do sleep 1; done
 
