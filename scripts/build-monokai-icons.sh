@@ -11,11 +11,20 @@ set -euo pipefail
 # symlinking matching folder-<color>*.svg / user-<color>*.svg files across
 # FIVE size directories (22x22, 24x24, 32x32, 48x48, 64x64) — recoloring
 # only one size directory would leave the other icon sizes un-recolored.
-# Idempotent: skips generation if "monokai" SVGs already exist in all five
-# size dirs, but always re-runs `papirus-folders -C monokai` (cheap, safe).
+# Idempotent: skips each source file individually if its monokai
+# counterpart already exists (not just "some monokai file exists in this
+# size dir" — that coarser check would silently skip newly-added violet
+# source files after a `pacman -Syu` updates papirus-icon-theme), and
+# always re-runs `papirus-folders -C monokai` (cheap, safe).
 
 papirus_dir="/usr/share/icons/Papirus"
-accent_hex="ab9df2"   # Monokai Pro purple, no leading '#' to match Papirus SVG fill syntax
+# Monokai Pro purple, no leading '#' to match Papirus SVG fill syntax.
+# The sed below replaces every hex fill in the source SVG with this single
+# color, flattening whatever shading/highlight sub-tones "violet" used for
+# depth — same flattening catppuccin/papirus-folders' own vendored SVGs do,
+# not a bug, but worth an eyeball check on real hardware since it can't be
+# rendered/verified in this sandbox.
+accent_hex="ab9df2"
 sizes=(22x22 24x24 32x32 48x48 64x64)
 
 if ! command -v papirus-folders >/dev/null 2>&1; then
@@ -28,26 +37,17 @@ if [[ ! -d "$papirus_dir/48x48/places" ]]; then
     exit 1
 fi
 
-needs_generation=false
+echo "==> generating Monokai Pro folder SVGs across ${sizes[*]} (skipping any already done)"
 for size in "${sizes[@]}"; do
-    if ! ls "$papirus_dir/$size/places/"folder-monokai*.svg >/dev/null 2>&1; then
-        needs_generation=true
-        break
-    fi
-done
-
-if [[ "$needs_generation" == "true" ]]; then
-    echo "==> generating Monokai Pro folder SVGs across ${sizes[*]}"
-    for size in "${sizes[@]}"; do
-        places_dir="$papirus_dir/$size/places"
-        [[ -d "$places_dir" ]] || continue
-        for src in "$places_dir/"folder-violet*.svg "$places_dir/"user-violet*.svg; do
-            [[ -e "$src" ]] || continue
-            dest="${src/-violet/-monokai}"
-            sudo sed -E "s/#[0-9a-fA-F]{6}/#${accent_hex}/g" "$src" | sudo tee "$dest" >/dev/null
-        done
+    places_dir="$papirus_dir/$size/places"
+    [[ -d "$places_dir" ]] || continue
+    for src in "$places_dir/"folder-violet*.svg "$places_dir/"user-violet*.svg; do
+        [[ -e "$src" ]] || continue
+        dest="${src/-violet/-monokai}"
+        [[ -e "$dest" ]] && continue
+        sudo sed -E "s/#[0-9a-fA-F]{6}/#${accent_hex}/g" "$src" | sudo tee "$dest" >/dev/null
     done
-fi
+done
 
 papirus-folders -C monokai --theme Papirus
 
