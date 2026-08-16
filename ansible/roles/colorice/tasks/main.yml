@@ -63,3 +63,6 @@
     - mpv.conf
     - ncspot.toml
     - starship.toml
+    - aerc-styleset
+    - betterlockscreen-colors
+    - delta.gitconfig

@@ -8,20 +8,9 @@ dim_level=40
 wallpaper_cmd="feh --bg-fill"
 quiet=false
 
-loginbox=1e1e2e66
-loginshadow=00000000
-bgcolor=1e1e2eff
-
 locktext="Type Password..."
 font="CaskaydiaCove Nerd Font"
-timecolor=cdd6f4ff
 time_format="%H:%M:%S"
-greetercolor=cdd6f4ff
-layoutcolor=cdd6f4ff
 
-insidewrongcolor=f38ba8ff
-ringwrongcolor=f38ba8ff
-insidevercolor=cba6f7ff
-ringvercolor=cba6f7ff
-insidecolor=1e1e2e00
-ringcolor=6c7086ff
+# colorice — once you run `colorice <wallpaper> --apply`, this file exists
+[ -f ~/.config/betterlockscreen/colorice-colors.sh ] && source ~/.config/betterlockscreen/colorice-colors.sh
