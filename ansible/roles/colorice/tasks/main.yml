@@ -58,3 +58,8 @@
     - atuin-theme.toml
     - bat.tmTheme
     - btop.theme
+    - eza.yml
+    - lazygit.yml
+    - mpv.conf
+    - ncspot.toml
+    - starship.toml

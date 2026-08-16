@@ -1,0 +1,102 @@
+# colorice — generated from {wallpaper}
+colourful: true
+
+filekinds:
+  normal: {foreground: "{foreground}"}
+  directory: {foreground: "{color5.saturate_15}"}
+  symlink: {foreground: "{color4}"}
+  pipe: {foreground: "{color7}"}
+  block_device: {foreground: "{color1.darken_10}"}
+  char_device: {foreground: "{color1.darken_10}"}
+  socket: {foreground: "{color7}"}
+  special: {foreground: "{color5.saturate_15}"}
+  executable: {foreground: "{color2}"}
+  mount_point: {foreground: "{color6}"}
+
+perms:
+  user_read: {foreground: "{color1}", is_bold: true}
+  user_write: {foreground: "{color3}", is_bold: true}
+  user_execute_file: {foreground: "{color2}", is_bold: true}
+  user_execute_other: {foreground: "{color2}", is_bold: true}
+  group_read: {foreground: "{color1}"}
+  group_write: {foreground: "{color3}"}
+  group_execute: {foreground: "{color2}"}
+  other_read: {foreground: "{color1}"}
+  other_write: {foreground: "{color3}"}
+  other_execute: {foreground: "{color2}"}
+  special_user_file: {foreground: "{color5.saturate_15}"}
+  special_other: {foreground: "{color8.lighten_20}"}
+  attribute: {foreground: "{color7.darken_10}"}
+
+size:
+  major: {foreground: "{color15}"}
+  minor: {foreground: "{color6.lighten_10}"}
+  number_byte: {foreground: "{color7}"}
+  number_kilo: {foreground: "{color15}"}
+  number_mega: {foreground: "{color4}"}
+  number_giga: {foreground: "{color5.saturate_15}"}
+  number_huge: {foreground: "{color5.saturate_15}"}
+  unit_byte: {foreground: "{color15}"}
+  unit_kilo: {foreground: "{color6.lighten_10}"}
+  unit_mega: {foreground: "{color5.saturate_15}"}
+  unit_giga: {foreground: "{color5.saturate_15}"}
+  unit_huge: {foreground: "{color6}"}
+
+users:
+  user_you: {foreground: "{foreground}"}
+  user_root: {foreground: "{color1}"}
+  user_other: {foreground: "{color1.darken_10}"}
+  group_yours: {foreground: "{color15}"}
+  group_other: {foreground: "{color7.darken_10}"}
+  group_root: {foreground: "{color1}"}
+
+links:
+  normal: {foreground: "{color4}"}
+  multi_link_file: {foreground: "{color4}"}
+
+git:
+  new: {foreground: "{color2}"}
+  modified: {foreground: "{color3}"}
+  deleted: {foreground: "{color1.darken_10}"}
+  renamed: {foreground: "{color6}"}
+  typechange: {foreground: "{color5}"}
+  ignored: {foreground: "{color8.lighten_20}"}
+  conflicted: {foreground: "{color3.darken_5.saturate_15}"}
+
+git_repo:
+  branch_main: {foreground: "{color15}"}
+  branch_other: {foreground: "{color5.saturate_15}"}
+  git_clean: {foreground: "{color2}"}
+  git_dirty: {foreground: "{color1.darken_10}"}
+
+security_context:
+  colon: {foreground: "{color8}"}
+  user: {foreground: "{color8.lighten_20}"}
+  role: {foreground: "{color5.saturate_15}"}
+  typ: {foreground: "{color8}"}
+  range: {foreground: "{color5.saturate_15}"}
+
+file_type:
+  image: {foreground: "{color3}"}
+  video: {foreground: "{color1}"}
+  music: {foreground: "{color2}"}
+  lossless: {foreground: "{color6}"}
+  crypto: {foreground: "{color8.lighten_20}"}
+  document: {foreground: "{foreground}"}
+  compressed: {foreground: "{color5}"}
+  temp: {foreground: "{color1.darken_10}"}
+  compiled: {foreground: "{color6.darken_5.saturate_10}"}
+  source: {foreground: "{color4}"}
+
+punctuation: {foreground: "{color8}"}
+date: {foreground: "{color3}"}
+inode: {foreground: "{color15}"}
+blocks: {foreground: "{color8}"}
+header: {foreground: "{foreground}"}
+octal: {foreground: "{color6}"}
+flags: {foreground: "{color5.saturate_15}"}
+
+symlink_path: {foreground: "{color6.lighten_10}"}
+control_char: {foreground: "{color6.darken_5.saturate_10}"}
+broken_symlink: {foreground: "{color1}"}
+broken_path_overlay: {foreground: "{color8}"}
