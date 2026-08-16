@@ -40,6 +40,9 @@ ventoy-bin
 python-clickgen
 papirus-folders
 
+# --- fonts ---
+ttf-ubuntu-sans
+
 # --- ratatui TUI picks, no official-repo package (github.com/ratatui/awesome-ratatui) ---
 mirro-rs-git
 parui

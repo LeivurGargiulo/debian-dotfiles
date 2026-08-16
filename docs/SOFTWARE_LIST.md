@@ -251,6 +251,12 @@ ruled out and why.
 | python-clickgen | provides `ctgen`, builds the Monokai Pro cursor theme (`scripts/build-monokai-cursor.sh`) |
 | papirus-folders | recolors Papirus folder icons, used by `scripts/build-monokai-icons.sh` |
 
+## Fonts (`packages/aur.txt`)
+
+| Package | Purpose |
+|---|---|
+| ttf-ubuntu-sans | Ubuntu Sans, the `$FONT` (general UI/window-label font), replaces Cantarell |
+
 ## Gaming / disk tools, AUR -bin builds (`packages/aur.txt`)
 
 | Package | Purpose |
