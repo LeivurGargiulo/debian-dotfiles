@@ -1,0 +1,38 @@
+.nowplaying-popup {
+  background-color: $base;
+  color: $text;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.nowplaying-art {
+  border-radius: 4px;
+}
+
+.nowplaying-meta {
+  margin-left: 8px;
+}
+
+.nowplaying-title {
+  font-weight: bold;
+  color: $text;
+}
+
+.nowplaying-artist, .nowplaying-album {
+  color: $subtext0;
+  font-size: 0.85em;
+}
+
+.nowplaying-btn {
+  background-color: $surface0;
+  color: $mauve;
+  border-radius: 6px;
+  padding: 4px 10px;
+  margin: 4px;
+}
+
+.nowplaying-position {
+  color: $overlay1;
+  font-size: 0.8em;
+  margin-top: 4px;
+}

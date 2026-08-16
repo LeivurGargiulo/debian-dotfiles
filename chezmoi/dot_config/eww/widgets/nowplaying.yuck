@@ -1,0 +1,28 @@
+(defwidget nowplaying [json position visible]
+  (revealer :transition "slideup"
+            :duration "250ms"
+            :reveal visible
+    (box :class "nowplaying-popup"
+         :orientation "vertical"
+         :space-evenly false
+      (box :class "nowplaying-header"
+           :orientation "horizontal"
+           :space-evenly false
+        (image :class "nowplaying-art"
+               :path {json.art != "" ? json.art : "/usr/share/icons/Papirus-Dark/64x64/mimetypes/audio-x-generic.svg"}
+               :image-width 64
+               :image-height 64)
+        (box :class "nowplaying-meta"
+             :orientation "vertical"
+             :space-evenly false
+          (label :class "nowplaying-title" :text "${json.title}" :limit-width 28 :wrap true)
+          (label :class "nowplaying-artist" :text "${json.artist}" :limit-width 28)
+          (label :class "nowplaying-album" :text "${json.album}" :limit-width 28)))
+      (box :class "nowplaying-controls"
+           :orientation "horizontal"
+           :halign "center"
+           :space-evenly true
+        (button :class "nowplaying-btn eww-fade-hover" :onclick "playerctl previous" "󰒮")
+        (button :class "nowplaying-btn eww-fade-hover" :onclick "playerctl play-pause" {json.status == "Playing" ? "󰏤" : "󰐊"})
+        (button :class "nowplaying-btn eww-fade-hover" :onclick "playerctl next" "󰒭"))
+      (label :class "nowplaying-position" :text "${position} / ${json.length}"))))
