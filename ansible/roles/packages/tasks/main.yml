@@ -41,6 +41,10 @@
     label: "{{ item.binary_name }}"
   tags: cargo_git_builds
 
+- name: Build and install xwinwrap
+  ansible.builtin.include_tasks: xwinwrap.yml
+  tags: xwinwrap
+
 - name: Install packages via official install scripts
   ansible.builtin.include_tasks: official_scripts.yml
 
