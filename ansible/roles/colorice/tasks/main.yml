@@ -28,3 +28,26 @@
     dest: "{{ invoking_home }}/.config/colorice/config.toml"
     mode: "0644"
   become: false
+
+- name: Seed placeholder colorice output files (never overwrites a real apply)
+  ansible.builtin.copy:
+    src: "seed/{{ item.src }}"
+    dest: "{{ invoking_home }}/{{ item.dest }}"
+    mode: "0644"
+    force: false
+  become: false
+  loop:
+    - { src: i3-colorice-colors.conf, dest: .config/i3/colorice-colors.conf }
+    - { src: i3-colorice-extended.conf, dest: .config/i3/colorice-extended.conf }
+    - { src: polybar-colorice-colors.ini, dest: .config/polybar/colorice-colors.ini }
+    - { src: polybar-colorice-extended.ini, dest: .config/polybar/colorice-extended.ini }
+
+- name: Deploy colorice custom templates
+  ansible.builtin.copy:
+    src: "templates/{{ item }}"
+    dest: "{{ invoking_home }}/.config/colorice/templates/{{ item }}"
+    mode: "0644"
+  become: false
+  loop:
+    - i3-extended.conf
+    - polybar-extended.ini

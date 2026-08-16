@@ -31,6 +31,11 @@ set $base #1e1e2e
 set $mantle #181825
 set $crust #11111b
 
+# colorice — overrides the $variables above once you run
+# `colorice <wallpaper> --apply`. Requires i3 >= 4.20.
+include ~/.config/i3/colorice-colors.conf
+include ~/.config/i3/colorice-extended.conf
+
 # Theming
 # target                 border   bg      text   indicator  child_border
 client.focused           $mauve   $base   $mauve $mauve     $mauve
