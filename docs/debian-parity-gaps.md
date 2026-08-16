@@ -39,15 +39,19 @@ calcurse, taskwarrior. See `docs/monokai-pro-palette.md` for the canonical
 palette and `docs/superpowers/plans/2026-08-16-monokai-pro-ricing.md` for
 what was built.
 
-**Deliberate deviation from debian, not a gap:** the zsh prompt is
-Powerlevel10k (`dotfiles/.p10k.zsh`, AUR `zsh-theme-powerlevel10k`), not
-debian's starship — user's explicit choice. Built from
-romkatv/powerlevel10k's real official "classic" style template
-(`config/p10k-classic.zsh`, fetched verbatim), with only the identity-color
-vars overridden to the same 256-color nearest-index mapping used for
-cmus/taskwarrior/newsboat elsewhere in this repo — not a from-scratch
-fabrication of the ~1700-line generated config. `packages/pacman.txt`'s
-`starship` and `dotfiles/.config/starship.toml` were removed.
+**zsh prompt history:** briefly swapped starship for Powerlevel10k
+(`dotfiles/.p10k.zsh`, ported from romkatv/powerlevel10k's real "classic"
+template), then reverted back to starship per a later explicit request —
+p10k's AUR package and config file were removed. Current
+`dotfiles/.config/starship.toml` is a from-scratch two-line Monokai Pro
+config (directory/git/status on line 1 powerline-style, prompt character
+on line 2, mimicking p10k classic's shape), using starship's real
+multi-line `format` + `add_newline` mechanism (verified against
+starship.rs/config/) — not the minimal single-line config from the first
+ricing pass. `.zshrc` also picked up the actual `eval "$(starship init
+zsh)"` line, which the first ricing pass never added (starship's config
+file existed but was never wired into the shell init — a real gap, now
+fixed).
 
 **Closed (2026-08-16, two passes):** every themeable tool in debian's own
 `chezmoi/dot_config/colorice/templates/` (23 files, the authoritative list

@@ -1,10 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # --- Monokai Pro: fzf ---
 export FZF_DEFAULT_OPTS="--color=fg:#FCFCFA,bg:#2D2A2E,hl:#FF6188,fg+:#FCFCFA,bg+:#221F22,hl+:#FC9867,info:#AB9DF2,prompt:#78DCE8,pointer:#FF6188,marker:#A9DC76,spinner:#FFD866,header:#939293,border:#939293,gutter:#2D2A2E,query:#FCFCFA"
 
@@ -44,6 +37,5 @@ ZSH_HIGHLIGHT_STYLES[redirection]='fg=#FF6188'
 ZSH_HIGHLIGHT_STYLES[comment]='fg=#939293,italic'
 ZSH_HIGHLIGHT_STYLES[arg0]='fg=#A9DC76'
 
-# --- Powerlevel10k prompt (Monokai Pro adaptation, see dotfiles/.p10k.zsh) ---
-source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# --- starship prompt (Monokai Pro, two-line — see dotfiles/.config/starship.toml) ---
+eval "$(starship init zsh)"

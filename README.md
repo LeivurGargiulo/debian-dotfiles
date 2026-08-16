@@ -25,8 +25,8 @@ extra tooling layer. Goal: reformat = clone this repo, run
   replacements for GUI apps that had a genuinely viable one (Discord
   → `endcord`, Telegram/WhatsApp → `nchat`, GNOME Boxes → `vm-curator`),
   `claude-squad` for managing multiple Claude Code sessions, and
-  Powerlevel10k (`dotfiles/.p10k.zsh`) as the zsh prompt, replacing
-  debian-dotfiles' starship.
+  starship (`dotfiles/.config/starship.toml`) as the zsh prompt —
+  Monokai Pro, two-line layout.
 - `dotfiles/.config/hyde/themes/Monokai-Pro/` — the HyDE theme (palette
   source for HyDE's wallbash engine, which propagates it to
   waybar/rofi/dunst/GTK/Qt/hyprlock/kitty), activated by `install.sh` via

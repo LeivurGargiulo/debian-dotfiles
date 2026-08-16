@@ -121,7 +121,7 @@ those change, it's a snapshot, not a generated artifact.
 | zsh-history-substring-search | up/down arrow history search by substring |
 | oh-my-zsh-git (AUR) | zsh configuration framework, hosts the plugins above |
 | tmux-plugin-manager (AUR) | plugin manager for tmux |
-| zsh-theme-powerlevel10k (AUR) | zsh prompt theme, see `dotfiles/.p10k.zsh` |
+| starship | zsh prompt, see `dotfiles/.config/starship.toml` |
 
 ## Misc, official repos (`packages/pacman.txt`)
 
