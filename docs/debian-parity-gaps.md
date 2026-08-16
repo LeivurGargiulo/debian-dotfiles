@@ -11,6 +11,18 @@ AUR package (`osu-lazer-bin`) — none needed flatpak after all, so that
 section and the `flatpak` package itself were removed entirely. This file
 is what's left: things that don't map cleanly.
 
+**A thorough line-by-line re-audit against debian's full `SOFTWARE_LIST.md`
+found one real miss, now fixed:** `dotfiles/.config/nvim/` never existed —
+neovim (this repo's declared sole editor) had zero configuration despite
+every other tool getting careful attention. Ported directly from debian's
+own real kickstart.nvim fork (LSP/treesitter/telescope/etc all intact,
+copied file-for-file, not reconstructed), with only the colorscheme
+swapped from Catppuccin to
+[monokai-pro.nvim](https://github.com/loctvl842/monokai-pro.nvim). The
+same audit also confirmed `flameshot` (debian's screenshot tool) really is
+covered by HyDE's own bundled `screenshot.sh` — not a gap, verified
+directly against the vendored HyDE source rather than assumed.
+
 ## 1. Superseded by Hyprland/HyDE (X11-only, no port needed)
 
 debian-dotfiles targets i3 (X11). HyDE already provides the Wayland/Hyprland

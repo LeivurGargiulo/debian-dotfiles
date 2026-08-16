@@ -34,6 +34,11 @@ extra tooling layer. Goal: reformat = clone this repo, run
   config lives under `dotfiles/.config/<tool>/`, same overlay mechanism as
   everything else — see `docs/monokai-pro-palette.md` for the canonical
   palette every config file was built from.
+- `dotfiles/.config/nvim/` — a real kickstart.nvim config (ported directly
+  from the prior Debian setup's own fork, LSP/treesitter/telescope/etc all
+  intact), with the colorscheme swapped from Catppuccin to
+  [monokai-pro.nvim](https://github.com/loctvl842/monokai-pro.nvim) —
+  neovim had zero config until this was caught in a parity re-audit.
 - `firefox/` — `userChrome.css` + `user.js`, applied to Firefox's default
   profile by `scripts/apply-firefox-theme.sh` (lives at the repo root, not
   under `dotfiles/`, because Firefox profile directory names are

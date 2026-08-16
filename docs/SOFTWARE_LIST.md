@@ -64,7 +64,7 @@ those change, it's a snapshot, not a generated artifact.
 | atuin | shell history sync + searchable TUI |
 | lazygit | TUI for git |
 | yazi | TUI file manager |
-| neovim | text editor |
+| neovim | text editor, config at `dotfiles/.config/nvim/` (kickstart.nvim + Monokai Pro) |
 | fastfetch | system info banner |
 | pulsemixer | PulseAudio/PipeWire mixer TUI |
 | aerc | TUI email client |
