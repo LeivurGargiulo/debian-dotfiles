@@ -138,3 +138,8 @@ output = "~/.config/betterlockscreen/colorice-colors.sh"
 name = "delta"
 input = "delta.gitconfig"
 output = "~/.config/delta/colorice-colors.gitconfig"
+
+[[templates]]
+name = "yazi"
+input = "yazi-flavor.toml"
+output = "~/.config/yazi/flavors/colorice.yazi/flavor.toml"
