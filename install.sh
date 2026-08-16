@@ -30,6 +30,13 @@ if ! command -v yay >/dev/null 2>&1; then
     rm -rf "$tmp_yay"
 fi
 
+echo "==> full system upgrade"
+# HyDE's own installer (vendor/hyde/Scripts/install_pre.sh) later runs a
+# bare "sudo pacman -Syyu" with no --noconfirm, which blocks forever on
+# an unattended run. Upgrading here first means that call finds nothing
+# to do and never prompts.
+sudo pacman -Syu --noconfirm
+
 echo "==> installing packages/pacman.txt"
 grep -vE '^\s*#|^\s*$' "$repo_root/packages/pacman.txt" | sudo pacman -S --needed --noconfirm -
 
