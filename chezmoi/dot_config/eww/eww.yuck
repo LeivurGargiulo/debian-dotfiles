@@ -2,6 +2,7 @@
 ;; Widget bodies live in widgets/*.yuck.
 
 (include "./widgets/nowplaying.yuck")
+(include "./widgets/volume.yuck")
 
 ;; Drives the nowplaying-popup's revealer. The window itself stays open
 ;; permanently (opened once from launch.sh); this var is what polybar's
@@ -33,3 +34,26 @@
   (nowplaying :json nowplaying_json
               :position nowplaying_position
               :visible popup-visible))
+
+;; Drives the volume-popup's revealer, same pattern as popup-visible
+;; above — the window stays open permanently, this var toggles it.
+(defvar volume-popup-visible false)
+
+;; Volume/mute state — polled only while the popup is visible, one
+;; pactl-based script call per tick, no persistent background process.
+(defpoll volume_json :interval "1s"
+                      :initial "{\"volume\": 0, \"muted\": false}"
+                      :run-while volume-popup-visible
+  `~/.config/eww/scripts/volume-status.sh`)
+
+(defwindow volume-popup
+  :monitor 0
+  :geometry (geometry :x "0px"
+                       :y "29px"
+                       :width "220px"
+                       :height "100px"
+                       :anchor "bottom right")
+  :stacking "fg"
+  :wm-ignore true
+  (volume :json volume_json
+          :visible volume-popup-visible))
