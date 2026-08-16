@@ -39,20 +39,17 @@ calcurse, taskwarrior. See `docs/monokai-pro-palette.md` for the canonical
 palette and `docs/superpowers/plans/2026-08-16-monokai-pro-ricing.md` for
 what was built.
 
-**Still open, real gaps (not deliberate skips):**
-- **Nerd Font package** — `dotfiles/.config/hyde/themes/Monokai-Pro/hypr.theme`
-  references `CaskaydiaCove Nerd Font Mono`, but no Nerd Font package
-  exists in `packages/pacman.txt` or `packages/aur.txt` (checked — neither
-  list has any `ttf-*`/`otf-*`/`nerd-font` entry). Add
-  `ttf-cascadia-code-nerd` (or check what HyDE's own installer already
-  pulls in — it may already cover this, verify on real hardware first).
-- **zellij** — debian-dotfiles has a Catppuccin zellij theme, but `zellij`
-  itself was never added to either package list here at all (not ported in
-  Task 2, not caught since). Add the package first if wanted, theme after.
-- **ducker** — installed (`packages/aur.txt`) but not in the ricing pass's
-  21-tool coverage list, so it has no Monokai Pro config. debian has one
-  (`chezmoi/dot_config/colorice/templates/ducker.yaml`) — straightforward
-  to port if wanted.
+**Closed (2026-08-16):**
+- **Nerd Font package** — `ttf-cascadia-mono-nerd` added to
+  `packages/pacman.txt` (official `extra`, matches `hypr.theme`'s
+  `CaskaydiaCove Nerd Font Mono` reference exactly).
+- **zellij** — `zellij` added to `packages/pacman.txt` (official `extra`),
+  themed at `dotfiles/.config/zellij/themes/monokai-pro.kdl` +
+  `dotfiles/.config/zellij/config.kdl`, real schema verified against
+  `zellij-org/zellij`'s own `example/themes/example.kdl`.
+- **ducker** — themed at `dotfiles/.config/ducker/config.yaml`, schema
+  ported from debian's own `ducker.yaml` (which cites ducker's real
+  `src/config.rs`).
 
 **Deliberately deferred per the ricing spec** (not gaps, tracked
 decisions):
