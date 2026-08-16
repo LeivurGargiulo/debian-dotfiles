@@ -35,6 +35,7 @@ rustdesk-bin
 steam-tui-bin
 ventoy-bin
 osu-lazer-bin
+prism-tui-bin
 
 # --- Monokai Pro cursor/icon theme build tooling ---
 python-clickgen

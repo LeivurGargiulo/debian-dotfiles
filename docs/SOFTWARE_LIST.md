@@ -261,6 +261,7 @@ ruled out and why.
 | steam-tui-bin | TUI wrapper/launcher around a Steam library |
 | ventoy-bin | multi-ISO bootable USB creator |
 | osu-lazer-bin | rhythm/aim-practice game (osu!lazer) |
+| prism-tui-bin | TUI for managing/launching PrismLauncher Minecraft instances |
 
 ## Not automated (see README's "Not automated yet")
 
