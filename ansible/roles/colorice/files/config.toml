@@ -79,6 +79,11 @@ input = "atuin.toml"
 output = "~/.config/atuin/config.toml"
 
 [[templates]]
+name = "atuin-theme"
+input = "atuin-theme.toml"
+output = "~/.config/atuin/themes/colorice.toml"
+
+[[templates]]
 name = "bat"
 input = "bat.tmTheme"
 output = "~/.config/bat/themes/Colorice.tmTheme"

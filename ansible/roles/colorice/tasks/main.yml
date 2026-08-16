@@ -53,3 +53,8 @@
     - i3-extended.conf
     - polybar-extended.ini
     - rofi-extended.rasi
+    - fastfetch.jsonc
+    - atuin.toml
+    - atuin-theme.toml
+    - bat.tmTheme
+    - btop.theme
