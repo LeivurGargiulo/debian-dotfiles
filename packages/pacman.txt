@@ -1,0 +1,88 @@
+# --- AMD Wayland GPU stack ---
+mesa
+vulkan-radeon
+vulkan-icd-loader
+libva-mesa-driver
+mesa-vdpau
+
+# --- core CLI ---
+curl
+eza
+bat
+fd
+ripgrep
+fzf
+zoxide
+tmux
+mosh
+jq
+git
+zsh
+p7zip
+unrar
+ffmpeg
+python
+python-pip
+jdk-openjdk
+openssh
+docker
+docker-compose
+unzip
+imagemagick
+git-delta
+duf
+smartmontools
+hdparm
+ncdu
+btop
+chafa
+lftp
+rclone
+wl-clipboard
+playerctl
+udiskie
+newsboat
+cmus
+oath-toolkit
+taskwarrior
+calcurse
+yt-dlp
+atuin
+lazygit
+yazi
+
+# --- TUI-first picks ---
+zathura
+zathura-pdf-mupdf
+mpv
+rtorrent
+cava
+
+# --- firewall / disk ---
+ufw
+gparted
+
+# --- GUI apps, no TUI equivalent ---
+remmina
+gimp
+kdenlive
+obs-studio
+libnotify
+
+# --- gaming (multilib) ---
+steam
+
+# --- flatpak runtime, apps installed separately (see README) ---
+flatpak
+
+# --- shell environment ---
+zsh-autosuggestions
+zsh-syntax-highlighting
+zsh-completions
+zsh-history-substring-search
+starship
+
+# --- misc, now packaged in official repos ---
+tailscale
+uv
+rustup

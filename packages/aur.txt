@@ -1,0 +1,25 @@
+# --- AMD GPU monitor ---
+amdgpu_top
+
+# --- CLI/TUI tools without an official-repo package ---
+ncspot
+bandwhich
+bluetuith
+glow
+ducker
+taskwarrior-tui
+gophertube
+wden
+pulsemixer
+ytfzf
+nvm
+
+# --- password / 2FA ---
+rbw
+rofi-rbw
+
+# --- browsers / chat (AUR -bin builds) ---
+zen-browser-bin
+rustdesk-bin
+vesktop-bin
+zapzap-bin
