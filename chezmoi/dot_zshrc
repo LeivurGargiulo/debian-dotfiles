@@ -44,6 +44,8 @@ alias rice="~/.local/bin/rice-refresh"
 alias myip="curl -s ifconfig.me"
 alias ports="ss -tulpn"
 alias path='echo -e ${PATH//:/\\n}'
+alias chezmoi="chezmoi --force"
+colorize() { colorice -a "$1"; }
 
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
