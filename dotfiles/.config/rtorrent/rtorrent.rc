@@ -1,0 +1,9 @@
+# Monokai Pro. rtorrent's stock color-scheme support is limited
+# (the rtorrent-ps patch adds real per-element theming); if the installed
+# rtorrent lacks rtorrent-ps, most of these keys are silently ignored —
+# verify `rtorrent -h` mentions "rtorrent-ps" before relying on this file.
+method.set_key = main, color.title, "#ab9df2"
+method.set_key = main, color.background, "#2d2a2e"
+method.set_key = main, color.text, "#fcfcfa"
+method.set_key = main, color.progress, "#a9dc76"
+method.set_key = main, color.alarm, "#ff6188"

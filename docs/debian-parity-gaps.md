@@ -39,17 +39,27 @@ calcurse, taskwarrior. See `docs/monokai-pro-palette.md` for the canonical
 palette and `docs/superpowers/plans/2026-08-16-monokai-pro-ricing.md` for
 what was built.
 
-**Closed (2026-08-16):**
-- **Nerd Font package** — `ttf-cascadia-mono-nerd` added to
-  `packages/pacman.txt` (official `extra`, matches `hypr.theme`'s
-  `CaskaydiaCove Nerd Font Mono` reference exactly).
-- **zellij** — `zellij` added to `packages/pacman.txt` (official `extra`),
-  themed at `dotfiles/.config/zellij/themes/monokai-pro.kdl` +
-  `dotfiles/.config/zellij/config.kdl`, real schema verified against
-  `zellij-org/zellij`'s own `example/themes/example.kdl`.
-- **ducker** — themed at `dotfiles/.config/ducker/config.yaml`, schema
-  ported from debian's own `ducker.yaml` (which cites ducker's real
-  `src/config.rs`).
+**Closed (2026-08-16, two passes):** every themeable tool in debian's own
+`chezmoi/dot_config/colorice/templates/` (23 files, the authoritative list
+of what debian actually themes) that has an arch-dotfiles equivalent
+package is now themed here — full cross-reference swept, not just the
+three flagged after the first ricing pass:
+
+bat, eza, git-delta (`.gitconfig`), fzf, tmux, zsh-syntax-highlighting,
+btop, cava, mangohud, yazi, lazygit, zathura, mpv/uosc, newsboat, aerc,
+atuin, ncspot, cmus, calcurse, taskwarrior (`.taskrc`), zellij (added to
+`packages/pacman.txt`, was never ported at all), ducker (missed in the
+first ricing pass), fastfetch, rtorrent, starship, bluetuith, glow (all
+five missed in the first ricing pass — installed but unthemed). Also
+`ttf-cascadia-mono-nerd` added to `packages/pacman.txt` (`hypr.theme`
+referenced `CaskaydiaCove Nerd Font Mono` but nothing installed it).
+
+Config schemas verified two ways: against the tool's own real upstream
+docs/source (zellij, bluetuith, ducker, glow) where debian's version
+needed independent confirmation, or ported directly from debian's own
+already-working `colorice` templates (fastfetch, rtorrent, starship, glow)
+with palette placeholders substituted for the canonical Monokai Pro hex
+values.
 
 **Deliberately deferred per the ricing spec** (not gaps, tracked
 decisions):
@@ -66,6 +76,14 @@ decisions):
 - qt5ct/GTK palette — relies on HyDE's wallbash `gtk-css.dcol`/qtct
   templates recoloring from `theme.dcol` automatically; not hand-verified
   against a running system.
+- Zen Browser CSS theming (debian: `zen-colors.css`, imported via
+  `userChrome.css` in the browser's profile) — Zen Browser has no viable
+  TUI replacement (kept as GUI, see the earlier GUI→TUI swap round) and
+  its per-profile flatpak-sandbox CSS injection is a different mechanism
+  than the CLI/TUI config-file pattern this ricing pass covers — out of
+  scope, not attempted.
+- `wtf.yml` (a terminal dashboard tool) — `wtf` itself was never added to
+  `packages/`, so nothing to theme; not confirmed wanted.
 
 ## 3. Dropped on purpose (non-FOSS), not a gap
 
