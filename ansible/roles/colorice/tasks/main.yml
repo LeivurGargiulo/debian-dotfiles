@@ -1,0 +1,23 @@
+---
+- name: Ensure pipx is available
+  ansible.builtin.apt:
+    name: pipx
+    state: present
+
+- name: Install colorice via pipx
+  ansible.builtin.command: pipx install colorice
+  register: colorice_install
+  changed_when: "'installed package' in colorice_install.stdout"
+  failed_when: colorice_install.rc != 0 and 'already seems to be installed' not in colorice_install.stderr
+  become: false
+
+- name: Check if colorice templates are already initialized
+  ansible.builtin.stat:
+    path: "{{ invoking_home }}/.config/colorice/config.toml"
+  register: colorice_config
+  become: false
+
+- name: Run colorice --init to drop bundled templates and starter config
+  ansible.builtin.command: colorice --init
+  become: false
+  when: not colorice_config.stat.exists
