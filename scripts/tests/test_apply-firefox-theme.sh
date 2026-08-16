@@ -55,4 +55,28 @@ fi
 HOME="$fake_home" PATH="$tmp/bin:$PATH" "$tmp/repo/scripts/apply-firefox-theme.sh"
 [[ -f "$chrome_css" ]] || { echo "FAIL: not idempotent"; exit 1; }
 
+# Second scenario: a profiles.ini with only the newer [InstallXXXX]
+# Default=<path> form, no Default=1 on any [ProfileN] block — the fallback
+# path this test guards against regressing.
+fake_home2="$tmp/home2"
+mkdir -p "$fake_home2/.mozilla/firefox/Profiles/install-default.default-release"
+cat > "$fake_home2/.mozilla/firefox/profiles.ini" <<'EOF'
+[Profile0]
+Name=default-release
+IsRelative=1
+Path=Profiles/install-default.default-release
+
+[Install4696BAC38E282B08]
+Default=Profiles/install-default.default-release
+Locked=1
+EOF
+
+HOME="$fake_home2" PATH="$tmp/bin:$PATH" "$tmp/repo/scripts/apply-firefox-theme.sh"
+
+chrome_css2="$fake_home2/.mozilla/firefox/Profiles/install-default.default-release/chrome/userChrome.css"
+if [[ ! -f "$chrome_css2" ]]; then
+    echo "FAIL: $chrome_css2 was not created (Install-section fallback)" >&2
+    exit 1
+fi
+
 echo "PASS"

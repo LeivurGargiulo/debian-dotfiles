@@ -41,8 +41,21 @@ rel_path="$(awk -F= '
     default_here && path       { print path; exit }
 ' "$ini")"
 
+# Fallback: newer Firefox (67+) tracks the default profile per-install via an
+# [InstallXXXXXXXXXXXXXXXX] section whose Default= value is the path itself,
+# not a Default=1 flag on the [ProfileN] block above — some fresh profiles
+# only have this form.
 if [[ -z "$rel_path" ]]; then
-    echo "error: could not find a Default=1 profile in $ini" >&2
+    rel_path="$(awk -F= '
+        /^\[Install/ { in_install=1; next }
+        /^\[/        { in_install=0; next }
+        in_install && /^Default=/ { print $2; exit }
+    ' "$ini")"
+fi
+
+if [[ -z "$rel_path" ]]; then
+    echo "error: could not find a default profile (neither [ProfileN] Default=1" \
+         "nor [InstallXXXX] Default=<path>) in $ini" >&2
     exit 1
 fi
 
