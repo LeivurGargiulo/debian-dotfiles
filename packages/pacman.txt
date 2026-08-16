@@ -1,8 +1,16 @@
 # --- AMD Wayland GPU stack ---
-# mesa/vulkan-radeon/libva-mesa-driver/mesa-vdpau intentionally omitted:
-# CachyOS ships mesa-git by default, which builds all of these as one
-# atomic split and conflicts with the stock mesa-derived packages.
+# pinned to stock (non-git) explicitly: steam (below) needs a
+# vulkan-driver/lib32-vulkan-driver provider, and with no explicit
+# pick --noconfirm defaults to cachyos-v3's mesa-git, which conflicts
+# with the stock mesa already installed and needs an interactive
+# "Remove mesa?" confirmation --noconfirm can't give.
+mesa
+vulkan-radeon
 vulkan-icd-loader
+libva-mesa-driver
+mesa-vdpau
+lib32-mesa
+lib32-vulkan-radeon
 
 # --- core CLI ---
 curl
