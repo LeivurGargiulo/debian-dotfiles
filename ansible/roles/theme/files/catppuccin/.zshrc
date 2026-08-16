@@ -41,7 +41,6 @@ alias c="clear"
 alias h="history"
 alias reload="source ~/.zshrc"
 theme() { ~/.local/bin/theme-switch.sh "$1"; }
-theme-full() { ANSIBLE_CONFIG=~/debian/ansible/ansible.cfg ansible-playbook ~/debian/ansible/site.yml --tags theme -e dotfiles_theme="$1" --ask-become-pass && command -v i3-msg >/dev/null 2>&1 && i3-msg reload; }
 alias myip="curl -s ifconfig.me"
 alias ports="ss -tulpn"
 alias path='echo -e ${PATH//:/\\n}'

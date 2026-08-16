@@ -4,9 +4,9 @@
     name: "{{ theme_packages }}"
     state: present
 
-- name: Copy {{ dotfiles_theme }} theme files into place
+- name: Copy catppuccin theme files into place
   ansible.builtin.copy:
-    src: "{{ dotfiles_theme }}/"
+    src: "catppuccin/"
     dest: "{{ invoking_home }}/"
     mode: preserve
   become: false
@@ -43,37 +43,19 @@
     mode: "0755"
   become: false
 
-- name: Fetch catppuccin cursor theme (catppuccin)
+- name: Fetch catppuccin cursor theme
   ansible.builtin.get_url:
     url: "https://github.com/catppuccin/cursors/releases/download/v2.0.0/catppuccin-mocha-mauve-cursors.zip"
     dest: "/tmp/catppuccin-mocha-mauve-cursors.zip"
     mode: "0644"
-  when: dotfiles_theme == 'catppuccin'
 
-- name: Install catppuccin cursor theme (catppuccin)
+- name: Install catppuccin cursor theme
   ansible.builtin.unarchive:
     src: "/tmp/catppuccin-mocha-mauve-cursors.zip"
     dest: "{{ invoking_home }}/.local/share/icons/"
     remote_src: true
     creates: "{{ invoking_home }}/.local/share/icons/catppuccin-mocha-mauve-cursors"
   become: false
-  when: dotfiles_theme == 'catppuccin'
-
-- name: Fetch Bibata Modern Amber cursor theme (orange)
-  ansible.builtin.get_url:
-    url: "https://github.com/ful1e5/Bibata_Cursor/releases/download/v2.0.7/Bibata-Modern-Amber.tar.xz"
-    dest: "/tmp/Bibata-Modern-Amber.tar.xz"
-    mode: "0644"
-  when: dotfiles_theme == 'orange'
-
-- name: Install Bibata Modern Amber cursor theme (orange)
-  ansible.builtin.unarchive:
-    src: "/tmp/Bibata-Modern-Amber.tar.xz"
-    dest: "{{ invoking_home }}/.local/share/icons/"
-    remote_src: true
-    creates: "{{ invoking_home }}/.local/share/icons/Bibata-Modern-Amber"
-  become: false
-  when: dotfiles_theme == 'orange'
 
 - name: Set X cursor default via ~/.icons/default
   ansible.builtin.file:
@@ -81,7 +63,6 @@
     state: directory
     mode: "0755"
   become: false
-  when: dotfiles_theme == 'catppuccin'  # orange ships this via the theme file overlay above
 
 - name: Point ~/.icons/default at the mauve cursor pack
   ansible.builtin.copy:
@@ -91,12 +72,11 @@
       Inherits=catppuccin-mocha-mauve-cursors
     mode: "0644"
   become: false
-  when: dotfiles_theme == 'catppuccin'
 
 - name: Set GTK cursor-theme via gsettings
   ansible.builtin.command: >
     gsettings set org.gnome.desktop.interface cursor-theme
-    {{ dotfiles_theme == 'catppuccin' | ternary('catppuccin-mocha-mauve-cursors', 'Bibata-Modern-Amber') }}
+    catppuccin-mocha-mauve-cursors
   become: false
   environment:
     DISPLAY: ":0"
@@ -110,14 +90,12 @@
     repo: https://github.com/catppuccin/papirus-folders.git
     dest: /tmp/catppuccin-papirus-folders
     depth: 1
-  when: dotfiles_theme == 'catppuccin'
 
 - name: Install Catppuccin Papirus folder color assets
   ansible.builtin.copy:
     src: /tmp/catppuccin-papirus-folders/src/
     dest: /usr/share/icons/Papirus/
     remote_src: true
-  when: dotfiles_theme == 'catppuccin'
 
 - name: Fetch papirus-folders script
   ansible.builtin.get_url:
@@ -127,11 +105,6 @@
 
 - name: Set Papirus folder color (mocha-mauve)
   ansible.builtin.command: papirus-folders -C cat-mocha-mauve --theme Papirus-Dark
-  when: dotfiles_theme == 'catppuccin'
-
-- name: Set Papirus folder color (orange)
-  ansible.builtin.command: papirus-folders -C orange --theme Papirus-Dark
-  when: dotfiles_theme == 'orange'
 
 - name: Select Catppuccin theme in Kvantum
   community.general.ini_file:
@@ -141,7 +114,6 @@
     value: catppuccin-mocha-mauve
     mode: "0644"
   become: false
-  when: dotfiles_theme == 'catppuccin'
 
 - name: Set Kvantum as the qt5ct widget style
   community.general.ini_file:
@@ -151,7 +123,6 @@
     value: kvantum
     mode: "0644"
   become: false
-  when: dotfiles_theme == 'catppuccin'
 
 - name: Select the Catppuccin qt5ct color scheme
   community.general.ini_file:
@@ -166,7 +137,6 @@
       value: "true"
     - option: color_scheme_path
       value: "{{ invoking_home }}/.config/qt5ct/colors/catppuccin-mocha-mauve.conf"
-  when: dotfiles_theme == 'catppuccin'
 
 - name: Create GTK settings directories
   ansible.builtin.file:
@@ -197,24 +167,11 @@
     mode: "0755"
   become: false
 
-- name: Set nitrogen wallpaper for orange theme
-  ansible.builtin.copy:
-    dest: "{{ invoking_home }}/.config/nitrogen/bg-saved.cfg"
-    content: |
-      [xin_-1]
-      file={{ invoking_home }}/.local/share/wallpapers/orange-neon-glass.png
-      mode=5
-      bgcolor=#0D0704
-    mode: "0644"
-  become: false
-  when: dotfiles_theme == 'orange'
-
 - name: Fetch a Catppuccin Mocha wallpaper
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/iQuickDev/catppuccin-wallpapers/master/minimalistic/mauve-cat.png
     dest: /usr/share/wallpapers/catppuccin-mocha.png
     mode: "0644"
-  when: dotfiles_theme == 'catppuccin'
 
 - name: Seed nitrogen's saved background to the Catppuccin wallpaper
   ansible.builtin.copy:
@@ -226,14 +183,7 @@
       bgcolor=#1E1E2E
     mode: "0644"
   become: false
-  when: dotfiles_theme == 'catppuccin'
 
-- name: Generate betterlockscreen's cached lock wallpaper (orange)
-  ansible.builtin.command: "betterlockscreen -u {{ invoking_home }}/.local/share/wallpapers/orange-neon-glass.png"
-  become: false
-  when: dotfiles_theme == 'orange'
-
-- name: Generate betterlockscreen's cached lock wallpaper (catppuccin)
+- name: Generate betterlockscreen's cached lock wallpaper
   ansible.builtin.command: betterlockscreen -u /usr/share/wallpapers/catppuccin-mocha.png
   become: false
-  when: dotfiles_theme == 'catppuccin'
