@@ -34,6 +34,7 @@ rustdesk-bin
 # --- gaming / disk tools (AUR -bin builds) ---
 steam-tui-bin
 ventoy-bin
+osu-lazer-bin
 
 # --- Monokai Pro cursor/icon theme build tooling ---
 python-clickgen

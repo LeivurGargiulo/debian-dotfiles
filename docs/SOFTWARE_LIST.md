@@ -97,6 +97,9 @@ those change, it's a snapshot, not a generated artifact.
 | kdenlive | video editor |
 | obs-studio | screen recording/streaming |
 | libnotify | desktop notification library other apps depend on |
+| easyeffects | PipeWire audio effects (EQ, compressor, limiter) |
+| prismlauncher | Minecraft launcher (mod loaders, instances, accounts) |
+| deskflow | share one mouse/keyboard across multiple computers (input-leap's actively-maintained successor) |
 
 ## Gaming (`packages/pacman.txt`, multilib)
 
@@ -104,12 +107,6 @@ those change, it's a snapshot, not a generated artifact.
 |---|---|
 | steam | game store/launcher/runtime |
 | mangohud | in-game FPS/perf overlay |
-
-## Flatpak runtime (`packages/pacman.txt`)
-
-| Package | Purpose |
-|---|---|
-| flatpak | sandboxed app runtime — see README's "Not automated yet" for apps installed on top (Zen Browser is native AUR though, see below) |
 
 ## Shell environment (`packages/pacman.txt` + `packages/aur.txt`)
 
@@ -263,6 +260,7 @@ ruled out and why.
 |---|---|
 | steam-tui-bin | TUI wrapper/launcher around a Steam library |
 | ventoy-bin | multi-ISO bootable USB creator |
+| osu-lazer-bin | rhythm/aim-practice game (osu!lazer) |
 
 ## Not automated (see README's "Not automated yet")
 

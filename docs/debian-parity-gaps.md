@@ -2,9 +2,14 @@
 
 Everything in `debian-dotfiles/docs/SOFTWARE_LIST.md` that has no path into
 `packages/pacman.txt` / `packages/aur.txt` here, grouped by why. Most of
-the list *was* portable and already got ported (see `packages/` +
-`README.md`'s "Not automated yet" section for the small residual). This
-file is the rest: things that don't map cleanly.
+the list *was* portable and already got ported — including, as of a later
+pass, the last four apps that had been sitting under README's "Not
+automated yet" as manual flatpak installs: EasyEffects, PrismLauncher, and
+input-leap (superseded by `deskflow`, its actively-maintained successor)
+all turned out to have official Arch `extra` packages, and osu! has a real
+AUR package (`osu-lazer-bin`) — none needed flatpak after all, so that
+section and the `flatpak` package itself were removed entirely. This file
+is what's left: things that don't map cleanly.
 
 ## 1. Superseded by Hyprland/HyDE (X11-only, no port needed)
 
@@ -132,5 +137,5 @@ here for them:
   never confirmed wanted
 
 `barrier` is not listed here — debian already replaced it with
-`input-leap` (flatpak), which arch-dotfiles' README already carries
-forward under "Not automated yet."
+`input-leap`, which arch-dotfiles now installs natively as `deskflow`
+(see above).

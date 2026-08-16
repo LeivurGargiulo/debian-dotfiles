@@ -98,13 +98,3 @@ See `docs/SOFTWARE_LIST.md` for what every installed package is actually
 for — update it by hand alongside `packages/` changes, same as this
 README, it's not generated.
 
-## Not automated yet
-
-These were part of the prior (Debian) setup and aren't wired into
-`install.sh` — install manually for now, promote into the automated
-flow later if it's worth it:
-
-- Flatpak apps (EasyEffects, PrismLauncher, input-leap, osu! — inherently
-  GUI-native, no TUI equivalent worth trusting) — `flatpak`
-  itself is in `packages/pacman.txt`; install apps with `flatpak install
-  flathub <app-id>` once needed

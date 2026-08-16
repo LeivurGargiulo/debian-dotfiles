@@ -75,13 +75,13 @@ gimp
 kdenlive
 obs-studio
 libnotify
+easyeffects
+prismlauncher
+deskflow
 
 # --- gaming (multilib) ---
 steam
 mangohud
-
-# --- flatpak runtime, apps installed separately (see README) ---
-flatpak
 
 # --- shell environment ---
 zsh-autosuggestions
