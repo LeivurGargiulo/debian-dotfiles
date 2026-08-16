@@ -18,8 +18,10 @@ extra tooling layer. Goal: reformat = clone this repo, run
   `dotfiles/.config/hypr/monitors.conf` → `~/.config/hypr/monitors.conf`).
   Applied last, after HyDE's installer, so it always wins.
 - `packages/pacman.txt` / `packages/aur.txt` — everything beyond what
-  HyDE's own installer already pulls in: the AMD driver stack and the
-  CLI/TUI tools ported from a previous (Debian) dotfiles setup.
+  HyDE's own installer already pulls in: the AMD driver stack, the
+  CLI/TUI tools ported from a previous (Debian) dotfiles setup, and a
+  curated set of Rust TUI tools from
+  [awesome-ratatui](https://github.com/ratatui/awesome-ratatui).
 - `install.sh`, `scripts/` — glue: package install, Node LTS via `nvm`,
   run HyDE's installer, apply the overlay.
 

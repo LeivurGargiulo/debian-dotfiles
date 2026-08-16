@@ -114,3 +114,16 @@ python-six
 python-soupsieve
 python-sqlalchemy
 python-websockets
+
+# --- ratatui TUI picks (github.com/ratatui/awesome-ratatui) ---
+bottom
+dua-cli
+diskonaut
+systemctl-tui
+gitui
+trippy
+gping
+serie
+igrep
+tabiew
+rucola

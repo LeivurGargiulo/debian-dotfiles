@@ -37,3 +37,11 @@ zapzap-bin
 # --- gaming / disk tools (AUR -bin builds) ---
 steam-tui-bin
 ventoy-bin
+
+# --- ratatui TUI picks, no official-repo package (github.com/ratatui/awesome-ratatui) ---
+mirro-rs-git
+parui
+journalview
+hwatch
+doxx-git
+bookokrat-bin
