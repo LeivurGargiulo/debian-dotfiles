@@ -1,5 +1,6 @@
 # --- AMD Wayland GPU stack ---
-mesa
+# mesa intentionally omitted: CachyOS ships mesa-git by default, which
+# provides mesa and conflicts with the stock package on install.
 vulkan-radeon
 vulkan-icd-loader
 libva-mesa-driver
