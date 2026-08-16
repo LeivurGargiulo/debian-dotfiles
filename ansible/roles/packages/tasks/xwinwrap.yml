@@ -6,7 +6,6 @@
     version: "ec32e9b72539de7e1553a4f70345166107b431f7"
     force: true
   become: false
-  become_user: "{{ invoking_user }}"
   environment:
     HOME: "{{ invoking_home }}"
 
@@ -16,7 +15,6 @@
     chdir: "{{ invoking_home }}/.cache/source-builds/xwinwrap"
     creates: "{{ invoking_home }}/.cache/source-builds/xwinwrap/xwinwrap"
   become: false
-  become_user: "{{ invoking_user }}"
 
 - name: Install xwinwrap to /usr/local/bin
   ansible.builtin.command: make install

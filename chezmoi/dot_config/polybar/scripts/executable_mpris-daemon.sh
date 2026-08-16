@@ -9,7 +9,10 @@ mkdir -p "$(dirname "$JSON_LOG")"
 _clear_pid=""
 
 emit_json() {
-    python3 - "$1" "$2" "$3" "$4" "$5" "$6" <<'PYEOF' >> "$JSON_LOG"
+    # overwrite, not append — eww's deflisten only needs the latest line
+    # (tail -F re-reads on truncation), and this keeps the file from
+    # growing unbounded over a long uptime.
+    python3 - "$1" "$2" "$3" "$4" "$5" "$6" <<'PYEOF' > "$JSON_LOG"
 import json, sys
 status, title, artist, album, art, length = sys.argv[1:7]
 print(json.dumps({"status": status, "title": title, "artist": artist, "album": album, "art": art, "length": length}))

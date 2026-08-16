@@ -6,7 +6,6 @@
     version: "{{ item.tag }}"
     force: true
   become: false
-  become_user: "{{ invoking_user }}"
   environment:
     HOME: "{{ invoking_home }}"
 
@@ -20,7 +19,6 @@
     executable: /bin/bash
     creates: "{{ invoking_home }}/.cache/source-builds/{{ item.binary_name }}/target/release/{{ item.binary_name }}"
   become: false
-  become_user: "{{ invoking_user }}"
   environment:
     HOME: "{{ invoking_home }}"
 
