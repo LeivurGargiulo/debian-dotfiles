@@ -1,0 +1,16 @@
+// animations.scss — shared transition tokens. Import this in every eww
+// widget's scss instead of hardcoding animation values, so every popup
+// (media, volume, tray, sysinfo, notifications, calendar) stays visually
+// consistent.
+
+$transition-fast: 150ms;
+$transition-medium: 250ms;
+$transition-slow: 400ms;
+$ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+.eww-fade-hover {
+  transition: opacity $transition-fast $ease;
+}
+.eww-fade-hover:hover {
+  opacity: 0.8;
+}

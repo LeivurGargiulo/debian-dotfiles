@@ -1,0 +1,35 @@
+;; eww.yuck — daemon-level config: shared state + window definitions.
+;; Widget bodies live in widgets/*.yuck.
+
+(include "./widgets/nowplaying.yuck")
+
+;; Drives the nowplaying-popup's revealer. The window itself stays open
+;; permanently (opened once from launch.sh); this var is what polybar's
+;; click handler toggles to animate it in/out.
+(defvar popup-visible false)
+
+;; One JSON line per playback change, appended by mpris-daemon.sh.
+;; Falls back to an empty object so widget field lookups don't error out
+;; before the first line is written.
+(deflisten nowplaying_json :initial "{}"
+  `tail -F -n1 $HOME/.cache/polybar/nowplaying.jsonl`)
+
+;; Live playback position — polled only while the popup is visible, so it
+;; doesn't run a playerctl call every second in the background.
+(defpoll nowplaying_position :interval "1s"
+                              :initial ""
+                              :run-while popup-visible
+  `playerctl position --format "{{ duration(position) }}" 2>/dev/null`)
+
+(defwindow nowplaying-popup
+  :monitor 0
+  :geometry (geometry :x "0px"
+                       :y "29px"
+                       :width "320px"
+                       :height "140px"
+                       :anchor "bottom center")
+  :stacking "fg"
+  :wm-ignore true
+  (nowplaying :json nowplaying_json
+              :position nowplaying_position
+              :visible popup-visible))

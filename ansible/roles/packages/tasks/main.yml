@@ -26,6 +26,25 @@
   ansible.builtin.include_tasks: github_releases.yml
   tags: github_releases
 
+- name: Install rustup (stable toolchain — needed for eww/prism-tui; apt's rustc is too old for prism-tui)
+  ansible.builtin.shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable --profile minimal
+  args:
+    creates: "{{ invoking_home }}/.cargo/bin/rustup"
+  become: false
+  environment:
+    HOME: "{{ invoking_home }}"
+
+- name: Build and install cargo git binaries (eww, prism-tui)
+  ansible.builtin.include_tasks: cargo_git_builds.yml
+  loop: "{{ cargo_git_builds }}"
+  loop_control:
+    label: "{{ item.binary_name }}"
+  tags: cargo_git_builds
+
+- name: Build and install xwinwrap
+  ansible.builtin.include_tasks: xwinwrap.yml
+  tags: xwinwrap
+
 - name: Install packages via official install scripts
   ansible.builtin.include_tasks: official_scripts.yml
 

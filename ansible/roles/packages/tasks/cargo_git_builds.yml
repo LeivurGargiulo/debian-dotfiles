@@ -1,0 +1,33 @@
+---
+- name: "Clone {{ item.repo }} at {{ item.tag }}"
+  ansible.builtin.git:
+    repo: "https://github.com/{{ item.repo }}.git"
+    dest: "{{ invoking_home }}/.cache/source-builds/{{ item.binary_name }}"
+    version: "{{ item.tag }}"
+    force: true
+  become: false
+  become_user: "{{ invoking_user }}"
+  environment:
+    HOME: "{{ invoking_home }}"
+
+- name: "Build {{ item.binary_name }} with cargo (release)"
+  ansible.builtin.shell: |
+    set -euo pipefail
+    source "$HOME/.cargo/env"
+    cargo build --release {{ item.cargo_args }}
+  args:
+    chdir: "{{ invoking_home }}/.cache/source-builds/{{ item.binary_name }}"
+    executable: /bin/bash
+    creates: "{{ invoking_home }}/.cache/source-builds/{{ item.binary_name }}/target/release/{{ item.binary_name }}"
+  become: false
+  become_user: "{{ invoking_user }}"
+  environment:
+    HOME: "{{ invoking_home }}"
+
+- name: "Install {{ item.binary_name }} to /usr/local/bin"
+  ansible.builtin.copy:
+    src: "{{ invoking_home }}/.cache/source-builds/{{ item.binary_name }}/target/release/{{ item.binary_name }}"
+    dest: "/usr/local/bin/{{ item.binary_name }}"
+    mode: "0755"
+    remote_src: true
+  become: true
