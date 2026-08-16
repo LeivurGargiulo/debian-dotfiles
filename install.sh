@@ -44,6 +44,11 @@ echo "==> running vendor/hyde/Scripts/install.sh (HyDE's own installer)"
 echo "==> applying dotfiles overlay (scripts/symlink-dotfiles.sh)"
 "$repo_root/scripts/symlink-dotfiles.sh"
 
+echo "==> applying Monokai Pro HyDE theme"
+if command -v hydectl >/dev/null 2>&1; then
+    hydectl theme set "Monokai-Pro"
+fi
+
 cat <<'EOF'
 
 ==> done.
