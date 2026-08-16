@@ -34,11 +34,6 @@ echo "==> installing packages/pacman.txt"
 grep -vE '^\s*#|^\s*$' "$repo_root/packages/pacman.txt" | sudo pacman -S --needed --noconfirm -
 
 echo "==> installing packages/aur.txt"
-# rustc defaults to its bundled rust-lld on this target, which fails to
-# resolve ring's hand-written asm hidden symbols (undefined ring_core_*
-# symbols at link time). Force the system cc/ld.bfd back on for any AUR
-# rust crate that depends on ring/rustls (reqwest, etc).
-export RUSTFLAGS="-C link-self-contained=-linker"
 grep -vE '^\s*#|^\s*$' "$repo_root/packages/aur.txt" | yay -S --needed --noconfirm -
 
 echo "==> installing Node LTS via nvm"

@@ -63,7 +63,9 @@ papirus-folders
 ttf-ubuntu-sans
 
 # --- ratatui TUI picks, no official-repo package (github.com/ratatui/awesome-ratatui) ---
-mirro-rs-git
+# mirro-rs-git dropped: fails to link against system rustc (rust-lld vs
+# ring crate hidden-symbol mismatch, unresolved even overriding rustflags
+# via env/cargo config). Managing mirrorlist via reflector/CLI instead.
 parui
 journalview
 hwatch
