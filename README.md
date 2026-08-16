@@ -85,6 +85,6 @@ flow later if it's worth it:
   plugin manager (tpm) — shell-environment setup scripts, not packages
 - Cargo-only tools (e.g. Raijin weather TUI, no pre-built binary)
 - Flatpak apps (Zen Browser, RustDesk, Vesktop, Telegram, ZapZap,
-  EasyEffects, GNOME Boxes, PrismLauncher, input-leap) — `flatpak` itself
-  is in `packages/pacman.txt`; install apps with `flatpak install
+  EasyEffects, GNOME Boxes, PrismLauncher, input-leap, osu!) — `flatpak`
+  itself is in `packages/pacman.txt`; install apps with `flatpak install
   flathub <app-id>` once needed

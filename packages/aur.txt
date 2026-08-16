@@ -10,7 +10,6 @@ ducker
 taskwarrior-tui
 gophertube
 wden
-pulsemixer
 ytfzf
 nvm
 
@@ -23,3 +22,7 @@ zen-browser-bin
 rustdesk-bin
 vesktop-bin
 zapzap-bin
+
+# --- gaming / disk tools (AUR -bin builds) ---
+steam-tui-bin
+ventoy-bin

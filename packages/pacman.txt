@@ -17,6 +17,7 @@ tmux
 mosh
 jq
 git
+github-cli
 zsh
 p7zip
 unrar
@@ -50,6 +51,10 @@ yt-dlp
 atuin
 lazygit
 yazi
+neovim
+fastfetch
+pulsemixer
+aerc
 
 # --- TUI-first picks ---
 zathura
@@ -71,6 +76,7 @@ libnotify
 
 # --- gaming (multilib) ---
 steam
+mangohud
 
 # --- flatpak runtime, apps installed separately (see README) ---
 flatpak
