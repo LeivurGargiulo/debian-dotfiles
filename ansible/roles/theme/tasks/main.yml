@@ -1,5 +1,5 @@
 ---
-- name: Install base theme packages (Papirus, Kvantum)
+- name: Install base theme packages (Papirus)
   ansible.builtin.apt:
     name: "{{ theme_packages }}"
     state: present
@@ -82,8 +82,6 @@
     DISPLAY: ":0"
   changed_when: true
   failed_when: false
-
-# --- catppuccin-only: fetch the upstream assets orange already vendors ---
 
 - name: Clone catppuccin-papirus-folders
   ansible.builtin.git:
