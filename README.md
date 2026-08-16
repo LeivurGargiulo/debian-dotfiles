@@ -19,9 +19,12 @@ extra tooling layer. Goal: reformat = clone this repo, run
   Applied last, after HyDE's installer, so it always wins.
 - `packages/pacman.txt` / `packages/aur.txt` — everything beyond what
   HyDE's own installer already pulls in: the AMD driver stack, the
-  CLI/TUI tools ported from a previous (Debian) dotfiles setup, and a
+  CLI/TUI tools ported from a previous (Debian) dotfiles setup, a
   curated set of Rust TUI tools from
-  [awesome-ratatui](https://github.com/ratatui/awesome-ratatui).
+  [awesome-ratatui](https://github.com/ratatui/awesome-ratatui), TUI
+  replacements for GUI apps that had a genuinely viable one (Discord
+  → `endcord`, Telegram/WhatsApp → `nchat`, GNOME Boxes → `vm-curator`),
+  and `claude-squad` for managing multiple Claude Code sessions.
 - `install.sh`, `scripts/` — glue: package install, Node LTS via `nvm`,
   run HyDE's installer, apply the overlay.
 
@@ -84,7 +87,7 @@ These were part of the prior (Debian) setup and aren't wired into
 `install.sh` — install manually for now, promote into the automated
 flow later if it's worth it:
 
-- Flatpak apps (Zen Browser, RustDesk, Vesktop, Telegram, ZapZap,
-  EasyEffects, GNOME Boxes, PrismLauncher, input-leap, osu!) — `flatpak`
+- Flatpak apps (EasyEffects, PrismLauncher, input-leap, osu! — inherently
+  GUI-native, no TUI equivalent worth trusting) — `flatpak`
   itself is in `packages/pacman.txt`; install apps with `flatpak install
   flathub <app-id>` once needed
