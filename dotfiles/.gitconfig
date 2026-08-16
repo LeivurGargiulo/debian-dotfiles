@@ -8,6 +8,9 @@
     navigate = true
     dark = true
     syntax-theme = Monokai Pro
+    # minus/plus line backgrounds: pink #ff6188 / green #a9dc76 blended
+    # dark toward background #2d2a2e, not standalone palette entries —
+    # -emph is the brighter/bolder blend of the same pair, for word-diff highlights.
     minus-style = "syntax #3d2029"
     minus-emph-style = "syntax bold #5a2436"
     plus-style = "syntax #26332a"
