@@ -66,3 +66,10 @@
     - aerc-styleset
     - betterlockscreen-colors
     - delta.gitconfig
+
+- name: Deploy rice-refresh script
+  ansible.builtin.copy:
+    src: rice-refresh
+    dest: "{{ invoking_home }}/.local/bin/rice-refresh"
+    mode: "0755"
+  become: false
