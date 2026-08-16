@@ -1,0 +1,19 @@
+[core]
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true
+    dark = true
+    syntax-theme = Monokai Pro
+    minus-style = "syntax #3d2029"
+    minus-emph-style = "syntax bold #5a2436"
+    plus-style = "syntax #26332a"
+    plus-emph-style = "syntax bold #34482f"
+    line-numbers = true
+    line-numbers-minus-style = "#FF6188"
+    line-numbers-plus-style = "#A9DC76"
+    file-style = "#78DCE8 bold"
+    hunk-header-style = "#939293"

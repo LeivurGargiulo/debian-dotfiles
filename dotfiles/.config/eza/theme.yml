@@ -1,0 +1,51 @@
+filekinds:
+  normal:
+    foreground: "#FCFCFA"
+  directory:
+    foreground: "#78DCE8"
+    is_bold: true
+  symlink:
+    foreground: "#AB9DF2"
+    is_italic: true
+  executable:
+    foreground: "#A9DC76"
+    is_bold: true
+  special:
+    foreground: "#FF6188"
+perms:
+  user_read:
+    foreground: "#FFD866"
+  user_write:
+    foreground: "#FF6188"
+    is_bold: true
+  user_execute_file:
+    foreground: "#A9DC76"
+    is_bold: true
+  group_read:
+    foreground: "#FFD866"
+  group_write:
+    foreground: "#FF6188"
+  group_execute:
+    foreground: "#A9DC76"
+  other_read:
+    foreground: "#FFD866"
+  other_write:
+    foreground: "#FF6188"
+  other_execute:
+    foreground: "#A9DC76"
+size:
+  number_byte:
+    foreground: "#FCFCFA"
+  unit_byte:
+    foreground: "#939293"
+git:
+  new:
+    foreground: "#A9DC76"
+  modified:
+    foreground: "#FFD866"
+  deleted:
+    foreground: "#FF6188"
+punctuation:
+  foreground: "#939293"
+date:
+  foreground: "#78DCE8"
