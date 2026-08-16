@@ -21,3 +21,10 @@
   ansible.builtin.command: colorice --init
   become: false
   when: not colorice_config.stat.exists
+
+- name: Deploy colorice config.toml
+  ansible.builtin.copy:
+    src: config.toml
+    dest: "{{ invoking_home }}/.config/colorice/config.toml"
+    mode: "0644"
+  become: false

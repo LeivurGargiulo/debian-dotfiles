@@ -1,0 +1,125 @@
+# Deployed by the colorice ansible role — do not edit on-machine, edit
+# ansible/roles/colorice/files/config.toml and re-provision.
+
+[[templates]]
+name = "kitty"
+input = "kitty.conf"
+output = "~/.config/kitty/colorice-colors.conf"
+hook = "killall -USR1 kitty"
+
+[[templates]]
+name = "i3"
+input = "i3-colors.conf"
+output = "~/.config/i3/colorice-colors.conf"
+hook = "i3-msg reload"
+
+[[templates]]
+name = "i3-extended"
+input = "i3-extended.conf"
+output = "~/.config/i3/colorice-extended.conf"
+hook = "i3-msg reload"
+
+[[templates]]
+name = "picom"
+input = "picom.conf"
+output = "~/.config/picom/i3.conf"
+hook = "sleep 0.5 && systemctl --user restart picom"
+
+[[templates]]
+name = "polybar"
+input = "polybar-colors.ini"
+output = "~/.config/polybar/colorice-colors.ini"
+hook = "polybar-msg cmd restart"
+
+[[templates]]
+name = "polybar-extended"
+input = "polybar-extended.ini"
+output = "~/.config/polybar/colorice-extended.ini"
+hook = "polybar-msg cmd restart"
+
+[[templates]]
+name = "neovim"
+input = "neovim-colors.lua"
+output = "~/.config/nvim/lua/colorice-colors.lua"
+
+[[templates]]
+name = "dunst"
+input = "dunst.conf"
+output = "~/.config/dunst/dunstrc"
+hook = "systemctl --user restart dunst"
+
+[[templates]]
+name = "rofi"
+input = "rofi-colors.rasi"
+output = "~/.config/rofi/colorice-colors.rasi"
+
+[[templates]]
+name = "cava"
+input = "cava.conf"
+output = "~/.config/cava/config"
+
+[[templates]]
+name = "zellij"
+input = "zellij-theme.kdl"
+output = "~/.config/zellij/themes/colorice.kdl"
+
+[[templates]]
+name = "fastfetch"
+input = "fastfetch.jsonc"
+output = "~/.config/fastfetch/config.jsonc"
+
+[[templates]]
+name = "atuin"
+input = "atuin.toml"
+output = "~/.config/atuin/config.toml"
+
+[[templates]]
+name = "bat"
+input = "bat.tmTheme"
+output = "~/.config/bat/themes/Colorice.tmTheme"
+hook = "bat cache --build"
+
+[[templates]]
+name = "btop"
+input = "btop.theme"
+output = "~/.config/btop/themes/colorice.theme"
+
+[[templates]]
+name = "eza"
+input = "eza.yml"
+output = "~/.config/eza/theme.yml"
+
+[[templates]]
+name = "lazygit"
+input = "lazygit.yml"
+output = "~/.config/lazygit/config.yml"
+
+[[templates]]
+name = "mpv"
+input = "mpv.conf"
+output = "~/.config/mpv/mpv.conf"
+
+[[templates]]
+name = "ncspot"
+input = "ncspot.toml"
+output = "~/.config/ncspot/config.toml"
+
+[[templates]]
+name = "starship"
+input = "starship.toml"
+output = "~/.config/starship.toml"
+
+[[templates]]
+name = "aerc"
+input = "aerc-styleset"
+output = "~/.config/aerc/stylesets/colorice"
+
+[[templates]]
+name = "betterlockscreen"
+input = "betterlockscreen-colors"
+output = "~/.config/betterlockscreen/colorice-colors.sh"
+
+[[templates]]
+name = "delta"
+input = "delta.gitconfig"
+output = "~/.config/delta/colorice-colors.gitconfig"
