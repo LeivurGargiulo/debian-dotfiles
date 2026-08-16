@@ -3,6 +3,12 @@ set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+log_file="$repo_root/install.log"
+: > "$log_file"
+exec > >(while IFS= read -r line; do printf '[%(%H:%M:%S)T] %s\n' -1 "$line"; done | tee -a "$log_file") 2>&1
+
+trap 'ec=$?; if [[ $ec -ne 0 ]]; then echo "==> FAILED (exit $ec): \"$BASH_COMMAND\" at line $LINENO — see $log_file" >&2; else echo "==> SUCCESS — full log at $log_file"; fi' EXIT
+
 if [[ "$EUID" -eq 0 ]]; then
     echo "error: do not run install.sh as root" >&2
     exit 1

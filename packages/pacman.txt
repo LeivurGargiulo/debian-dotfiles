@@ -45,7 +45,7 @@ udiskie
 newsboat
 cmus
 oath-toolkit
-taskwarrior
+task
 calcurse
 yt-dlp
 atuin
