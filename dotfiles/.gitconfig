@@ -20,3 +20,9 @@
     line-numbers-plus-style = "#A9DC76"
     file-style = "#78DCE8 bold"
     hunk-header-style = "#939293"
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
