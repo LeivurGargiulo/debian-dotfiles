@@ -276,8 +276,23 @@ echo "==> building Monokai Pro icon theme (Papirus folders)"
 "$repo_root/scripts/build-monokai-icons.sh"
 
 echo "==> applying Monokai Pro HyDE theme"
+# hydectl lives in ~/.local/bin, which is only ever added to PATH by
+# Hyprland/uwsm's own session environment files
+# (~/.config/uwsm/env.d/00-hyde.sh) — sourced when a Hyprland session
+# starts, not by this plain LXDE-terminal bash script. HyDE's own vendor
+# installer runs into the identical gap and works around it locally
+# (vendor/hyde/Scripts/install.sh exports this same PATH right before its
+# internal theme/waybar calls), but that export lives in a subprocess and
+# never reaches back here. Without it, `command -v hydectl` silently found
+# nothing, the theme was never set, and the desktop came up on whatever
+# HyDE's own installer leaves as its default (Catppuccin Mocha) — confirmed
+# live: install.log shows "applying Monokai Pro HyDE theme" with nothing
+# after it, no error, because the whole block was quietly skipped.
+export PATH="$HOME/.local/lib/hyde:$HOME/.local/bin:$PATH"
 if command -v hydectl >/dev/null 2>&1; then
     hydectl theme set "Monokai-Pro"
+else
+    echo "    warning: hydectl not found even with ~/.local/bin on PATH — HyDE's installer may not have completed" >&2
 fi
 
 echo "==> applying Monokai Pro Firefox theme"

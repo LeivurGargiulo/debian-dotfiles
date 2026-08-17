@@ -52,6 +52,6 @@ dcol_4xa7=ff6188
 dcol_4xa8=ff87a2
 dcol_4xa9=ffaec1
 
-dcol_pry1_rgba=rgba(45,42,46,0.95)
-dcol_txt1_rgba=rgba(252,252,250,0.95)
-dcol_pry4_rgba=rgba(255,97,136,0.95)
+dcol_pry1_rgba="rgba(45,42,46,0.95)"
+dcol_txt1_rgba="rgba(252,252,250,0.95)"
+dcol_pry4_rgba="rgba(255,97,136,0.95)"

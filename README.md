@@ -197,10 +197,49 @@ to own `display-manager.service`, disabling any other enabled DM
 such as LXDE can stay installed — it remains selectable as a session in
 sddm and makes a useful fallback.
 
-**3-monitor setup:** `dotfiles/.config/hypr/monitors.conf` ships as a
-placeholder. After first install, run `hyprctl monitors`, fill in the
-real output names/positions, then re-run `scripts/symlink-dotfiles.sh`
-(or all of `install.sh`).
+**3-monitor setup:** filled in from a real `hyprctl monitors` run on the
+actual hardware (`DP-1`/`DP-2`/`HDMI-A-1`, 1920x1080@60 each at `0x0` /
+`1920x0` / `3840x0`) — output names can change if a cable moves to a
+different port or a monitor is swapped; re-run `hyprctl monitors` and
+update `dotfiles/.config/hypr/monitors.conf` if positions look wrong
+after a hardware change, then `scripts/symlink-dotfiles.sh` (or all of
+`install.sh`) to apply it. Note that a monitor's *physical size* (the
+inches `fastfetch` reports) comes from that monitor's own EDID, not from
+this file — `monitors.conf` only controls resolution/position/scale, so
+a wrong-looking diagonal size there isn't something this repo can fix.
+
+**`hydectl theme set` needs `~/.local/bin` on PATH, which this script
+doesn't have:** that directory is only ever added to `PATH` by
+Hyprland/uwsm's own session environment files
+(`~/.config/uwsm/env.d/00-hyde.sh`), sourced when a Hyprland session
+starts — never by `install.sh`, which necessarily runs from whatever
+terminal bootstrapped the machine (LXDE, in practice, since Hyprland
+isn't installed yet). Confirmed live: `command -v hydectl` silently
+found nothing right after a real install, so the theme was never set
+and the desktop came up on HyDE's own default (Catppuccin Mocha)
+instead, with install.log showing "applying Monokai Pro HyDE theme"
+and nothing after it — no error, the whole guarded block just quietly
+skipped. `install.sh` now exports `PATH="$HOME/.local/lib/hyde:$HOME/.local/bin:$PATH"`
+before checking for `hydectl` — the identical export HyDE's own vendor
+installer uses internally for this same reason, which only helps
+*inside that subprocess* and never reaches back here on its own.
+
+**Theme `.dcol` files are sourced as bash, not just data:** HyDE's
+wallbash engine loads every theme's `theme.dcol` with plain bash, so an
+`rgba(...)` value has to be quoted —
+`dcol_pry1_rgba="rgba(45,42,46,0.95)"`, matching every stock HyDE
+theme's own `.dcol` files — not
+`dcol_pry1_rgba=rgba(45,42,46,0.95)`, which is a bash syntax error
+(unquoted parens after `=` parse as a subshell). This broke silently:
+applying the theme failed with a syntax error deep in wallbash's own
+output, which also meant Hyprland never received any color values at
+all (`hyprctl reload` / `hyde-shell reload` reporting "Hyprland does
+not detect colors!" was a symptom of this, not a separate bug).
+`scripts/tests/test_theme-dcol-syntax.sh` runs `bash -n` on every
+`*.dcol` file in `dotfiles/` to catch this class of break before it
+reaches a real install. `theme.conf` alongside it is a different,
+non-bash format (Hyprland's own config syntax) and is deliberately not
+checked the same way.
 
 ## Updating HyDE
 

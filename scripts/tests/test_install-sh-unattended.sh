@@ -290,4 +290,24 @@ chsh_line="$(grep -n 'sudo chsh -s' "$install_sh" | head -1 | cut -d: -f1)"
 grep -q '"\$current_shell" != "zsh"' "$install_sh" ||
     fail "the shell comparison doesn't match HyDE's own basename comparison — sudo chsh would run on every invocation instead of only when needed"
 
+# --- 11. hydectl is found even though this script never runs inside a --
+#         Hyprland/uwsm session where ~/.local/bin is normally on PATH
+# hydectl lives in ~/.local/bin, only added to PATH by Hyprland/uwsm's own
+# session environment files (~/.config/uwsm/env.d/00-hyde.sh) — sourced
+# when a Hyprland session starts, never by this plain-terminal bash script.
+# Confirmed live: `command -v hydectl` silently found nothing right after a
+# real HyDE install, so "hydectl theme set Monokai-Pro" never ran and the
+# desktop came up on HyDE's own default theme (Catppuccin Mocha) instead —
+# install.log showed "applying Monokai Pro HyDE theme" with nothing after
+# it, no error, because the whole guarded block was quietly skipped.
+grep -q 'HOME/.local/lib/hyde:\$HOME/.local/bin:\$PATH' "$install_sh" ||
+    fail "install.sh doesn't add ~/.local/bin to PATH before checking for hydectl — the theme-set call will silently no-op again on a fresh install, same as it did on a real box"
+
+pathexport_line="$(grep -n 'HOME/.local/lib/hyde:\$HOME/.local/bin:\$PATH' "$install_sh" | head -1 | cut -d: -f1)"
+hydectl_check_line="$(grep -n 'if command -v hydectl' "$install_sh" | head -1 | cut -d: -f1)"
+[[ -n "$pathexport_line" && -n "$hydectl_check_line" ]] ||
+    fail "could not locate the PATH export or the hydectl check"
+(( pathexport_line < hydectl_check_line )) ||
+    fail "PATH export is at line $pathexport_line, after the hydectl check at line $hydectl_check_line — too late to help"
+
 echo "PASS"
