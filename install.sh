@@ -73,6 +73,32 @@ echo "==> full system upgrade"
 # to do and never prompts.
 sudo pacman -Syu --noconfirm
 
+echo "==> preferring pipewire-jack over jack2"
+# packages/pacman.txt pulls in several packages (ffmpeg, mpv, cava, ...) that
+# need a JACK implementation. Left to choose on its own, --needed --noconfirm
+# picks jack2 — but HyDE's core dependencies (vendor/hyde/Scripts/dots/deps.toml)
+# require pipewire-jack, which outright *conflicts* with jack2 (confirmed via
+# `pacman -Si`: both provide the same jack/libjack.so, and pipewire-jack lists
+# jack2 under Conflicts With). That conflict aborts HyDE's core-deps pacman
+# transaction as a whole — one unresolved conflict takes down every package
+# batched with it, which is how a real run ended up with sddm, hyprland,
+# waybar, rofi and dunst all reported "missing" at once.
+#
+# A conflict-removal prompt ("jack2 and pipewire-jack are in conflict. Remove
+# jack2? [y/N]") defaults to N and neither --noconfirm nor a blank-line stdin
+# changes that default — both just take it silently, which is the same
+# "unresolvable package conflicts detected" failure either way. It has to be
+# answered "y" explicitly. Doing that here, scoped to only this one install
+# (not blanket across the rest of the run), installs pipewire-jack before
+# anything else has a chance to pull in jack2 on a fresh box, and swaps it out
+# on a system — like this one — where an earlier partial run already has
+# jack2 installed. pipewire-jack provides the same jack/libjack.so, so every
+# jack2 dependent (cava, ffmpeg, fluidsynth, mpv, obs-studio, ...) is
+# satisfied by the replacement.
+if ! pacman -Qq pipewire-jack >/dev/null 2>&1; then
+    yes | sudo pacman -S --needed pipewire-jack
+fi
+
 echo "==> installing packages/pacman.txt"
 grep -vE '^\s*#|^\s*$' "$repo_root/packages/pacman.txt" | sudo pacman -S --needed --noconfirm -
 

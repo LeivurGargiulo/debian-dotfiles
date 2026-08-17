@@ -191,4 +191,33 @@ echo "$out" | grep -q '^proceed=yes$' ||
 echo "$out" | grep -q '^reboot=no$' ||
     fail "blank-line stdin answered the reboot prompt — an unattended run must never reboot itself"
 
+# --- 8. pipewire-jack is installed before it can conflict with jack2 ------
+# packages/pacman.txt pulls in ffmpeg/mpv/cava, which need a JACK
+# implementation; left to --needed --noconfirm, pacman picks jack2. HyDE's
+# core deps require pipewire-jack, which conflicts with jack2 outright
+# (confirmed via `pacman -Si`: both provide the same jack/libjack.so, and
+# pipewire-jack lists jack2 under Conflicts With). That conflict aborts
+# HyDE's entire core-deps transaction as one unit — a real run reported
+# sddm, hyprland, waybar, rofi and dunst all "missing" simultaneously from
+# a single unresolved jack2 conflict. Neither --noconfirm nor a blank-line
+# stdin changes the prompt's default (both take the same N-by-default
+# "unresolvable package conflicts detected" failure) — it has to be
+# answered "y" explicitly, and only for this one command.
+grep -q 'pipewire-jack' "$install_sh" ||
+    fail "install.sh no longer installs pipewire-jack ahead of jack2"
+
+pw_line="$(grep -n "pacman -S --needed pipewire-jack" "$install_sh" | head -1 | cut -d: -f1)"
+pacman_txt_line="$(grep -n 'packages/pacman.txt" | sudo pacman' "$install_sh" | head -1 | cut -d: -f1)"
+[[ -n "$pw_line" && -n "$pacman_txt_line" ]] ||
+    fail "could not locate the pipewire-jack step or the pacman.txt install step"
+(( pw_line < pacman_txt_line )) ||
+    fail "pipewire-jack is installed at line $pw_line, after packages/pacman.txt at line $pacman_txt_line — too late to stop jack2 from being pulled in first"
+
+# The line installing pipewire-jack must itself answer "y" (a scoped `yes |`,
+# not the run-wide blank-line stream) — a blank line takes the prompt's own
+# N default and reproduces the exact same conflict failure.
+pw_full_line="$(sed -n "${pw_line}p" "$install_sh")"
+[[ "$pw_full_line" == *"yes |"* ]] ||
+    fail "the pipewire-jack install doesn't answer its conflict prompt with 'y' — it will hit the same jack2 conflict"
+
 echo "PASS"

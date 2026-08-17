@@ -134,6 +134,23 @@ HyDE step: the cursor theme build alone takes several minutes, and
 combined with AUR builds a run can outlast the default 15-minute sudo
 ticket right as `deez`'s un-`noconfirm`ed pacman calls need it.
 
+**pipewire-jack vs jack2:** `packages/pacman.txt` pulls in `ffmpeg`,
+`mpv`, `cava` and others that need *a* JACK implementation; left to
+`--needed --noconfirm`, pacman resolves that to `jack2`. HyDE's core
+deps require `pipewire-jack` instead, which outright conflicts with
+`jack2` (`pacman -Si`: both provide the same `jack`/`libjack.so`, and
+`pipewire-jack` lists `jack2` under `Conflicts With`). That conflict
+aborts HyDE's entire core-deps transaction as one unit — a real run
+reported `sddm`, `hyprland`, `waybar`, `rofi` and `dunst` all "missing"
+simultaneously from this single unresolved conflict, since pacman
+treats a dependency batch as all-or-nothing. Neither `--noconfirm` nor
+the blank-line stdin above changes the conflict prompt's own `[y/N]`
+default, so `install.sh` installs `pipewire-jack` explicitly before
+`packages/pacman.txt` ever runs, answering just that one prompt with a
+scoped `yes |` (not the run-wide blank-line stream) — `pipewire-jack`
+provides the same `jack`/`libjack.so`, so every `jack2` dependent stays
+satisfied by the swap.
+
 **Cleanup:** the run tidies up after itself. A single scratch root holds
 every step's working space and is removed by an `EXIT` trap however the
 script ends, and a final step drops the build byproducts of the AUR
