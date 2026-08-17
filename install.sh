@@ -268,6 +268,25 @@ else
     echo "    warning: sddm is not installed — HyDE's core dependency step did not complete"
 fi
 
+echo "==> enabling btrfs snapshots (snapper timeline + snap-pac)"
+# snapper's own default config ships with TIMELINE_CREATE="no", so enabling
+# snapper-timeline.timer alone is a silent no-op — the timer fires but the
+# snapshot it asks for never happens. Both halves are required. snap-pac
+# (packages/pacman.txt) covers the other half: a pre/post snapshot around
+# every pacman transaction, independent of this timer, so a bad update is
+# always a `snapper rollback` away regardless of the timeline schedule.
+if command -v snapper >/dev/null 2>&1; then
+    if [[ -f /etc/snapper/configs/root ]]; then
+        sudo sed -i 's/^TIMELINE_CREATE=.*/TIMELINE_CREATE="yes"/' /etc/snapper/configs/root
+    else
+        sudo snapper -c root create-config /
+    fi
+    sudo systemctl enable --now snapper-timeline.timer
+    sudo systemctl enable --now snapper-cleanup.timer
+else
+    echo "    warning: snapper is not installed — skipping"
+fi
+
 echo "==> applying dotfiles overlay (scripts/symlink-dotfiles.sh)"
 "$repo_root/scripts/symlink-dotfiles.sh"
 

@@ -75,6 +75,14 @@ cava
 ufw
 gparted
 
+# --- btrfs snapshot safety net ---
+# pacman hooks that snapshot / (via snapper) before and after every
+# transaction, so a bad update is a `snapper rollback` away instead of a
+# reinstall. install.sh also enables snapper-timeline.timer and flips
+# TIMELINE_CREATE on in /etc/snapper/configs/root for periodic snapshots
+# unrelated to package installs (e.g. a bad manual config edit).
+snap-pac
+
 # --- GUI apps, no TUI equivalent ---
 remmina
 gimp

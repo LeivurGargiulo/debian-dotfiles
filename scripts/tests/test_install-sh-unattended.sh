@@ -342,4 +342,19 @@ overlay_line="$(grep -n 'scripts/symlink-dotfiles.sh"$' "$install_sh" | head -1 
 (( overlay_line < bat_cache_line )) ||
     fail "bat cache --build runs at line $bat_cache_line, before the overlay is applied at line $overlay_line — the theme file wouldn't exist yet to cache"
 
+# --- 14. snapper timeline is actually enabled, not just the timer ---------
+# snapper's default /etc/snapper/configs/root ships with TIMELINE_CREATE="no"
+# — enabling snapper-timeline.timer alone is a silent no-op, the timer fires
+# but the snapshot it asks for never happens. Confirmed live: timeline.timer
+# was enabled while TIMELINE_CREATE stayed "no", so nothing was ever
+# snapshotted. Both halves are required.
+grep -q 'TIMELINE_CREATE=' "$install_sh" ||
+    fail "install.sh doesn't flip TIMELINE_CREATE on in /etc/snapper/configs/root — enabling snapper-timeline.timer alone is a no-op"
+grep -q 'systemctl enable --now snapper-timeline.timer' "$install_sh" ||
+    fail "install.sh doesn't enable snapper-timeline.timer"
+grep -q 'systemctl enable --now snapper-cleanup.timer' "$install_sh" ||
+    fail "install.sh doesn't enable snapper-cleanup.timer"
+grep -q '^snap-pac$' "$repo_root/packages/pacman.txt" ||
+    fail "snap-pac is missing from packages/pacman.txt — pacman transactions won't get automatic pre/post snapshots on a fresh install"
+
 echo "PASS"
