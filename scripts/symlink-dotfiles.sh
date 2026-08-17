@@ -20,7 +20,7 @@ find "$src_root" -type f | while IFS= read -r src; do
     # this repo apply immediately, no re-run needed); only the wallpaper
     # itself has to be a real file for HyDE's own tree-walk to see it.
     case "$rel" in
-    .config/hyde/themes/*/wall.*)
+    .config/hyde/themes/*/wall.*|.config/hyde/themes/*/wallpapers/*)
         rm -f "$dest"
         cp "$src" "$dest"
         echo "copied: ~/$rel"

@@ -8,6 +8,8 @@ mkdir -p "$tmp/repo/scripts" "$tmp/repo/dotfiles/.config/hypr" \
     "$tmp/repo/dotfiles/.config/hyde/themes/Monokai-Pro"
 echo "placeholder" > "$tmp/repo/dotfiles/.config/hypr/settings.conf"
 echo "fake wallpaper bytes" > "$tmp/repo/dotfiles/.config/hyde/themes/Monokai-Pro/wall.png"
+mkdir -p "$tmp/repo/dotfiles/.config/hyde/themes/Monokai-Pro/wallpapers"
+echo "fake gallery wallpaper bytes" > "$tmp/repo/dotfiles/.config/hyde/themes/Monokai-Pro/wallpapers/wall.png"
 
 script_under_test="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/symlink-dotfiles.sh"
 cp "$script_under_test" "$tmp/repo/scripts/symlink-dotfiles.sh"
@@ -47,6 +49,23 @@ if [[ ! -f "$wall" ]]; then
 fi
 if ! cmp -s "$wall" "$tmp/repo/dotfiles/.config/hyde/themes/Monokai-Pro/wall.png"; then
     echo "FAIL: $wall content does not match the source wallpaper" >&2
+    exit 1
+fi
+
+# The same applies one level deeper: wallbash's color-extraction pipeline
+# reads from a theme's wallpapers/ subdirectory (not just top-level wall.*),
+# and that recursion hits the identical find -type f blind spot. A theme
+# missing this real-file treatment for wallpapers/ silently falls back to
+# stale cached colors instead of extracting from the actual wallpaper —
+# confirmed live: kitty/waybar stayed on a leftover theme's colors after a
+# theme switch because Monokai-Pro only had a top-level wall.png.
+gallery_wall="$fake_home/.config/hyde/themes/Monokai-Pro/wallpapers/wall.png"
+if [[ -L "$gallery_wall" ]]; then
+    echo "FAIL: $gallery_wall is a symlink — wallbash's color-extraction scan won't see it" >&2
+    exit 1
+fi
+if [[ ! -f "$gallery_wall" ]]; then
+    echo "FAIL: $gallery_wall was not created" >&2
     exit 1
 fi
 
