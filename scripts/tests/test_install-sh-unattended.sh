@@ -36,11 +36,29 @@ hyde_line="$(grep -n 'vendor/hyde/Scripts" && ./install.sh' "$install_sh" | head
 (( aur_line < hyde_line )) ||
     fail "AUR step is not above the HyDE step; the ordering assumption changed"
 
-# --- 3. HyDE's installer is driven with stdin closed ---
-# Its sddm-theme and reboot prompts are plain reads; EOF makes them fall
-# through to the defaults we want instead of blocking forever.
-grep -q 'vendor/hyde/Scripts" && ./install.sh </dev/null' "$install_sh" ||
-    fail "HyDE's installer is not run with stdin from /dev/null"
+# --- 3. HyDE's installer is fed an endless stream of blank lines ---
+# Its sddm-theme and reboot prompts are plain reads whose defaults come from
+# a bare Enter, so that's what stdin must supply. This must NOT be /dev/null
+# (EOF): a layer deeper, HyDE's own dependency installer (deez) shells out to
+# bare "sudo pacman -S <pkg>" with no --noconfirm for anything it finds
+# missing, and EOF fails that confirmation prompt outright — which is how a
+# real run silently ended up without sddm installed at all while deez logged
+# it as a mere warning and still reported success.
+grep -q 'vendor/hyde/Scripts" && ./install.sh < <(yes '"''"')' "$install_sh" ||
+    fail "HyDE's installer is not fed blank lines via stdin (regression: deez's un-noconfirmed pacman prompts get starved by /dev/null, silently dropping packages like sddm)"
+
+# It must never be `yes` (bare "y") — the closing prompt is "reboot now? [y/N]",
+# and a literal "y" answer would talk an unattended run into rebooting itself.
+if grep -qE '< <\(yes\)' "$install_sh" || grep -qE "echo\s+y\s*\|.*install\.sh" "$install_sh"; then
+    fail "HyDE's installer is fed literal 'y' answers — this would auto-confirm the reboot prompt"
+fi
+
+# --- 3b. a stale sudo ticket must not silently break a long run ---
+# The cursor theme build alone takes several minutes; combined with AUR
+# builds a run can outlast the default 15-minute sudo ticket, right as deez's
+# un-noconfirmed pacman calls need it.
+grep -q "sudo -n true" "$install_sh" ||
+    fail "no sudo keepalive around the HyDE installer step; a long run risks a stale sudo ticket"
 
 # --- 4. the two timed prompts are pre-answered ---
 grep -q 'export myShell=' "$install_sh" ||
@@ -131,5 +149,46 @@ SCRATCH
     [[ -n "$ref" ]] || fail "scratch probe ($mode) never recorded a directory"
     [[ -d "$ref" ]] && fail "scratch directory leaked on the '$mode' path: $ref"
 done
+
+# --- 7. blank-line stdin resolves every remaining prompt shape correctly --
+# Exercise the exact `< <(yes '')` construct against the two prompt shapes
+# this chain actually contains: a bare `read` defaulting on empty input
+# (HyDE's sddm-theme picker, its reboot confirm), and a [Y/n]-vs-[y/N]-style
+# confirm. A blank line must proceed the [Y/n] case and decline the [y/N]
+# case — that asymmetry is exactly what keeps an unattended run from talking
+# itself into an unwanted reboot.
+cat > "$tmp_dir/prompts.sh" <<'PROBE'
+#!/usr/bin/env bash
+set -euo pipefail
+read -r -p "sddm theme option: " opt
+case "$opt" in
+    1) theme="Candy" ;;
+    2) theme="Corners" ;;
+    *) theme="Corners" ;;
+esac
+echo "theme=$theme"
+
+read -r -p "Proceed with installation? [Y/n] " proceed
+if [[ -z "$proceed" || "$proceed" =~ ^[Yy] ]]; then
+    echo "proceed=yes"
+else
+    echo "proceed=no"
+fi
+
+read -r -p "reboot now? [y/N] " answer
+if [[ "$answer" == [Yy] ]]; then
+    echo "reboot=yes"
+else
+    echo "reboot=no"
+fi
+PROBE
+
+out="$(bash "$tmp_dir/prompts.sh" < <(yes ''))"
+echo "$out" | grep -q '^theme=Corners$' ||
+    fail "blank-line stdin did not fall through to the Corners default"
+echo "$out" | grep -q '^proceed=yes$' ||
+    fail "blank-line stdin did not proceed past a [Y/n] prompt — deez's pacman installs would fail again"
+echo "$out" | grep -q '^reboot=no$' ||
+    fail "blank-line stdin answered the reboot prompt — an unattended run must never reboot itself"
 
 echo "PASS"

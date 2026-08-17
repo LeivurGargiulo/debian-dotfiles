@@ -3,16 +3,22 @@ set -euo pipefail
 
 # Installs Monokai Pro's userChrome.css + the enabling user.js pref into
 # Firefox's default profile. Profile directories have a randomized name
-# (e.g. ~/.mozilla/firefox/xxxxxxxx.default-release/), so this can't be a
-# static dotfiles/ symlink target — profiles.ini has to be parsed at
-# install time. Mechanism verified against support.mozilla.org, ArchWiki's
-# Firefox/Tweaks page, and black7375/Firefox-UI-Fix's real install.sh.
+# (e.g. .../firefox/xxxxxxxx.default-release/), so this can't be a static
+# dotfiles/ symlink target — profiles.ini has to be parsed at install time.
+#
+# Where that profile lives depends on the Firefox build: some still use the
+# legacy ~/.mozilla/firefox, but this repo's (153.0.4, CachyOS's package) is
+# XDG-compliant and uses ${XDG_CONFIG_HOME:-~/.config}/mozilla/firefox —
+# confirmed directly (a -CreateProfile run left ~/.mozilla untouched and
+# wrote profiles.ini under the XDG path instead). Checking XDG first with a
+# fallback to the legacy path covers both without needing a version check.
 #
 # Idempotent: re-running just re-copies the same source files (backing up
 # a differing destination once as .bak).
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-firefox_dir="$HOME/.mozilla/firefox"
+firefox_dir="${XDG_CONFIG_HOME:-$HOME/.config}/mozilla/firefox"
+legacy_firefox_dir="$HOME/.mozilla/firefox"
 ini="$firefox_dir/profiles.ini"
 
 if ! command -v firefox >/dev/null 2>&1; then
@@ -20,16 +26,22 @@ if ! command -v firefox >/dev/null 2>&1; then
     exit 1
 fi
 
-if [[ ! -f "$ini" ]]; then
-    echo "==> no Firefox profile yet, creating one"
-    firefox -CreateProfile default-release -no-remote
+if [[ ! -f "$ini" && -f "$legacy_firefox_dir/profiles.ini" ]]; then
+    firefox_dir="$legacy_firefox_dir"
+    ini="$firefox_dir/profiles.ini"
 fi
 
 if [[ ! -f "$ini" ]]; then
-    echo "error: profiles.ini still missing after -CreateProfile — cold-start profile" \
-         "creation isn't reliably provable non-interactively (no prior-art" \
-         "reference implementation exercises this path); create a profile by" \
-         "launching firefox once, then re-run this script" >&2
+    echo "==> no Firefox profile yet, creating one"
+    # -headless: a fresh install must not flash a browser window during an
+    # unattended run. Verified directly against this Firefox build: this
+    # exact invocation writes profiles.ini and the profile dir immediately.
+    firefox -CreateProfile default-release -no-remote -headless
+fi
+
+if [[ ! -f "$ini" ]]; then
+    echo "error: profiles.ini still missing after -CreateProfile in both" \
+         "$firefox_dir and $legacy_firefox_dir" >&2
     exit 1
 fi
 

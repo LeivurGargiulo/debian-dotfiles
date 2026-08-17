@@ -143,16 +143,51 @@ fi
 #    already set. dotfiles/.zshrc is the overlay we apply, so: zsh.
 export myShell=zsh
 
-# 4. The last two prompts (install_pst.sh's sddm theme, and the closing
-#    "reboot now?") are plain `read`s whose fall-through defaults are the ones
-#    we want anyway — the Corners sddm theme, and no reboot. Redirecting stdin
-#    from /dev/null makes both take EOF immediately instead of waiting.
-#    A partial dotfile deployment is reported by HyDE as a non-zero exit; that
-#    must not cost us the overlay and theming steps below, which are exactly
-#    what would repair it.
+# 4. The last two direct prompts (install_pst.sh's sddm theme, and the
+#    closing "reboot now?") are plain `read`s whose fall-through defaults are
+#    the ones we want anyway — the Corners sddm theme, and no reboot.
+#
+#    Feeding stdin from /dev/null (EOF immediately) used to be how these were
+#    answered, but that starves a prompt one layer deeper: HyDE's dependency
+#    installer (deez) shells out to plain "sudo pacman -S <pkg>" with no
+#    --noconfirm for anything it finds missing (its own package_managers
+#    table has no --noconfirm entry for pacman at all). On EOF that
+#    "Proceed with installation? [Y/n]" prompt fails outright, and deez only
+#    logs it as "[warn] pacman: <pkg> missing" rather than treating it as
+#    fatal — which is how a real run silently ended up without sddm at all
+#    while still reporting success.
+#
+#    An endless stream of blank lines fixes both without special-casing
+#    either: every prompt left in this chain — HyDE's own two, and any bare
+#    pacman/makepkg confirmation deez triggers — defaults to the safe choice
+#    on a bare Enter ([Y/n] proceeds, [y/N] declines, the sddm theme picker
+#    falls through to Corners). It is never "y" for exactly this reason: the
+#    reboot prompt is [y/N], and an unattended run must never talk itself
+#    into a surprise reboot.
+#
+#    A partial dotfile deployment is reported by HyDE as a non-zero exit;
+#    that must not cost us the overlay and theming steps below, which are
+#    exactly what would repair it.
+#
+# Sudo's cached credential can expire mid-run — the cursor theme build alone
+# takes several minutes, and combined with AUR builds a run can run long
+# past the default 15-minute ticket. A background `sudo -v` every 4 minutes
+# keeps it alive so a late privileged call (deez's pacman installs among
+# them) never blocks on a password prompt this script has no way to answer.
+sudo_keepalive_pid=""
+if sudo -n true 2>/dev/null; then
+    while true; do sleep 240; sudo -n true 2>/dev/null || break; done &
+    sudo_keepalive_pid=$!
+fi
+
 echo "==> running vendor/hyde/Scripts/install.sh (HyDE's own installer)"
 hyde_failed=0
-(cd "$repo_root/vendor/hyde/Scripts" && ./install.sh </dev/null) || hyde_failed=1
+(cd "$repo_root/vendor/hyde/Scripts" && ./install.sh < <(yes '')) || hyde_failed=1
+
+if [[ -n "$sudo_keepalive_pid" ]]; then
+    kill "$sudo_keepalive_pid" 2>/dev/null
+    wait "$sudo_keepalive_pid" 2>/dev/null || true
+fi
 
 echo "==> making sddm the display manager"
 # HyDE's restore_svc.sh runs a plain "systemctl enable sddm", which fails when

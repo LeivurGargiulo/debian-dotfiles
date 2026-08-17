@@ -42,7 +42,15 @@ extra tooling layer. Goal: reformat = clone this repo, run
 - `firefox/` — `userChrome.css` + `user.js`, applied to Firefox's default
   profile by `scripts/apply-firefox-theme.sh` (lives at the repo root, not
   under `dotfiles/`, because Firefox profile directory names are
-  randomized and can't be a static symlink target).
+  randomized and can't be a static symlink target). The profile itself
+  lives at `${XDG_CONFIG_HOME:-~/.config}/mozilla/firefox` on this repo's
+  Firefox (153.0.4, CachyOS's package) — confirmed directly, since it's
+  XDG-compliant rather than the legacy `~/.mozilla/firefox` most
+  documentation still assumes. The script checks XDG first and falls back
+  to the legacy path, so either Firefox build works. On a genuinely fresh
+  install with no profile yet, it runs `firefox -CreateProfile
+  default-release -no-remote -headless`, confirmed to create one instantly
+  with no window flash.
 - `install.sh`, `scripts/` — glue: package install, Node LTS via `nvm`,
   run HyDE's installer, apply the overlay.
 
@@ -104,6 +112,27 @@ AUR step and HyDE's installer are both non-fatal — a single unbuildable
 AUR package must never again abort the run before the desktop is
 installed. Anything that failed is listed at the end and sets a
 non-zero exit.
+
+HyDE's installer is fed stdin from an endless stream of blank lines
+(`< <(yes '')`), not `/dev/null`. Closing stdin entirely used to be how
+its own prompts were answered, but that also starves a prompt one layer
+deeper: HyDE's dependency installer (`deez`) shells out to plain `sudo
+pacman -S <pkg>` with no `--noconfirm` for anything it finds missing —
+its own package-manager table has no `--noconfirm` entry for pacman at
+all. On EOF that "Proceed with installation? [Y/n]" prompt fails
+outright, and `deez` only logs it as a warning rather than treating it
+as fatal, which is exactly how a real run silently ended up without
+`sddm` installed at all while still reporting success. A blank line
+resolves every prompt in this chain to its safe default — `[Y/n]`
+proceeds, `[y/N]` declines, HyDE's sddm-theme picker falls through to
+Corners — without special-casing any of them, and it is deliberately
+never a literal `y`: the closing prompt is `[y/N]` for "reboot now?",
+and an unattended run must never talk itself into a surprise reboot.
+
+A background `sudo -v` keeps the cached credential alive for the whole
+HyDE step: the cursor theme build alone takes several minutes, and
+combined with AUR builds a run can outlast the default 15-minute sudo
+ticket right as `deez`'s un-`noconfirm`ed pacman calls need it.
 
 **Cleanup:** the run tidies up after itself. A single scratch root holds
 every step's working space and is removed by an `EXIT` trap however the
