@@ -179,7 +179,9 @@ EOF
 fi
 
 # 3. HyDE's install.sh prompts for a shell on a 120s timer unless myShell is
-#    already set. dotfiles/.zshrc is the overlay we apply, so: zsh.
+#    already set. dotfiles/.config/zsh/.zshrc is the overlay we apply
+#    (not ~/.zshrc — this HyDE fork sets ZDOTDIR=~/.config/zsh, so plain
+#    ~/.zshrc is never read at all; see the README), so: zsh.
 export myShell=zsh
 
 # 3b. HyDE's own restore_shl.sh (vendor/hyde/Scripts/restore_shl.sh, run via
@@ -274,6 +276,19 @@ echo "==> building Monokai Pro cursor theme (Bibata via cbmp)"
 
 echo "==> building Monokai Pro icon theme (Papirus folders)"
 "$repo_root/scripts/build-monokai-icons.sh"
+
+echo "==> rebuilding bat's theme cache"
+# bat caches its themes as a binary index (~/.cache/bat/themes.bin) built
+# from whatever is under ~/.config/bat/themes/ at the time `bat cache
+# --build` last ran — it does not scan that directory live on every
+# invocation. dotfiles/.config/bat/themes/Monokai Pro.tmTheme being deployed
+# by symlink-dotfiles.sh above is not enough on its own: without this,
+# `bat --list-themes` never lists "Monokai Pro" and BAT_THEME="Monokai Pro"
+# (dotfiles/.config/zsh/.zshrc) makes every bat invocation fail with
+# "unknown theme 'Monokai Pro', using default" instead. Confirmed live.
+if command -v bat >/dev/null 2>&1; then
+    bat cache --build
+fi
 
 echo "==> applying Monokai Pro HyDE theme"
 # hydectl lives in ~/.local/bin, which is only ever added to PATH by

@@ -310,4 +310,36 @@ hydectl_check_line="$(grep -n 'if command -v hydectl' "$install_sh" | head -1 | 
 (( pathexport_line < hydectl_check_line )) ||
     fail "PATH export is at line $pathexport_line, after the hydectl check at line $hydectl_check_line — too late to help"
 
+# --- 12. the zsh overlay lives where this HyDE fork actually reads it -----
+# This fork sets ZDOTDIR=~/.config/zsh (vendor/hyde/Configs/.zshenv), so
+# plain ~/.zshrc is never read at all — confirmed live: BAT_THEME and
+# FZF_DEFAULT_OPTS, both exported from the old dotfiles/.zshrc, were empty
+# in a real interactive shell. dotfiles/.zshrc must not come back; the real
+# file is dotfiles/.config/zsh/.zshrc.
+if [[ -f "$repo_root/dotfiles/.zshrc" ]]; then
+    fail "dotfiles/.zshrc exists again — this HyDE fork's ZDOTDIR=~/.config/zsh means zsh never reads it, so anything placed there is silently dead"
+fi
+[[ -f "$repo_root/dotfiles/.config/zsh/.zshrc" ]] ||
+    fail "dotfiles/.config/zsh/.zshrc is missing — this is the file zsh actually reads on this HyDE fork"
+grep -q 'BAT_THEME' "$repo_root/dotfiles/.config/zsh/.zshrc" ||
+    fail "dotfiles/.config/zsh/.zshrc lost its Monokai Pro exports (BAT_THEME etc.)"
+
+# --- 13. bat's theme cache is rebuilt, not just the theme file deployed ---
+# bat indexes ~/.config/bat/themes/ into a binary cache (~/.cache/bat/
+# themes.bin) via `bat cache --build`; it does not scan that directory live.
+# Deploying dotfiles/.config/bat/themes/Monokai Pro.tmTheme via
+# symlink-dotfiles.sh alone left "Monokai Pro" absent from `bat
+# --list-themes`, so BAT_THEME="Monokai Pro" (now exported correctly per
+# the check above) made every bat call fail with "unknown theme ... using
+# default" instead — confirmed live.
+grep -q 'bat cache --build' "$install_sh" ||
+    fail "install.sh doesn't rebuild bat's theme cache — BAT_THEME=\"Monokai Pro\" will make every bat invocation fall back to the default theme with a warning"
+
+bat_cache_line="$(grep -n 'bat cache --build' "$install_sh" | head -1 | cut -d: -f1)"
+overlay_line="$(grep -n 'scripts/symlink-dotfiles.sh"$' "$install_sh" | head -1 | cut -d: -f1)"
+[[ -n "$bat_cache_line" && -n "$overlay_line" ]] ||
+    fail "could not locate the bat cache step or the overlay-apply step"
+(( overlay_line < bat_cache_line )) ||
+    fail "bat cache --build runs at line $bat_cache_line, before the overlay is applied at line $overlay_line — the theme file wouldn't exist yet to cache"
+
 echo "PASS"

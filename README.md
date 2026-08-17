@@ -39,6 +39,17 @@ extra tooling layer. Goal: reformat = clone this repo, run
   `claude-squad` for managing multiple Claude Code sessions, and
   starship (`dotfiles/.config/starship.toml`) as the zsh prompt —
   Monokai Pro, two-line layout.
+- `dotfiles/.config/zsh/.zshrc` and `.../user.zsh` — **not**
+  `dotfiles/.zshrc`. This HyDE fork sets `ZDOTDIR=~/.config/zsh`
+  (`vendor/hyde/Configs/.zshenv`), so a plain `~/.zshrc` is never read by
+  zsh at all on this build — confirmed live, an earlier `dotfiles/.zshrc`
+  here exported `BAT_THEME`/`FZF_DEFAULT_OPTS` and neither ever showed up
+  in a real interactive shell. `~/.config/zsh/.zshrc` is the file zsh
+  actually sources, and it's real, HyDE-generated content (not a
+  template) with its own comment pointing here: *"Override aliases here
+  in `$ZDOTDIR/.zshrc`"*. Personal aliases, `EDITOR`, and anything else
+  you want zsh to pick up belong in this file now, under the "Aliases
+  (personal)" heading near the bottom — not the old `~/.zshrc` path.
 - `dotfiles/.config/hyde/themes/Monokai-Pro/` — the HyDE theme, activated
   by `install.sh` via `hydectl theme set "Monokai-Pro"`. Colors for
   waybar/rofi/dunst/GTK/Qt/hyprlock/kitty come from HyDE's wallbash
@@ -269,6 +280,17 @@ not detect colors!" was a symptom of this, not a separate bug). That
 immediately if any theme in this repo ever gains one again.
 `theme.conf` is a different, non-bash format (Hyprland's own config
 syntax) and is deliberately not checked the same way.
+
+**`bat` needs its theme cache rebuilt — deploying the theme file isn't
+enough.** `bat` indexes `~/.config/bat/themes/` into a binary cache
+(`~/.cache/bat/themes.bin`) via `bat cache --build`; it does not scan
+that directory live on every run. `dotfiles/.config/bat/themes/Monokai
+Pro.tmTheme` being symlinked into place by `scripts/symlink-dotfiles.sh`
+was never enough on its own — confirmed live, `bat --list-themes` never
+listed "Monokai Pro" and `BAT_THEME="Monokai Pro"` (see above) made
+every `bat` call print `unknown theme 'Monokai Pro', using default` and
+fall back silently. `install.sh` now runs `bat cache --build` right
+after the overlay is applied.
 
 ## Updating HyDE
 
