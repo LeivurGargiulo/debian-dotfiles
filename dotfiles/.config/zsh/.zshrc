@@ -43,7 +43,19 @@
 # unset -f command_not_found_handler # Uncomment to prevent searching for commands not found in package manager
 
 #  Aliases (personal)
-# alias claudio='claude'
+alias claudio='claude --dangerously-skip-permissions'
+
+# fuzzy-find a file by (partial) name under $HOME and open it
+# e.g. `open list.txt` finds ~/market/list_market.txt and opens it
+open() {
+    local match
+    match=$(fd -t f -i "$1" ~ 2>/dev/null | head -n1)
+    if [[ -n "$match" ]]; then
+        xdg-open "$match"
+    else
+        echo "open: no match for '$1'" >&2
+    fi
+}
 
 # --- Monokai Pro: fzf ---
 export FZF_DEFAULT_OPTS="--color=fg:#FCFCFA,bg:#2D2A2E,hl:#FF6188,fg+:#FCFCFA,bg+:#221F22,hl+:#FC9867,info:#AB9DF2,prompt:#78DCE8,pointer:#FF6188,marker:#A9DC76,spinner:#FFD866,header:#939293,border:#939293,gutter:#2D2A2E,query:#FCFCFA"
