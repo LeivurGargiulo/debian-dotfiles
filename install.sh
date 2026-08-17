@@ -182,6 +182,26 @@ fi
 #    already set. dotfiles/.zshrc is the overlay we apply, so: zsh.
 export myShell=zsh
 
+# 3b. HyDE's own restore_shl.sh (vendor/hyde/Scripts/restore_shl.sh, run via
+#     install_pst.sh) changes the login shell with a bare `chsh -s <path>` —
+#     no sudo, so it authenticates via *this account's own login password*,
+#     which nothing in this script has or can supply. That failure isn't
+#     contained either: every HyDE script sources global_fn.sh, which sets
+#     `set -e`, and chsh's non-zero exit cascades all the way up through
+#     install_pst.sh to HyDE's top-level install.sh — aborting it before it
+#     ever reaches the services step (NetworkManager, bluetooth) or
+#     migrations, which is worse than just an unset shell.
+#
+#     restore_shl.sh only calls chsh when the account's current login shell
+#     doesn't already match myShell (comparing basenames via `getent passwd`).
+#     Setting it here first, with sudo — which changes a shell without
+#     needing that account's own password, unlike a plain chsh — makes HyDE
+#     see the shell as already correct and skip its own chsh call entirely.
+current_shell="$(getent passwd "$USER" | cut -d: -f7 | xargs -r basename)"
+if [[ "$current_shell" != "zsh" ]]; then
+    sudo chsh -s "$(command -v zsh)" "$USER"
+fi
+
 # 4. The last two direct prompts (install_pst.sh's sddm theme, and the
 #    closing "reboot now?") are plain `read`s whose fall-through defaults are
 #    the ones we want anyway — the Corners sddm theme, and no reboot.

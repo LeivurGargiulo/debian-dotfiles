@@ -263,4 +263,31 @@ if bash "$tmp_dir/sigpipe_real_fail.sh" >/dev/null 2>&1; then
     fail "the pipefail-off pattern also swallows a genuine reader failure — a real pacman error would go unnoticed"
 fi
 
+# --- 10. the login shell is set before HyDE's installer, not left to chsh -
+# vendor/hyde/Scripts/restore_shl.sh changes the shell with a bare
+# `chsh -s <path>` — no sudo, so it authenticates via the account's own
+# login password, which nothing in this script can supply. Every HyDE
+# script sources global_fn.sh, which sets `set -e`, so that failure isn't
+# contained: it cascades all the way up through install_pst.sh and aborts
+# HyDE's top-level install.sh before it ever reaches the services step
+# (NetworkManager, bluetooth) or migrations. Confirmed live: a real run's
+# log showed "chsh: Authentication failure" immediately followed by control
+# returning to this script, with nothing from HyDE's services/migrations
+# steps anywhere in between.
+grep -q 'sudo chsh -s' "$install_sh" ||
+    fail "install.sh no longer pre-sets the login shell with sudo chsh — HyDE's own chsh call will fail (it needs the account's own login password) and abort HyDE's installer before it reaches services/migrations"
+
+chsh_line="$(grep -n 'sudo chsh -s' "$install_sh" | head -1 | cut -d: -f1)"
+[[ -n "$chsh_line" && -n "$hyde_line" ]] ||
+    fail "could not locate the sudo-chsh step or the HyDE installer step"
+(( chsh_line < hyde_line )) ||
+    fail "sudo chsh runs at line $chsh_line, after HyDE's installer at line $hyde_line — too late to stop restore_shl.sh's own chsh call from failing"
+
+# It must compare against a plain basename ("zsh"), matching how HyDE's own
+# login_shell()/resolve_shell() compare (vendor/hyde/Scripts/global_fn.sh) —
+# comparing against a full path here would never match and chsh would run
+# unconditionally on every single install.sh invocation, sudo prompt or not.
+grep -q '"\$current_shell" != "zsh"' "$install_sh" ||
+    fail "the shell comparison doesn't match HyDE's own basename comparison — sudo chsh would run on every invocation instead of only when needed"
+
 echo "PASS"

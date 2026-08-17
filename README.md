@@ -134,6 +134,23 @@ HyDE step: the cursor theme build alone takes several minutes, and
 combined with AUR builds a run can outlast the default 15-minute sudo
 ticket right as `deez`'s un-`noconfirm`ed pacman calls need it.
 
+**Login shell, set before HyDE's installer runs, not by it:**
+`vendor/hyde/Scripts/restore_shl.sh` changes the shell with a bare
+`chsh -s <path>` — no sudo, so it authenticates via the account's own
+*login* password, which is a different credential from sudo's and
+nothing in this script has it. Worse, every HyDE script sources
+`global_fn.sh`, which sets `set -e`, so that failure isn't contained to
+restore_shl.sh: it cascades all the way up through `install_pst.sh` and
+aborts HyDE's top-level `install.sh` before it ever reaches the
+services step (`NetworkManager`, `bluetooth`) or migrations — confirmed
+live, a real run's log showed `chsh: Authentication failure` immediately
+followed by control returning to this script, with no services/migration
+output anywhere in between. `install.sh` now runs `sudo chsh` itself
+first — root can change an account's shell without that account's own
+password — comparing against a plain basename exactly like HyDE's own
+`login_shell()`/`resolve_shell()` do, so HyDE sees the shell as already
+correct and never calls `chsh` at all.
+
 **pipewire-jack vs jack2:** `packages/pacman.txt` pulls in `ffmpeg`,
 `mpv`, `cava` and others that need *a* JACK implementation; left to
 `--needed --noconfirm`, pacman resolves that to `jack2`. HyDE's core
