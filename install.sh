@@ -338,10 +338,12 @@ cat <<'EOF'
 
 ==> done.
 
-Reminder: dotfiles/.config/hypr/monitors.conf is a placeholder.
-Once on real hardware, run `hyprctl monitors`, fill in real output
-names/positions in that file, then re-run:
-  scripts/symlink-dotfiles.sh
+Reminder: monitor layout lives in dotfiles/.config/hypr/hyprland.lua as
+hl.monitor({...}) calls (this HyDE fork uses Lua config; the old
+monitors.conf mechanism is dead — see vendor/hyde/MIGRATION-LUA.md).
+Once on real hardware, run `hyprctl monitors`, update the hl.monitor()
+calls with the real output names/positions, then re-run:
+  scripts/symlink-dotfiles.sh && hyprctl reload
 (or re-run install.sh — it's safe to re-run end to end)
 EOF
 

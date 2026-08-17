@@ -15,7 +15,7 @@ extra tooling layer. Goal: reformat = clone this repo, run
   Hyprland, Waybar, rofi, a lock screen, a notification daemon, GTK/Qt
   theming, and its own package/install logic.
 - `dotfiles/` — our overlay, mirrors `$HOME` layout exactly (e.g.
-  `dotfiles/.config/hypr/monitors.conf` → `~/.config/hypr/monitors.conf`).
+  `dotfiles/.config/hypr/hyprland.lua` → `~/.config/hypr/hyprland.lua`).
   Applied last, after HyDE's installer, so it always wins. Every file is a
   live symlink into this repo — edit here, see it immediately — except one:
   `dotfiles/.config/hyde/themes/*/wall.*` is *copied*, not symlinked.
@@ -197,16 +197,35 @@ to own `display-manager.service`, disabling any other enabled DM
 such as LXDE can stay installed — it remains selectable as a session in
 sddm and makes a useful fallback.
 
-**3-monitor setup:** filled in from a real `hyprctl monitors` run on the
-actual hardware (`DP-1`/`DP-2`/`HDMI-A-1`, 1920x1080@60 each at `0x0` /
-`1920x0` / `3840x0`) — output names can change if a cable moves to a
-different port or a monitor is swapped; re-run `hyprctl monitors` and
-update `dotfiles/.config/hypr/monitors.conf` if positions look wrong
-after a hardware change, then `scripts/symlink-dotfiles.sh` (or all of
-`install.sh`) to apply it. Note that a monitor's *physical size* (the
-inches `fastfetch` reports) comes from that monitor's own EDID, not from
-this file — `monitors.conf` only controls resolution/position/scale, so
-a wrong-looking diagonal size there isn't something this repo can fix.
+**3-monitor setup:** declared in `dotfiles/.config/hypr/hyprland.lua` as
+three `hl.monitor({...})` calls — **not** a `monitors.conf` file. This
+HyDE fork migrated its whole config to Lua
+(`vendor/hyde/MIGRATION-LUA.md`); the classic
+`~/.config/hypr/{monitors,windowrules,nvidia}.conf` files it describes
+are no longer read at all. An earlier version of this repo still shipped
+a `dotfiles/.config/hypr/monitors.conf` from before that migration —
+confirmed dead by grepping the entire live Lua config chain
+(`~/.config/hypr/hyprland.lua`, `~/.local/share/hypr/lua/**`) for any
+reference to it: none. It's been removed; don't recreate it.
+
+Real hardware, from a real `hyprctl monitors` run: `DP-1` and `DP-2`
+(1920x1080@60, capped there per their own `availableModes`) flank
+`HDMI-A-1` (1920x1080@180 — the only one of the three that reports
+180Hz support) in the physically-central position, at `0x0` / `1920x0`
+/ `3840x0`. Output names can change if a cable moves to a different
+port or a monitor is swapped; re-run `hyprctl monitors` and update the
+`hl.monitor()` calls if positions look wrong after a hardware change,
+then `scripts/symlink-dotfiles.sh && hyprctl reload` (or all of
+`install.sh`) to apply it.
+
+Note that a monitor's *physical size* (the inches `fastfetch` reports)
+comes from that monitor's own EDID, read straight off the cable — not
+from anything in this repo. If it's reporting a wrong diagonal (this
+box's monitors are actually all 27", not the 24"/27"/27" EDID claims),
+that's the monitor's own firmware, or an adapter/KVM in the signal path
+rewriting it — confirmed not a VM (`systemd-detect-virt` says `none`,
+real Gigabyte board, real AMD GPU) — and not something software here
+can fix.
 
 **`hydectl theme set` needs `~/.local/bin` on PATH, which this script
 doesn't have:** that directory is only ever added to `PATH` by

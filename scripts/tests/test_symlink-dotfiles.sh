@@ -6,7 +6,7 @@ trap 'rm -rf "$tmp"' EXIT
 
 mkdir -p "$tmp/repo/scripts" "$tmp/repo/dotfiles/.config/hypr" \
     "$tmp/repo/dotfiles/.config/hyde/themes/Monokai-Pro"
-echo "placeholder" > "$tmp/repo/dotfiles/.config/hypr/monitors.conf"
+echo "placeholder" > "$tmp/repo/dotfiles/.config/hypr/settings.conf"
 echo "fake wallpaper bytes" > "$tmp/repo/dotfiles/.config/hyde/themes/Monokai-Pro/wall.png"
 
 script_under_test="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/symlink-dotfiles.sh"
@@ -17,13 +17,13 @@ fake_home="$tmp/home"
 mkdir -p "$fake_home"
 HOME="$fake_home" "$tmp/repo/scripts/symlink-dotfiles.sh"
 
-link="$fake_home/.config/hypr/monitors.conf"
+link="$fake_home/.config/hypr/settings.conf"
 if [[ ! -L "$link" ]]; then
     echo "FAIL: $link is not a symlink" >&2
     exit 1
 fi
 target="$(readlink -f "$link")"
-expected="$tmp/repo/dotfiles/.config/hypr/monitors.conf"
+expected="$tmp/repo/dotfiles/.config/hypr/settings.conf"
 if [[ "$target" != "$(readlink -f "$expected")" ]]; then
     echo "FAIL: symlink target = $target, expected $expected" >&2
     exit 1
