@@ -9,7 +9,10 @@ glow
 ducker
 taskwarrior-tui
 gophertube
-wden
+# wden dropped: no such AUR package ("No AUR package found for wden" in a
+# real install run). yay only warns and moves on, so it never failed the
+# install, but it was a permanent no-op line. bitwarden-cli-bin + rbw below
+# already cover the Bitwarden side.
 ytfzf
 tremc
 

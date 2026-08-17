@@ -1,0 +1,135 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Regression tests for the failure that left a real CachyOS install on a bare
+# TTY: install.sh died on one unbuildable AUR package before HyDE's installer
+# ever ran, and every prompt that would have explained why was swallowed by
+# the log wrapper.
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+install_sh="$repo_root/install.sh"
+
+fail() {
+    echo "FAIL: $1" >&2
+    exit 1
+}
+
+# --- 1. rustup gets a default toolchain before anything builds from the AUR ---
+# Without this, rustup's shims shadow the system rustc/cargo and refuse to run,
+# which is what broke journalview (exit status 4).
+grep -q 'rustup default stable' "$install_sh" ||
+    fail "install.sh never runs 'rustup default stable'"
+
+rust_line="$(grep -n 'rustup default stable' "$install_sh" | head -1 | cut -d: -f1)"
+aur_line="$(grep -n 'packages/aur.txt" | yay' "$install_sh" | head -1 | cut -d: -f1)"
+[[ -n "$rust_line" && -n "$aur_line" ]] ||
+    fail "could not locate the rustup and AUR steps"
+(( rust_line < aur_line )) ||
+    fail "rustup default is set at line $rust_line, after the AUR step at line $aur_line"
+
+# --- 2. a failed AUR package must not abort the run before HyDE installs ---
+grep -q 'aur_failed=1' "$install_sh" ||
+    fail "the AUR step is still fatal; one bad package will again cost the desktop"
+
+hyde_line="$(grep -n 'vendor/hyde/Scripts" && ./install.sh' "$install_sh" | head -1 | cut -d: -f1)"
+[[ -n "$hyde_line" ]] || fail "could not locate the HyDE installer step"
+(( aur_line < hyde_line )) ||
+    fail "AUR step is not above the HyDE step; the ordering assumption changed"
+
+# --- 3. HyDE's installer is driven with stdin closed ---
+# Its sddm-theme and reboot prompts are plain reads; EOF makes them fall
+# through to the defaults we want instead of blocking forever.
+grep -q 'vendor/hyde/Scripts" && ./install.sh </dev/null' "$install_sh" ||
+    fail "HyDE's installer is not run with stdin from /dev/null"
+
+# --- 4. the two timed prompts are pre-answered ---
+grep -q 'export myShell=' "$install_sh" ||
+    fail "myShell is not pre-set; HyDE will stall 120s on its shell prompt"
+grep -q 'chaotic-aur' "$install_sh" ||
+    fail "nothing declines Chaotic-AUR; HyDE's prompt defaults to installing it"
+
+# --- 5. the log wrapper must flush partial lines (prompts have no newline) ---
+# Run the real wrapper and check an unterminated prompt still reaches the log.
+tmp_dir="$(mktemp -d)"
+trap 'rm -rf "$tmp_dir"' EXIT
+
+sed -n '/^exec > >(/,/^) 2>&1$/p' "$install_sh" > "$tmp_dir/wrapper.inc"
+[[ -s "$tmp_dir/wrapper.inc" ]] || fail "could not extract the log wrapper from install.sh"
+
+cat > "$tmp_dir/probe.sh" <<PROBE
+#!/usr/bin/env bash
+set -euo pipefail
+log_file="$tmp_dir/probe.log"
+: > "\$log_file"
+$(cat "$tmp_dir/wrapper.inc")
+echo "a complete line"
+printf ' :: a prompt with no trailing newline : '
+sleep 2
+echo ""
+PROBE
+
+timeout 30 bash "$tmp_dir/probe.sh" >/dev/null 2>&1 ||
+    fail "the log wrapper did not terminate cleanly"
+
+grep -q 'a complete line' "$tmp_dir/probe.log" ||
+    fail "the log wrapper dropped a complete line"
+grep -q 'a prompt with no trailing newline' "$tmp_dir/probe.log" ||
+    fail "the log wrapper swallowed an unterminated prompt — a stalled run will look like a hang again"
+
+# --- 6. the run cleans up after itself, but never the log ------------------
+grep -q '==> cleaning up build caches' "$install_sh" ||
+    fail "install.sh no longer has a cleanup step"
+
+# The log is the record of the run; nothing may delete it.
+if grep -nE '\brm\b[^|;&]*(\$log_file|install\.log)' "$install_sh"; then
+    fail "install.sh deletes its own log"
+fi
+grep -q 'install.log is deliberately NOT touched' "$install_sh" ||
+    fail "the note explaining that install.log survives cleanup is gone"
+
+# ~/.cargo/bin holds `cargo install` binaries and must survive; only the
+# download/build caches under ~/.cargo may be removed.
+if grep -qE 'rm -rf[^\n]*\$HOME/\.cargo"' "$install_sh" ||
+   grep -qE 'rm -rf[^\n]*\.cargo/bin' "$install_sh"; then
+    fail "cleanup would remove ~/.cargo/bin or all of ~/.cargo"
+fi
+
+# Cache cleanup must be skipped when AUR builds failed — those cached sources
+# are what make the retry fast.
+grep -q 'if (( aur_failed )); then' "$install_sh" ||
+    fail "cache cleanup is not gated on the AUR step succeeding"
+
+# The scratch root must be removed however the script ends, including the
+# paths that never reach the cleanup step. Exercise the real trap wiring.
+grep -q 'cleanup_scratch' "$install_sh" ||
+    fail "install.sh has no scratch-directory cleanup"
+
+# Defining the function is not enough — it has to be called from the EXIT
+# trap, which is the only thing that runs on every way out of the script.
+exit_trap="$(grep -E "^trap '.*' EXIT\$" "$install_sh" | head -1)"
+[[ -n "$exit_trap" ]] || fail "install.sh has no EXIT trap"
+[[ "$exit_trap" == *cleanup_scratch* ]] ||
+    fail "cleanup_scratch is defined but never called from the EXIT trap"
+
+for mode in success failure early; do
+    # Use install.sh's real EXIT trap, so rewiring it breaks this test.
+    cat > "$tmp_dir/scratch.sh" <<SCRATCH
+#!/usr/bin/env bash
+set -euo pipefail
+log_file="$tmp_dir/unused.log"
+$(grep -A4 '^scratch_dir="\$(mktemp -d)"' "$install_sh")
+${exit_trap}
+echo "\$scratch_dir" > "$tmp_dir/ref"
+mkdir -p "\$scratch_dir/work" && echo payload > "\$scratch_dir/work/f"
+case "$mode" in
+    failure) false ;;
+    early)   exit 1 ;;
+esac
+SCRATCH
+    bash "$tmp_dir/scratch.sh" >/dev/null 2>&1 || true
+    ref="$(cat "$tmp_dir/ref")"
+    [[ -n "$ref" ]] || fail "scratch probe ($mode) never recorded a directory"
+    [[ -d "$ref" ]] && fail "scratch directory leaked on the '$mode' path: $ref"
+done
+
+echo "PASS"

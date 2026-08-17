@@ -57,6 +57,34 @@ HyDE's installer targets "Arch or Arch-based" and works as-is. No
 CachyOS-specific package renames are known yet — if `install.sh` hits
 one (a package under a different name in CachyOS's repos), fix it in
 `packages/pacman.txt`/`packages/aur.txt` directly and note it here.
+All 57 of HyDE's core pacman dependencies resolve in CachyOS's repos;
+only `hyprquery` is AUR-only, and yay covers it.
+
+**Chaotic-AUR is deliberately declined.** CachyOS ships its own tuned
+repos and layering Chaotic-AUR over them causes conflicting rebuilds.
+HyDE's `install_pre.sh` offers it on a 120-second timer that *defaults
+to installing it*, so `install.sh` writes a `[chaotic-aur]` comment
+into `/etc/pacman.conf` — HyDE skips the prompt when it greps that
+string, and a comment satisfies the grep without enabling the repo.
+That comment is load-bearing; don't tidy it away.
+
+### rustup needs a default toolchain
+
+`packages/pacman.txt` installs `rustup`, whose `rustc`/`cargo` shims
+take PATH precedence over the system ones and **refuse to run until a
+default toolchain is selected**:
+
+```
+error: rustup could not choose a version of rustc to run, because one
+       wasn't specified explicitly, and no default is configured
+```
+
+Every AUR package that builds with cargo fails on this. `install.sh`
+now runs `rustup default stable` before the AUR step. This was a real
+install-killer (`journalview`, exit status 4) and is very likely what
+the earlier "rust-lld breaks the ring crate" / "mirro-rs-git won't
+link" commits were actually diagnosing — with the default toolchain
+set, those builds need no linker overrides at all.
 
 ## Fresh install
 
@@ -68,6 +96,31 @@ cd ~/arch-dotfiles
 
 Safe to re-run end to end — every step uses `--needed`/`-sfn`-style
 idempotent operations.
+
+The run is fully unattended: HyDE's installer asks four questions (its
+pacman `-Syyu`, Chaotic-AUR, the login shell, the sddm theme) plus a
+closing "reboot now?", and `install.sh` pre-answers all of them. The
+AUR step and HyDE's installer are both non-fatal — a single unbuildable
+AUR package must never again abort the run before the desktop is
+installed. Anything that failed is listed at the end and sets a
+non-zero exit.
+
+**Cleanup:** the run tidies up after itself. A single scratch root holds
+every step's working space and is removed by an `EXIT` trap however the
+script ends, and a final step drops the build byproducts of the AUR
+step — yay's source checkouts and build trees, plus the Rust and Go
+compiler caches — then trims the pacman cache with `paccache -rk1` /
+`-ruk0`, which keeps one previous version of each installed package so
+a downgrade stays possible. On a fresh install that reclaims several
+GB. Two deliberate exceptions: `install.log` is never touched, and the
+cache cleanup is skipped entirely when an AUR build failed, since those
+cached sources are what make the retry fast.
+
+**Display manager:** HyDE installs `sddm`, and `install.sh` forces it
+to own `display-manager.service`, disabling any other enabled DM
+(lightdm/gdm/lxdm) so the two can't race for the seat. A second desktop
+such as LXDE can stay installed — it remains selectable as a session in
+sddm and makes a useful fallback.
 
 **3-monitor setup:** `dotfiles/.config/hypr/monitors.conf` ships as a
 placeholder. After first install, run `hyprctl monitors`, fill in the
