@@ -220,4 +220,47 @@ pw_full_line="$(sed -n "${pw_line}p" "$install_sh")"
 [[ "$pw_full_line" == *"yes |"* ]] ||
     fail "the pipewire-jack install doesn't answer its conflict prompt with 'y' — it will hit the same jack2 conflict"
 
+# --- 9. the pipewire-jack install doesn't false-fail on yes's own SIGPIPE -
+# `yes | sudo pacman -S --needed pipewire-jack` succeeds in practice —
+# pacman reads the one line it needs to confirm the jack2 conflict, then
+# exits. `yes` is still writing to a now-closed pipe at that point, gets
+# SIGPIPE, and exits 141. Under `set -o pipefail` (on for the whole script)
+# that 141 becomes the *pipeline's* exit status even though pacman itself
+# succeeded — confirmed live: a real run installed pipewire-jack and removed
+# jack2 correctly, then still reported "FAILED (exit 141)" and aborted.
+# pipefail must be turned off for just that one line.
+pw_block="$(sed -n '/if ! pacman -Qq pipewire-jack/,/^fi$/p' "$install_sh")"
+[[ -n "$pw_block" ]] || fail "could not locate the pipewire-jack install block"
+echo "$pw_block" | grep -q '^\s*set +o pipefail\s*$' ||
+    fail "the pipewire-jack install doesn't disable pipefail — yes's own SIGPIPE (exit 141) will be reported as a failure even when pacman itself succeeds"
+echo "$pw_block" | grep -q '^\s*set -o pipefail\s*$' ||
+    fail "pipefail is disabled for the pipewire-jack install but never re-enabled — every later pipeline in the script would stop being pipefail-checked"
+
+# Exercise the exact failure mode: a `yes`-fed pipeline whose reader exits
+# well before yes runs out of input must not be reported as a failure, but a
+# reader that genuinely fails must still abort the script.
+cat > "$tmp_dir/sigpipe.sh" <<'PROBE'
+#!/usr/bin/env bash
+set -euo pipefail
+set +o pipefail
+yes | bash -c 'read -r _; exit 0'
+set -o pipefail
+echo "reached-end"
+PROBE
+out="$(bash "$tmp_dir/sigpipe.sh" 2>&1)" || fail "a successful reader behind 'yes |' was reported as a script failure (this is exactly what broke a real, successful pipewire-jack install)"
+[[ "$out" == *"reached-end"* ]] ||
+    fail "the pipefail-off pattern did not let the script continue past a successful yes-fed pipeline"
+
+cat > "$tmp_dir/sigpipe_real_fail.sh" <<'PROBE'
+#!/usr/bin/env bash
+set -euo pipefail
+set +o pipefail
+yes | bash -c 'read -r _; exit 7'
+set -o pipefail
+echo "reached-end"
+PROBE
+if bash "$tmp_dir/sigpipe_real_fail.sh" >/dev/null 2>&1; then
+    fail "the pipefail-off pattern also swallows a genuine reader failure — a real pacman error would go unnoticed"
+fi
+
 echo "PASS"

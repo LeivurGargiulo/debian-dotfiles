@@ -96,7 +96,20 @@ echo "==> preferring pipewire-jack over jack2"
 # jack2 dependent (cava, ffmpeg, fluidsynth, mpv, obs-studio, ...) is
 # satisfied by the replacement.
 if ! pacman -Qq pipewire-jack >/dev/null 2>&1; then
+    # `yes` here is piped into a command that stops reading well before
+    # `yes` itself would ever run out of input — pacman reads the one line
+    # it needs to confirm the jack2 conflict, then exits. `yes` is still
+    # writing to a now-closed pipe at that point, gets SIGPIPE, and exits
+    # 141. Under `set -o pipefail` (on for the whole script) that 141
+    # becomes the *pipeline's* exit status even when pacman itself
+    # succeeded — which is exactly what reported a real, successful install
+    # as "FAILED (exit 141)". Turning pipefail off for just this line makes
+    # the pipeline's exit status the ordinary last-command one (pacman's
+    # real exit code) instead, which is what set -e should actually be
+    # judging this on.
+    set +o pipefail
     yes | sudo pacman -S --needed pipewire-jack
+    set -o pipefail
 fi
 
 echo "==> installing packages/pacman.txt"
