@@ -54,3 +54,9 @@ end
 hl.monitor({ output = "DP-1", mode = "1920x1080@60", position = "0x0", scale = 1 })
 hl.monitor({ output = "HDMI-A-1", mode = "1920x1080@180", position = "1920x0", scale = 1 })
 hl.monitor({ output = "DP-2", mode = "1920x1080@60", position = "3840x0", scale = 1 })
+
+-- US + Latin American Spanish layouts, switched with Alt+Shift. First entry
+-- (us) is active on login; SUPER + / shows the bind if it ever needs to move.
+hl.config({
+	input = { kb_layout = "us,latam", kb_options = "grp:alt_shift_toggle" },
+})
