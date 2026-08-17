@@ -45,16 +45,17 @@
 #  Aliases (personal)
 alias claudio='claude --dangerously-skip-permissions'
 
-# fuzzy-find a file by (partial) name under $HOME and open it
-# e.g. `open list.txt` finds ~/market/list_market.txt and opens it
+# fuzzy-find a file by (partial) name under $HOME, pick from matches, and open it
+# e.g. `open list.txt` offers ~/market/list_market.txt among the matches
 open() {
-    local match
-    match=$(fd -t f -i "$1" ~ 2>/dev/null | head -n1)
-    if [[ -n "$match" ]]; then
-        xdg-open "$match"
-    else
+    local matches match
+    matches=$(fd -t f -i "$1" ~ 2>/dev/null)
+    if [[ -z "$matches" ]]; then
         echo "open: no match for '$1'" >&2
+        return 1
     fi
+    match=$(echo "$matches" | fzf --prompt="open> " --select-1)
+    [[ -n "$match" ]] && xdg-open "$match"
 }
 
 # --- Monokai Pro: fzf ---
