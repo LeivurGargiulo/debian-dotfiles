@@ -16,7 +16,19 @@ extra tooling layer. Goal: reformat = clone this repo, run
   theming, and its own package/install logic.
 - `dotfiles/` — our overlay, mirrors `$HOME` layout exactly (e.g.
   `dotfiles/.config/hypr/monitors.conf` → `~/.config/hypr/monitors.conf`).
-  Applied last, after HyDE's installer, so it always wins.
+  Applied last, after HyDE's installer, so it always wins. Every file is a
+  live symlink into this repo — edit here, see it immediately — except one:
+  `dotfiles/.config/hyde/themes/*/wall.*` is *copied*, not symlinked.
+  HyDE's own wallpaper scanner (`~/.local/lib/hyde/globalcontrol.sh`,
+  `find_wallpapers()`) walks the theme directory with `find -H ... -type f`,
+  and `-H` only dereferences a symlink that is `find`'s own starting-point
+  argument — a symlink it encounters *while recursing* still reports its
+  own type (`l`), not what it points to, so a symlinked `wall.png` is
+  invisible to `-type f` and HyDE logs "No compatible wallpapers found"
+  even though the file is a perfectly valid image. Confirmed against a
+  real run. `scripts/symlink-dotfiles.sh` re-copies the wallpaper on every
+  run, so editing the source and re-running still propagates the change —
+  it just isn't a live symlink like everything else.
 - `packages/pacman.txt` / `packages/aur.txt` — everything beyond what
   HyDE's own installer already pulls in: the AMD driver stack, the
   CLI/TUI tools ported from a previous (Debian) dotfiles setup, a
