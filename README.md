@@ -39,13 +39,22 @@ extra tooling layer. Goal: reformat = clone this repo, run
   `claude-squad` for managing multiple Claude Code sessions, and
   starship (`dotfiles/.config/starship.toml`) as the zsh prompt —
   Monokai Pro, two-line layout.
-- `dotfiles/.config/hyde/themes/Monokai-Pro/` — the HyDE theme (palette
-  source for HyDE's wallbash engine, which propagates it to
-  waybar/rofi/dunst/GTK/Qt/hyprlock/kitty), activated by `install.sh` via
-  `hydectl theme set "Monokai-Pro"`. Every other themed CLI/TUI tool's
-  config lives under `dotfiles/.config/<tool>/`, same overlay mechanism as
-  everything else — see `docs/monokai-pro-palette.md` for the canonical
-  palette every config file was built from.
+- `dotfiles/.config/hyde/themes/Monokai-Pro/` — the HyDE theme, activated
+  by `install.sh` via `hydectl theme set "Monokai-Pro"`. Colors for
+  waybar/rofi/dunst/GTK/Qt/hyprlock/kitty come from HyDE's wallbash
+  engine extracting dominant colors from `wall.png` — there is
+  deliberately no `theme.dcol` here overriding that. An earlier version
+  pinned a fixed 2-accent palette (pink + purple, all wallbash's
+  architecture supports — its `color.set.sh` is hard-limited to 4 color
+  slots, 2 backgrounds + 2 accents) via `theme.dcol`, which made pink
+  the dominant color almost everywhere; removing it and using an actual
+  wallpaper instead gives real color variety again. Changing the desktop
+  accent colors now means changing `wall.png`, not editing a palette
+  file — every other themed CLI/TUI tool's config still lives under
+  `dotfiles/.config/<tool>/`, same overlay mechanism as everything else,
+  and still pulls from the fixed palette in
+  `docs/monokai-pro-palette.md` (nvim/bat/etc. syntax highlighting isn't
+  wallbash-driven and doesn't shift with the wallpaper).
 - `dotfiles/.config/nvim/` — a real kickstart.nvim config (ported directly
   from the prior Debian setup's own fork, LSP/treesitter/telescope/etc all
   intact), with the colorscheme swapped from Catppuccin to
@@ -244,21 +253,22 @@ installer uses internally for this same reason, which only helps
 *inside that subprocess* and never reaches back here on its own.
 
 **Theme `.dcol` files are sourced as bash, not just data:** HyDE's
-wallbash engine loads every theme's `theme.dcol` with plain bash, so an
-`rgba(...)` value has to be quoted —
-`dcol_pry1_rgba="rgba(45,42,46,0.95)"`, matching every stock HyDE
-theme's own `.dcol` files — not
+wallbash engine loads any theme's `theme.dcol` with plain bash, so an
+`rgba(...)` value has to be quoted — `dcol_pry1_rgba="rgba(45,42,46,0.95)"`,
+matching every stock HyDE theme's own `.dcol` files — not
 `dcol_pry1_rgba=rgba(45,42,46,0.95)`, which is a bash syntax error
-(unquoted parens after `=` parse as a subshell). This broke silently:
+(unquoted parens after `=` parse as a subshell). Monokai-Pro's
+`theme.dcol` briefly had exactly this bug, which broke silently:
 applying the theme failed with a syntax error deep in wallbash's own
 output, which also meant Hyprland never received any color values at
 all (`hyprctl reload` / `hyde-shell reload` reporting "Hyprland does
-not detect colors!" was a symptom of this, not a separate bug).
-`scripts/tests/test_theme-dcol-syntax.sh` runs `bash -n` on every
-`*.dcol` file in `dotfiles/` to catch this class of break before it
-reaches a real install. `theme.conf` alongside it is a different,
-non-bash format (Hyprland's own config syntax) and is deliberately not
-checked the same way.
+not detect colors!" was a symptom of this, not a separate bug). That
+`theme.dcol` has since been removed entirely — see above — but
+`scripts/tests/test_theme-dcol-syntax.sh` still runs `bash -n` on every
+`*.dcol` file under `dotfiles/`, so this class of break is caught
+immediately if any theme in this repo ever gains one again.
+`theme.conf` is a different, non-bash format (Hyprland's own config
+syntax) and is deliberately not checked the same way.
 
 ## Updating HyDE
 
