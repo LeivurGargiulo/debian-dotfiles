@@ -1,0 +1,4 @@
+${HOME}/.config/newsboat/config|bash "${WALLBASH_SCRIPTS}/newsboat.sh"
+# placeholder — newsboat.sh regenerates this file immediately after
+# (newsboat's colorN indices need hex->256 math, not a plain
+# <wallbash_...> substitution)

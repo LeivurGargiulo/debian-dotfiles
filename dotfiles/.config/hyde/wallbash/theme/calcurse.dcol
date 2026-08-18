@@ -1,0 +1,4 @@
+${HOME}/.config/calcurse/conf|bash "${WALLBASH_SCRIPTS}/calcurse.sh"
+# placeholder — calcurse.sh regenerates this file immediately after
+# (calcurse only supports 8 ANSI names, needs a nearest-hue pick, not a
+# plain <wallbash_...> substitution)

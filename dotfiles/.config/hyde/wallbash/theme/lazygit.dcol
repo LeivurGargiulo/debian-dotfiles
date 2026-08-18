@@ -1,28 +1,29 @@
+${HOME}/.config/lazygit/config.yml
 gui:
   theme:
     activeBorderColor:
-      - '#78dce8'
+      - '#<wallbash_3xa7>'
       - bold
     inactiveBorderColor:
-      - '#939293'
+      - '#<wallbash_1xa9>'
     searchingActiveBorderColor:
-      - '#ffd866'
+      - '#<wallbash_3xa9>'
       - bold
     optionsTextColor:
-      - '#78dce8'
+      - '#<wallbash_3xa7>'
     selectedLineBgColor:
-      - '#403e41'
+      - '#<wallbash_pry3>'
     inactiveViewSelectedLineBgColor:
-      - '#221f22'
+      - '#<wallbash_pry2>'
     cherryPickedCommitFgColor:
-      - '#ab9df2'
+      - '#<wallbash_2xa7>'
     cherryPickedCommitBgColor:
-      - '#403e41'
+      - '#<wallbash_pry3>'
     markedBaseCommitFgColor:
-      - '#ffd866'
+      - '#<wallbash_3xa9>'
     markedBaseCommitBgColor:
-      - '#403e41'
+      - '#<wallbash_pry3>'
     unstagedChangesColor:
-      - '#ff6188'
+      - '#<wallbash_4xa9>'
     defaultFgColor:
-      - '#fcfcfa'
+      - '#<wallbash_txt1>'

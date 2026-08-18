@@ -1,0 +1,7 @@
+${HOME}/.config/mpv/mpv.conf
+osd-color=#<wallbash_txt1>
+osd-border-color=#<wallbash_pry1>
+osd-back-color=#<wallbash_pry2>
+osd-outline-size=2
+osd-font-size=32
+osd-bold=yes

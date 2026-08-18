@@ -1,0 +1,97 @@
+${HOME}/.config/yazi/theme.toml
+[mgr]
+cwd = { fg = "#<wallbash_3xa7>" }
+hovered = { reversed = true }
+preview_hovered = { underline = true }
+
+find_keyword = { fg = "#<wallbash_4xa9>", bold = true, italic = true, underline = true }
+find_position = { fg = "#<wallbash_2xa7>", bg = "reset", bold = true, italic = true }
+
+symlink_target = { fg = "#<wallbash_3xa7>", italic = true }
+
+marker_copied = { fg = "#<wallbash_2xa9>", bg = "#<wallbash_2xa9>" }
+marker_cut = { fg = "#<wallbash_4xa9>", bg = "#<wallbash_4xa9>" }
+marker_marked = { fg = "#<wallbash_2xa7>", bg = "#<wallbash_2xa7>" }
+marker_selected = { fg = "#<wallbash_4xa9>", bg = "#<wallbash_4xa9>" }
+
+count_copied = { fg = "#<wallbash_pry2>", bg = "#<wallbash_2xa9>" }
+count_cut = { fg = "#<wallbash_pry2>", bg = "#<wallbash_4xa9>" }
+count_selected = { fg = "#<wallbash_pry2>", bg = "#<wallbash_3xa9>" }
+
+border_symbol = "│"
+border_style = { fg = "#<wallbash_1xa9>" }
+
+[tabs]
+active = { fg = "#<wallbash_pry2>", bg = "#<wallbash_3xa9>", bold = true }
+inactive = { fg = "#<wallbash_3xa9>", bg = "#<wallbash_pry2>" }
+sep_inner = { open = "", close = "" }
+sep_outer = { open = "", close = "" }
+
+[mode]
+normal_main = { fg = "#<wallbash_pry1>", bg = "#<wallbash_3xa9>", bold = true }
+normal_alt = { fg = "#<wallbash_3xa9>", bg = "#<wallbash_pry3>" }
+select_main = { fg = "#<wallbash_pry1>", bg = "#<wallbash_2xa7>", bold = true }
+select_alt = { fg = "#<wallbash_2xa7>", bg = "#<wallbash_pry3>" }
+unset_main = { fg = "#<wallbash_pry1>", bg = "#<wallbash_4xa9>", bold = true }
+unset_alt = { fg = "#<wallbash_4xa9>", bg = "#<wallbash_pry3>" }
+
+[status]
+sep_left = { open = "", close = "" }
+sep_right = { open = "", close = "" }
+perm_sep = { fg = "#<wallbash_1xa9>" }
+perm_type = { fg = "#<wallbash_2xa9>" }
+perm_read = { fg = "#<wallbash_3xa9>" }
+perm_write = { fg = "#<wallbash_4xa9>" }
+perm_exec = { fg = "#<wallbash_3xa7>" }
+progress_normal = { fg = "#<wallbash_3xa7>", bg = "#<wallbash_pry1>" }
+progress_error = { fg = "#<wallbash_4xa9>", bg = "#<wallbash_pry1>" }
+
+[which]
+cols = 3
+mask = { bg = "#<wallbash_pry1>" }
+cand = { fg = "#<wallbash_3xa7>" }
+rest = { fg = "#<wallbash_1xa9>" }
+desc = { fg = "#<wallbash_2xa7>" }
+separator = "  "
+separator_style = { fg = "#<wallbash_1xa9>" }
+
+[confirm]
+border = { fg = "#<wallbash_3xa9>" }
+title = { fg = "#<wallbash_3xa9>" }
+btn_yes = { reversed = true }
+
+[notify]
+title_info = { fg = "#<wallbash_2xa9>" }
+title_warn = { fg = "#<wallbash_3xa9>" }
+title_error = { fg = "#<wallbash_4xa9>" }
+
+[pick]
+border = { fg = "#<wallbash_3xa7>" }
+active = { fg = "#<wallbash_2xa7>", bold = true }
+
+[input]
+border = { fg = "#<wallbash_3xa7>" }
+
+[cmp]
+border = { fg = "#<wallbash_3xa7>" }
+active = { reversed = true }
+
+[tasks]
+border = { fg = "#<wallbash_3xa7>" }
+hovered = { fg = "#<wallbash_2xa7>", underline = true }
+
+[help]
+on = { fg = "#<wallbash_3xa7>" }
+run = { fg = "#<wallbash_2xa7>" }
+hovered = { reversed = true, bold = true }
+
+[filetype]
+rules = [
+  { mime = "image/*", fg = "#<wallbash_3xa9>" },
+  { mime = "{video}/*", fg = "#<wallbash_2xa9>" },
+  { mime = "{audio}/*", fg = "#<wallbash_2xa7>" },
+  { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "#<wallbash_4xa9>" },
+  { mime = "application/{pdf,doc,rtf}", fg = "#<wallbash_3xa7>" },
+  { mime = "inode/empty", fg = "#<wallbash_4xa9>" },
+  { url = "*/", fg = "#<wallbash_1xa7>", bold = true },
+]

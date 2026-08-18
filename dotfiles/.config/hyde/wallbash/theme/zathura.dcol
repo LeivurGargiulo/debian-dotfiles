@@ -1,0 +1,40 @@
+${HOME}/.config/zathura/zathurarc
+set default-bg                      "#<wallbash_pry1>"
+set default-fg                      "#<wallbash_txt1>"
+
+set statusbar-bg                    "#<wallbash_pry2>"
+set statusbar-fg                    "#<wallbash_txt1>"
+
+set inputbar-bg                     "#<wallbash_pry2>"
+set inputbar-fg                     "#<wallbash_txt1>"
+
+set notification-bg                 "#<wallbash_pry2>"
+set notification-fg                 "#<wallbash_2xa9>"
+set notification-error-bg           "#<wallbash_pry2>"
+set notification-error-fg           "#<wallbash_4xa9>"
+set notification-warning-bg         "#<wallbash_pry2>"
+set notification-warning-fg         "#<wallbash_1xa7>"
+
+set completion-bg                   "#<wallbash_pry1>"
+set completion-fg                   "#<wallbash_1xa9>"
+set completion-group-bg             "#<wallbash_pry2>"
+set completion-group-fg             "#<wallbash_3xa7>"
+set completion-highlight-bg         "#<wallbash_2xa7>"
+set completion-highlight-fg         "#<wallbash_pry1>"
+
+set index-bg                        "#<wallbash_pry1>"
+set index-fg                        "#<wallbash_txt1>"
+set index-active-bg                 "#<wallbash_2xa7>"
+set index-active-fg                 "#<wallbash_pry1>"
+
+set highlight-color                 "#<wallbash_3xa9>"
+set highlight-active-color          "#<wallbash_1xa7>"
+
+set render-loading-bg               "#<wallbash_pry1>"
+set render-loading-fg               "#<wallbash_txt1>"
+
+# Recolor mode (dark-mode-for-PDF): light page bg -> darkcolor, dark text -> lightcolor
+set recolor                         true
+set recolor-lightcolor              "#<wallbash_txt1>"
+set recolor-darkcolor               "#<wallbash_pry1>"
+set recolor-keephue                 true

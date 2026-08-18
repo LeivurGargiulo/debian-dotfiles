@@ -1,0 +1,16 @@
+${HOME}/.config/zellij/themes/wallbash.kdl
+themes {
+	wallbash {
+		fg "#<wallbash_txt1>"
+		bg "#<wallbash_pry1>"
+		black "#<wallbash_pry2>"
+		red "#<wallbash_4xa9>"
+		green "#<wallbash_2xa9>"
+		yellow "#<wallbash_3xa9>"
+		blue "#<wallbash_3xa7>"
+		magenta "#<wallbash_2xa7>"
+		cyan "#<wallbash_3xa7>"
+		white "#<wallbash_txt1>"
+		orange "#<wallbash_1xa7>"
+	}
+}

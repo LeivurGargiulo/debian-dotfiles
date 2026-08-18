@@ -1,0 +1,2 @@
+${HOME}/.config/mpv/script-opts/uosc.conf
+color=foreground=<wallbash_txt1>,foreground_text=<wallbash_pry1>,background=<wallbash_pry1>,background_text=<wallbash_txt1>,window_border=<wallbash_pry2>,curtain=<wallbash_pry2>,success=<wallbash_2xa9>,error=<wallbash_4xa9>,match=<wallbash_3xa7>,heatmap=<wallbash_2xa7>

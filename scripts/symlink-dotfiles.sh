@@ -4,7 +4,22 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 src_root="$repo_root/dotfiles"
 
-find "$src_root" -type f | while IFS= read -r src; do
+# Records every destination this script has ever written via `cp` (as
+# opposed to `ln -sfn`), so a later run can tell "this copy is stale because
+# its dotfiles/ source was deleted" apart from "this file was never ours to
+# begin with". That distinction matters a lot here: the copy-case
+# directories (.config/hyde/themes/*/, .config/hyde/wallbash/) are shared
+# with plenty of content this repo has no opinion on -- other HyDE themes,
+# HyDE's own stock wallbash/always+scripts+theme templates. A first attempt
+# at orphan cleanup scanned those directories wholesale and deleted all of
+# that alongside the one real stale file it was after -- restored from
+# vendor/hyde and each theme's themepatcher cache, but the lesson stuck:
+# only ever remove a path this exact manifest previously wrote, never infer
+# "orphan" from directory contents.
+manifest="$repo_root/.git/symlink-dotfiles.copied-manifest"
+declare -A copied_dests=()
+
+while IFS= read -r src; do
     rel="${src#"$src_root"/}"
     dest="$HOME/$rel"
     mkdir -p "$(dirname "$dest")"
@@ -37,6 +52,7 @@ find "$src_root" -type f | while IFS= read -r src; do
     .config/hyde/themes/*/wall.*|.config/hyde/themes/*/wallpapers/*|.config/hyde/themes/*/*.theme|.config/hyde/themes/*/.sort|.config/hyde/wallbash/*)
         rm -f "$dest"
         cp "$src" "$dest"
+        copied_dests["$dest"]=1
         echo "copied: ~/$rel"
         ;;
     *)
@@ -44,4 +60,18 @@ find "$src_root" -type f | while IFS= read -r src; do
         echo "linked: ~/$rel"
         ;;
     esac
-done
+done < <(find "$src_root" -type f)
+
+# Orphan cleanup: remove only destinations a *previous* run of this exact
+# script copied and this run did not -- i.e. their dotfiles/ source was
+# deleted. Never touch a path this manifest has no record of.
+if [[ -f "$manifest" ]]; then
+    while IFS= read -r old_dest; do
+        [[ -n "$old_dest" && -z "${copied_dests["$old_dest"]:-}" && -e "$old_dest" ]] && {
+            rm -f "$old_dest"
+            echo "removed orphan: ${old_dest/#"$HOME"/\~}"
+        }
+    done <"$manifest"
+fi
+mkdir -p "$(dirname "$manifest")"
+printf '%s\n' "${!copied_dests[@]}" >"$manifest"

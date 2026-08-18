@@ -1,0 +1,3 @@
+${HOME}/.config/cmus/wallbash.theme|bash "${WALLBASH_SCRIPTS}/cmus.sh"
+# placeholder — cmus.sh regenerates this file immediately after (cmus's
+# 256-color indices need hex->256 math, not a plain <wallbash_...> substitution)

@@ -1,12 +1,5 @@
-[color]
-gradient = 1
-background = '#2d2a2e'
-foreground = '#fcfcfa'
-gradient_color_1 = '#ab9df2'
-gradient_color_2 = '#78dce8'
-gradient_color_3 = '#a9dc76'
-gradient_color_4 = '#ffd866'
-gradient_color_5 = '#fc9867'
-gradient_color_6 = '#ff6188'
-gradient_color_7 = '#ff6188'
-gradient_color_8 = '#ff6188'
+# Colors are managed by HyDE's own wallbash integration
+# (~/.config/hyde/wallbash/always/cava.dcol + scripts/cava.sh), which
+# appends a generated [color] block below the marker line it inserts here
+# on every `hydectl theme set` / wallpaper switch -- do not add a [color]
+# section above this file, it would be a second, conflicting one.
