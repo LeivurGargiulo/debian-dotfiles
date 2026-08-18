@@ -1,0 +1,89 @@
+${HOME}/.config/lnav/configs/installed/wallbash.json
+{
+  "$schema": "https://lnav.org/schemas/config-v1.schema.json",
+  "ui": {
+    "theme": "wallbash",
+    "theme-defs": {
+      "wallbash": {
+        "vars": {
+          "bg": "#<wallbash_pry1>",
+          "panel_bg": "#<wallbash_pry2>",
+          "sel_bg": "#<wallbash_pry3>",
+          "fg": "#<wallbash_txt1>",
+          "muted": "#<wallbash_1xa9>",
+          "accent": "#<wallbash_2xa7>",
+          "cyan": "#<wallbash_3xa7>",
+          "green": "#<wallbash_2xa9>",
+          "yellow": "#<wallbash_3xa9>",
+          "red": "#<wallbash_4xa9>"
+        },
+        "styles": {
+          "text": {
+            "color": "$fg",
+            "background-color": "$bg"
+          },
+          "selected-text": {
+            "background-color": "$sel_bg"
+          },
+          "identifier": {
+            "background-color": "",
+            "color": "semantic()"
+          },
+          "fuzzy-match": {
+            "color": "$yellow",
+            "underline": true,
+            "bold": true
+          },
+          "alt-text": {
+            "background-color": "$panel_bg"
+          },
+          "ok": {
+            "color": "$green",
+            "bold": true
+          },
+          "info": {
+            "color": "$cyan",
+            "bold": true
+          },
+          "error": {
+            "color": "$red",
+            "bold": true
+          },
+          "warning": {
+            "color": "$yellow",
+            "bold": true
+          }
+        },
+        "status-styles": {
+          "text": {
+            "color": "$fg",
+            "background-color": "$panel_bg"
+          },
+          "title": {
+            "color": "$bg",
+            "background-color": "$accent",
+            "bold": true
+          },
+          "hotkey": {
+            "color": "$yellow",
+            "underline": true
+          }
+        },
+        "log-level-styles": {
+          "warning": { "color": "$yellow" },
+          "error": { "color": "$red" },
+          "critical": { "color": "$red" },
+          "fatal": { "color": "$red" }
+        },
+        "syntax-styles": {
+          "keyword": { "color": "$red" },
+          "string": { "color": "$yellow" },
+          "comment": { "color": "$muted" },
+          "type": { "color": "$cyan" },
+          "function": { "color": "$green" },
+          "number": { "color": "$accent" }
+        }
+      }
+    }
+  }
+}

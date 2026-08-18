@@ -4,6 +4,8 @@ ${HOME}/.config/zsh/wallbash-colors.zsh
 
 export FZF_DEFAULT_OPTS="--color=fg:#<wallbash_txt1>,bg:#<wallbash_pry1>,hl:#<wallbash_4xa9>,fg+:#<wallbash_txt1>,bg+:#<wallbash_pry2>,hl+:#<wallbash_1xa7>,info:#<wallbash_2xa7>,prompt:#<wallbash_3xa7>,pointer:#<wallbash_4xa9>,marker:#<wallbash_2xa9>,spinner:#<wallbash_3xa9>,header:#<wallbash_1xa9>,border:#<wallbash_1xa9>,gutter:#<wallbash_pry1>,query:#<wallbash_txt1>"
 
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#<wallbash_1xa9>'
+
 typeset -A ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_STYLES[default]='fg=#<wallbash_txt1>'
 ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=#<wallbash_4xa9>'

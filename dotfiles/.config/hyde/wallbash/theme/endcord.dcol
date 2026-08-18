@@ -1,0 +1,4 @@
+${HOME}/.config/endcord/Themes/wallbash-theme.ini|bash "${WALLBASH_SCRIPTS}/endcord.sh"
+# placeholder — endcord.sh regenerates this file immediately after
+# (endcord's theme uses ncurses 256-color indices, not hex, so it needs
+# hex->256 math rather than a plain <wallbash_...> substitution)

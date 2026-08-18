@@ -57,4 +57,19 @@ color.scheduled=on $pry2
 
 color.undo.after=$green
 color.undo.before=$red
+
+# taskwarrior-tui reads these from the same taskrc, "support all
+# Taskwarrior color formats" per its own docs (kdheepak.com/taskwarrior-tui)
+uda.taskwarrior-tui.style.title=$purple
+uda.taskwarrior-tui.style.title.border=$muted
+uda.taskwarrior-tui.style.help.gauge=$muted
+uda.taskwarrior-tui.style.command.error=$red
+uda.taskwarrior-tui.style.command=$txt1
+uda.taskwarrior-tui.style.navbar=$txt1 on $pry2
+uda.taskwarrior-tui.style.report.selection=$txt1 on $pry2
+uda.taskwarrior-tui.style.context.active=$pry1 on $purple
+uda.taskwarrior-tui.style.report-menu.active=$pry1 on $purple
+uda.taskwarrior-tui.style.calendar.title=$pry1 on $purple
+uda.taskwarrior-tui.style.report.scrollbar=$muted
+uda.taskwarrior-tui.style.report.scrollbar.area=$pry2
 EOF
