@@ -1,0 +1,1 @@
+${HOME}/.config/jrnl/jrnl.yaml|bash "${WALLBASH_SCRIPTS}/jrnl.sh"

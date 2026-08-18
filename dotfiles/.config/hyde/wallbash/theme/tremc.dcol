@@ -1,0 +1,4 @@
+${HOME}/.config/tremc/settings.cfg|bash "${WALLBASH_SCRIPTS}/tremc.sh"
+# placeholder — tremc.sh regenerates this file immediately after (tremc's
+# colors need a nearest-curses-color pick, not a plain
+# <wallbash_...> substitution)
