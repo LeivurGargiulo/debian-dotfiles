@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Claudio
+Comment=Claude Code session in home directory
+Exec=sh -c "cd $HOME && exec kitty -e claude"
+Icon=utilities-terminal
+Terminal=false
+Categories=Development;Utility;

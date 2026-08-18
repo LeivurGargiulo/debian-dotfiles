@@ -79,7 +79,7 @@ dev() {
 # e.g. `open list.txt` offers ~/market/list_market.txt among the matches
 open() {
     local matches match
-    matches=$(fd -t f -i "$1" ~ 2>/dev/null)
+    matches=$(fd -H -t f -i "$1" ~ 2>/dev/null)
     if [[ -z "$matches" ]]; then
         echo "open: no match for '$1'" >&2
         return 1

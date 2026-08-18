@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Yazi
+Comment=Terminal file manager
+Exec=xdg-terminal-exec yazi %f
+Icon=yazi
+Terminal=true
+MimeType=inode/directory;
+Categories=System;Utility;FileManager;
