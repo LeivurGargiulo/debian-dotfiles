@@ -1,0 +1,10 @@
+${HOME}/.config/tmux/theme.conf|tmux source-file "${HOME}/.config/tmux/theme.conf" 2>/dev/null || true
+set -g status-style "bg=#<wallbash_pry2>,fg=#<wallbash_txt1>"
+set -g status-left-style "bg=#<wallbash_pry2>,fg=#<wallbash_3xa7>"
+set -g status-right-style "bg=#<wallbash_pry2>,fg=#<wallbash_1xa9>"
+set -g window-status-current-style "bg=#<wallbash_4xa9>,fg=#<wallbash_pry1>,bold"
+set -g pane-border-style "fg=#<wallbash_1xa9>"
+set -g pane-active-border-style "fg=#<wallbash_3xa7>"
+set -g message-style "bg=#<wallbash_pry2>,fg=#<wallbash_3xa9>"
+set -g message-command-style "bg=#<wallbash_pry2>,fg=#<wallbash_2xa9>"
+set -g mode-style "bg=#<wallbash_2xa7>,fg=#<wallbash_pry1>"

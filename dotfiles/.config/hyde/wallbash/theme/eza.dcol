@@ -1,0 +1,52 @@
+${HOME}/.config/eza/theme.yml
+filekinds:
+  normal:
+    foreground: "#<wallbash_txt1>"
+  directory:
+    foreground: "#<wallbash_1xa7>"
+    is_bold: true
+  symlink:
+    foreground: "#<wallbash_2xa7>"
+    is_italic: true
+  executable:
+    foreground: "#<wallbash_2xa9>"
+    is_bold: true
+  special:
+    foreground: "#<wallbash_4xa9>"
+perms:
+  user_read:
+    foreground: "#<wallbash_3xa9>"
+  user_write:
+    foreground: "#<wallbash_4xa9>"
+    is_bold: true
+  user_execute_file:
+    foreground: "#<wallbash_2xa9>"
+    is_bold: true
+  group_read:
+    foreground: "#<wallbash_3xa8>"
+  group_write:
+    foreground: "#<wallbash_4xa8>"
+  group_execute:
+    foreground: "#<wallbash_2xa8>"
+  other_read:
+    foreground: "#<wallbash_3xa7>"
+  other_write:
+    foreground: "#<wallbash_4xa7>"
+  other_execute:
+    foreground: "#<wallbash_2xa7>"
+size:
+  number_byte:
+    foreground: "#<wallbash_txt1>"
+  unit_byte:
+    foreground: "#<wallbash_1xa9>"
+git:
+  new:
+    foreground: "#<wallbash_2xa9>"
+  modified:
+    foreground: "#<wallbash_3xa9>"
+  deleted:
+    foreground: "#<wallbash_4xa9>"
+punctuation:
+  foreground: "#<wallbash_1xa9>"
+date:
+  foreground: "#<wallbash_3xa7>"

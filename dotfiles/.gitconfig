@@ -7,7 +7,7 @@
 [delta]
     navigate = true
     dark = true
-    syntax-theme = Monokai Pro
+    syntax-theme = Wallbash
     # minus/plus line backgrounds: pink #ff6188 / green #a9dc76 blended
     # dark toward background #2d2a2e, not standalone palette entries —
     # -emph is the brighter/bolder blend of the same pair, for word-diff highlights.

@@ -1,0 +1,4 @@
+${HOME}/.config/task/taskrc|bash "${WALLBASH_SCRIPTS}/taskwarrior.sh"
+# placeholder — taskwarrior.sh regenerates this file immediately after
+# (taskwarrior's rgbRGB cube colors need hex->cube math, not a plain
+# <wallbash_...> substitution)

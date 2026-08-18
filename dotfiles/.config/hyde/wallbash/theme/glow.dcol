@@ -1,0 +1,192 @@
+${HOME}/.config/glow/wallbash.json
+{
+  "document": {
+    "block_prefix": "\n",
+    "block_suffix": "\n",
+    "color": "#<wallbash_txt1>",
+    "margin": 2
+  },
+  "block_quote": {
+    "indent": 1,
+    "indent_token": "│ "
+  },
+  "paragraph": {},
+  "list": {
+    "level_indent": 2
+  },
+  "heading": {
+    "block_suffix": "\n",
+    "color": "#<wallbash_2xa7>",
+    "bold": true
+  },
+  "h1": {
+    "prefix": " ",
+    "suffix": " ",
+    "color": "#<wallbash_2xa7>",
+    "background_color": "#<wallbash_pry2>",
+    "bold": true
+  },
+  "h2": {
+    "prefix": "## "
+  },
+  "h3": {
+    "prefix": "### "
+  },
+  "h4": {
+    "prefix": "#### "
+  },
+  "h5": {
+    "prefix": "##### "
+  },
+  "h6": {
+    "prefix": "###### ",
+    "color": "#<wallbash_3xa7>",
+    "bold": false
+  },
+  "text": {},
+  "strikethrough": {
+    "crossed_out": true
+  },
+  "emph": {
+    "italic": true
+  },
+  "strong": {
+    "bold": true
+  },
+  "hr": {
+    "color": "#<wallbash_1xa9>",
+    "format": "\n--------\n"
+  },
+  "item": {
+    "block_prefix": "• "
+  },
+  "enumeration": {
+    "block_prefix": ". "
+  },
+  "task": {
+    "ticked": "[✓] ",
+    "unticked": "[ ] "
+  },
+  "link": {
+    "color": "#<wallbash_3xa7>",
+    "underline": true
+  },
+  "link_text": {
+    "color": "#<wallbash_3xa7>",
+    "bold": true
+  },
+  "image": {
+    "color": "#<wallbash_2xa7>",
+    "underline": true
+  },
+  "image_text": {
+    "color": "#<wallbash_1xa9>",
+    "format": "Image: {{.text}} →"
+  },
+  "code": {
+    "prefix": " ",
+    "suffix": " ",
+    "color": "#<wallbash_4xa9>",
+    "background_color": "#<wallbash_pry2>"
+  },
+  "code_block": {
+    "color": "#<wallbash_1xa9>",
+    "margin": 2,
+    "chroma": {
+      "text": {
+        "color": "#<wallbash_txt1>"
+      },
+      "error": {
+        "color": "#<wallbash_pry1>",
+        "background_color": "#<wallbash_4xa9>"
+      },
+      "comment": {
+        "color": "#<wallbash_1xa9>"
+      },
+      "comment_preproc": {
+        "color": "#<wallbash_3xa7>"
+      },
+      "keyword": {
+        "color": "#<wallbash_3xa7>"
+      },
+      "keyword_reserved": {
+        "color": "#<wallbash_2xa7>"
+      },
+      "keyword_namespace": {
+        "color": "#<wallbash_2xa7>"
+      },
+      "keyword_type": {
+        "color": "#<wallbash_2xa9>"
+      },
+      "operator": {
+        "color": "#<wallbash_4xa9>"
+      },
+      "punctuation": {
+        "color": "#<wallbash_3xa9>"
+      },
+      "name": {
+        "color": "#<wallbash_txt1>"
+      },
+      "name_builtin": {
+        "color": "#<wallbash_2xa7>"
+      },
+      "name_tag": {
+        "color": "#<wallbash_2xa9>"
+      },
+      "name_attribute": {
+        "color": "#<wallbash_3xa7>"
+      },
+      "name_class": {
+        "color": "#<wallbash_pry1>",
+        "underline": true,
+        "bold": true
+      },
+      "name_constant": {},
+      "name_decorator": {
+        "color": "#<wallbash_3xa9>"
+      },
+      "name_exception": {},
+      "name_function": {
+        "color": "#<wallbash_2xa9>"
+      },
+      "name_other": {},
+      "literal": {},
+      "literal_number": {
+        "color": "#<wallbash_3xa9>"
+      },
+      "literal_date": {},
+      "literal_string": {
+        "color": "#<wallbash_3xa7>"
+      },
+      "literal_string_escape": {
+        "color": "#<wallbash_2xa9>"
+      },
+      "generic_deleted": {
+        "color": "#<wallbash_4xa9>"
+      },
+      "generic_emph": {
+        "italic": true
+      },
+      "generic_inserted": {
+        "color": "#<wallbash_2xa9>"
+      },
+      "generic_strong": {
+        "bold": true
+      },
+      "generic_subheading": {
+        "color": "#<wallbash_1xa9>"
+      },
+      "background": {
+        "background_color": "#<wallbash_pry1>"
+      }
+    }
+  },
+  "table": {},
+  "definition_list": {},
+  "definition_term": {},
+  "definition_description": {
+    "block_prefix": "\n🠶 "
+  },
+  "html_block": {},
+  "html_span": {}
+}
