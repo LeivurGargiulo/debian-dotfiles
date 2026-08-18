@@ -1,0 +1,10 @@
+${HOME}/.config/delta/theme.gitconfig
+[delta]
+    minus-style = "syntax #<wallbash_4xa2>"
+    minus-emph-style = "syntax bold #<wallbash_4xa3>"
+    plus-style = "syntax #<wallbash_2xa2>"
+    plus-emph-style = "syntax bold #<wallbash_2xa3>"
+    line-numbers-minus-style = "#<wallbash_4xa9>"
+    line-numbers-plus-style = "#<wallbash_2xa9>"
+    file-style = "#<wallbash_3xa7> bold"
+    hunk-header-style = "#<wallbash_1xa9>"
