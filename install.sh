@@ -290,47 +290,17 @@ fi
 echo "==> applying dotfiles overlay (scripts/symlink-dotfiles.sh)"
 "$repo_root/scripts/symlink-dotfiles.sh"
 
-echo "==> building Monokai Pro cursor theme (Bibata via cbmp)"
-"$repo_root/scripts/build-monokai-cursor.sh"
-
-echo "==> building Monokai Pro icon theme (Papirus folders)"
-"$repo_root/scripts/build-monokai-icons.sh"
-
 echo "==> rebuilding bat's theme cache"
 # bat caches its themes as a binary index (~/.cache/bat/themes.bin) built
 # from whatever is under ~/.config/bat/themes/ at the time `bat cache
 # --build` last ran — it does not scan that directory live on every
-# invocation. dotfiles/.config/bat/themes/Monokai Pro.tmTheme being deployed
-# by symlink-dotfiles.sh above is not enough on its own: without this,
-# `bat --list-themes` never lists "Monokai Pro" and BAT_THEME="Monokai Pro"
-# (dotfiles/.config/zsh/.zshrc) makes every bat invocation fail with
-# "unknown theme 'Monokai Pro', using default" instead. Confirmed live.
+# invocation. Every *.tmTheme deployed by symlink-dotfiles.sh above (this
+# repo's own dynamic "Wallbash" theme included — see
+# dotfiles/.config/hyde/wallbash/theme/bat.dcol) is invisible to `bat
+# --list-themes`/BAT_THEME until this runs at least once. Confirmed live.
 if command -v bat >/dev/null 2>&1; then
     bat cache --build
 fi
-
-echo "==> applying Monokai Pro HyDE theme"
-# hydectl lives in ~/.local/bin, which is only ever added to PATH by
-# Hyprland/uwsm's own session environment files
-# (~/.config/uwsm/env.d/00-hyde.sh) — sourced when a Hyprland session
-# starts, not by this plain LXDE-terminal bash script. HyDE's own vendor
-# installer runs into the identical gap and works around it locally
-# (vendor/hyde/Scripts/install.sh exports this same PATH right before its
-# internal theme/waybar calls), but that export lives in a subprocess and
-# never reaches back here. Without it, `command -v hydectl` silently found
-# nothing, the theme was never set, and the desktop came up on whatever
-# HyDE's own installer leaves as its default (Catppuccin Mocha) — confirmed
-# live: install.log shows "applying Monokai Pro HyDE theme" with nothing
-# after it, no error, because the whole block was quietly skipped.
-export PATH="$HOME/.local/lib/hyde:$HOME/.local/bin:$PATH"
-if command -v hydectl >/dev/null 2>&1; then
-    hydectl theme set "Monokai-Pro"
-else
-    echo "    warning: hydectl not found even with ~/.local/bin on PATH — HyDE's installer may not have completed" >&2
-fi
-
-echo "==> applying Monokai Pro Firefox theme"
-"$repo_root/scripts/apply-firefox-theme.sh"
 
 echo "==> cleaning up build caches"
 # Installing ~79 AUR packages leaves several GB of build byproducts behind:

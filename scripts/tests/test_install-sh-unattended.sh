@@ -290,26 +290,6 @@ chsh_line="$(grep -n 'sudo chsh -s' "$install_sh" | head -1 | cut -d: -f1)"
 grep -q '"\$current_shell" != "zsh"' "$install_sh" ||
     fail "the shell comparison doesn't match HyDE's own basename comparison — sudo chsh would run on every invocation instead of only when needed"
 
-# --- 11. hydectl is found even though this script never runs inside a --
-#         Hyprland/uwsm session where ~/.local/bin is normally on PATH
-# hydectl lives in ~/.local/bin, only added to PATH by Hyprland/uwsm's own
-# session environment files (~/.config/uwsm/env.d/00-hyde.sh) — sourced
-# when a Hyprland session starts, never by this plain-terminal bash script.
-# Confirmed live: `command -v hydectl` silently found nothing right after a
-# real HyDE install, so "hydectl theme set Monokai-Pro" never ran and the
-# desktop came up on HyDE's own default theme (Catppuccin Mocha) instead —
-# install.log showed "applying Monokai Pro HyDE theme" with nothing after
-# it, no error, because the whole guarded block was quietly skipped.
-grep -q 'HOME/.local/lib/hyde:\$HOME/.local/bin:\$PATH' "$install_sh" ||
-    fail "install.sh doesn't add ~/.local/bin to PATH before checking for hydectl — the theme-set call will silently no-op again on a fresh install, same as it did on a real box"
-
-pathexport_line="$(grep -n 'HOME/.local/lib/hyde:\$HOME/.local/bin:\$PATH' "$install_sh" | head -1 | cut -d: -f1)"
-hydectl_check_line="$(grep -n 'if command -v hydectl' "$install_sh" | head -1 | cut -d: -f1)"
-[[ -n "$pathexport_line" && -n "$hydectl_check_line" ]] ||
-    fail "could not locate the PATH export or the hydectl check"
-(( pathexport_line < hydectl_check_line )) ||
-    fail "PATH export is at line $pathexport_line, after the hydectl check at line $hydectl_check_line — too late to help"
-
 # --- 12. the zsh overlay lives where this HyDE fork actually reads it -----
 # This fork sets ZDOTDIR=~/.config/zsh (vendor/hyde/Configs/.zshenv), so
 # plain ~/.zshrc is never read at all — confirmed live: BAT_THEME and
@@ -322,18 +302,17 @@ fi
 [[ -f "$repo_root/dotfiles/.config/zsh/.zshrc" ]] ||
     fail "dotfiles/.config/zsh/.zshrc is missing — this is the file zsh actually reads on this HyDE fork"
 grep -q 'BAT_THEME' "$repo_root/dotfiles/.config/zsh/.zshrc" ||
-    fail "dotfiles/.config/zsh/.zshrc lost its Monokai Pro exports (BAT_THEME etc.)"
+    fail "dotfiles/.config/zsh/.zshrc lost its BAT_THEME export"
 
 # --- 13. bat's theme cache is rebuilt, not just the theme file deployed ---
 # bat indexes ~/.config/bat/themes/ into a binary cache (~/.cache/bat/
 # themes.bin) via `bat cache --build`; it does not scan that directory live.
-# Deploying dotfiles/.config/bat/themes/Monokai Pro.tmTheme via
-# symlink-dotfiles.sh alone left "Monokai Pro" absent from `bat
-# --list-themes`, so BAT_THEME="Monokai Pro" (now exported correctly per
-# the check above) made every bat call fail with "unknown theme ... using
-# default" instead — confirmed live.
+# Deploying a .tmTheme via symlink-dotfiles.sh/wallbash alone leaves it
+# absent from `bat --list-themes`, so BAT_THEME="<name>" (now exported
+# correctly per the check above) makes every bat call fail with "unknown
+# theme ... using default" instead — confirmed live.
 grep -q 'bat cache --build' "$install_sh" ||
-    fail "install.sh doesn't rebuild bat's theme cache — BAT_THEME=\"Monokai Pro\" will make every bat invocation fall back to the default theme with a warning"
+    fail "install.sh doesn't rebuild bat's theme cache — BAT_THEME will make every bat invocation fall back to the default theme with a warning"
 
 bat_cache_line="$(grep -n 'bat cache --build' "$install_sh" | head -1 | cut -d: -f1)"
 overlay_line="$(grep -n 'scripts/symlink-dotfiles.sh"$' "$install_sh" | head -1 | cut -d: -f1)"

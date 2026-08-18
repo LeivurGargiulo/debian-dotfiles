@@ -64,7 +64,7 @@ those change, it's a snapshot, not a generated artifact.
 | atuin | shell history sync + searchable TUI |
 | lazygit | TUI for git |
 | yazi | TUI file manager |
-| neovim | text editor, config at `dotfiles/.config/nvim/` (kickstart.nvim + Monokai Pro) |
+| neovim | text editor, config at `dotfiles/.config/nvim/` (kickstart.nvim, colors dynamic — see README) |
 | fastfetch | system info banner |
 | pulsemixer | PulseAudio/PipeWire mixer TUI |
 | aerc | TUI email client |
@@ -138,9 +138,9 @@ those change, it's a snapshot, not a generated artifact.
 | nvm | Node Version Manager |
 | zellij | terminal workspace/multiplexer (tmux alternative) |
 | ttf-firacode-nerd | FiraCode font patched with Nerd Fonts glyphs, terminal/code font |
-| yarn | JS package manager, build dependency for the Monokai Pro cursor theme (`scripts/build-monokai-cursor.sh`) |
-| papirus-icon-theme | icon theme, recolored per-folder to Monokai Pro by `scripts/build-monokai-icons.sh` |
-| firefox | web browser, themed via `scripts/apply-firefox-theme.sh` (`firefox/userChrome.css`), replaces Zen Browser |
+| yarn | JS package manager |
+| papirus-icon-theme | icon theme |
+| firefox | web browser, replaces Zen Browser |
 
 ## Python libraries, system-wide (`packages/pacman.txt` + `packages/aur.txt`)
 
@@ -171,9 +171,7 @@ packages.
 
 ## ratatui TUI picks (`packages/pacman.txt` + `packages/aur.txt`)
 
-Curated from [awesome-ratatui](https://github.com/ratatui/awesome-ratatui) — see
-`docs/superpowers/plans/2026-08-16-monokai-pro-ricing.md` for the selection
-process.
+Curated from [awesome-ratatui](https://github.com/ratatui/awesome-ratatui).
 
 | Package | Purpose |
 |---|---|
@@ -248,13 +246,6 @@ ruled out and why.
 | Package | Purpose |
 |---|---|
 | rustdesk-bin | ad-hoc P2P remote desktop access |
-
-## Monokai Pro cursor/icon theme build tooling (`packages/aur.txt`)
-
-| Package | Purpose |
-|---|---|
-| python-clickgen | provides `ctgen`, builds the Monokai Pro cursor theme (`scripts/build-monokai-cursor.sh`) |
-| papirus-folders | recolors Papirus folder icons, used by `scripts/build-monokai-icons.sh` |
 
 ## Fonts (`packages/aur.txt`)
 

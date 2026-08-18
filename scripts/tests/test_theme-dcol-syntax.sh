@@ -2,9 +2,9 @@
 set -euo pipefail
 
 # HyDE's wallbash engine sources a theme's palette-override file — the one
-# literally named theme.dcol — as a plain bash script (confirmed live:
-# applying this repo's Monokai-Pro theme threw "syntax error near
-# unexpected token '('" on a real box, from color.set.sh's `source
+# literally named theme.dcol — as a plain bash script (confirmed live: an
+# earlier theme.dcol in this repo threw "syntax error near unexpected
+# token '('" on a real box, from color.set.sh's `source
 # "$HYDE_THEME_DIR/theme.dcol"`). An rgba(...) value assigned without
 # quotes — dcol_pry1_rgba=rgba(45,42,46,0.95) — is invalid bash: unquoted
 # parens after '=' are parsed as a subshell, not part of the value. It must

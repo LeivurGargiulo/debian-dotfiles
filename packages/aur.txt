@@ -58,10 +58,6 @@ posting
 ptpython
 frogmouth
 
-# --- Monokai Pro cursor/icon theme build tooling ---
-python-clickgen
-papirus-folders
-
 # --- fonts ---
 ttf-ubuntu-sans
 

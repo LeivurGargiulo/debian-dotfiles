@@ -5,11 +5,11 @@ tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 
 mkdir -p "$tmp/repo/scripts" "$tmp/repo/dotfiles/.config/hypr" \
-    "$tmp/repo/dotfiles/.config/hyde/themes/Monokai-Pro"
+    "$tmp/repo/dotfiles/.config/hyde/themes/Test-Theme"
 echo "placeholder" > "$tmp/repo/dotfiles/.config/hypr/settings.conf"
-echo "fake wallpaper bytes" > "$tmp/repo/dotfiles/.config/hyde/themes/Monokai-Pro/wall.png"
-mkdir -p "$tmp/repo/dotfiles/.config/hyde/themes/Monokai-Pro/wallpapers"
-echo "fake gallery wallpaper bytes" > "$tmp/repo/dotfiles/.config/hyde/themes/Monokai-Pro/wallpapers/wall.png"
+echo "fake wallpaper bytes" > "$tmp/repo/dotfiles/.config/hyde/themes/Test-Theme/wall.png"
+mkdir -p "$tmp/repo/dotfiles/.config/hyde/themes/Test-Theme/wallpapers"
+echo "fake gallery wallpaper bytes" > "$tmp/repo/dotfiles/.config/hyde/themes/Test-Theme/wallpapers/wall.png"
 
 script_under_test="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/symlink-dotfiles.sh"
 cp "$script_under_test" "$tmp/repo/scripts/symlink-dotfiles.sh"
@@ -38,7 +38,7 @@ fi
 # while *recursing* still reports as type l, not f, so a symlinked wall.png
 # is invisible to it and HyDE reports "No compatible wallpapers found" even
 # though the file is a perfectly valid image. Confirmed against a real run.
-wall="$fake_home/.config/hyde/themes/Monokai-Pro/wall.png"
+wall="$fake_home/.config/hyde/themes/Test-Theme/wall.png"
 if [[ -L "$wall" ]]; then
     echo "FAIL: $wall is a symlink — HyDE's find -type f wallpaper scan won't see it" >&2
     exit 1
@@ -47,7 +47,7 @@ if [[ ! -f "$wall" ]]; then
     echo "FAIL: $wall was not created" >&2
     exit 1
 fi
-if ! cmp -s "$wall" "$tmp/repo/dotfiles/.config/hyde/themes/Monokai-Pro/wall.png"; then
+if ! cmp -s "$wall" "$tmp/repo/dotfiles/.config/hyde/themes/Test-Theme/wall.png"; then
     echo "FAIL: $wall content does not match the source wallpaper" >&2
     exit 1
 fi
@@ -58,8 +58,8 @@ fi
 # missing this real-file treatment for wallpapers/ silently falls back to
 # stale cached colors instead of extracting from the actual wallpaper —
 # confirmed live: kitty/waybar stayed on a leftover theme's colors after a
-# theme switch because Monokai-Pro only had a top-level wall.png.
-gallery_wall="$fake_home/.config/hyde/themes/Monokai-Pro/wallpapers/wall.png"
+# theme switch because Test-Theme only had a top-level wall.png.
+gallery_wall="$fake_home/.config/hyde/themes/Test-Theme/wallpapers/wall.png"
 if [[ -L "$gallery_wall" ]]; then
     echo "FAIL: $gallery_wall is a symlink — wallbash's color-extraction scan won't see it" >&2
     exit 1
@@ -76,11 +76,37 @@ HOME="$fake_home" "$tmp/repo/scripts/symlink-dotfiles.sh"
 
 # A source wallpaper update must actually propagate on re-run, not just get
 # skipped because a file already exists at the destination.
-echo "updated wallpaper bytes" > "$tmp/repo/dotfiles/.config/hyde/themes/Monokai-Pro/wall.png"
+echo "updated wallpaper bytes" > "$tmp/repo/dotfiles/.config/hyde/themes/Test-Theme/wall.png"
 HOME="$fake_home" "$tmp/repo/scripts/symlink-dotfiles.sh"
-if ! cmp -s "$wall" "$tmp/repo/dotfiles/.config/hyde/themes/Monokai-Pro/wall.png"; then
+if ! cmp -s "$wall" "$tmp/repo/dotfiles/.config/hyde/themes/Test-Theme/wall.png"; then
     echo "FAIL: wallpaper update did not propagate on re-run" >&2
     exit 1
 fi
+
+# Orphan cleanup must be manifest-based, never a directory scan: a copied
+# file whose dotfiles/ source is deleted should be pruned, but content that
+# was never written by this script — sitting in the very same directory —
+# must survive untouched. An earlier version of this logic scanned whole
+# directories instead and took out every other installed theme's files plus
+# HyDE's own stock wallbash templates alongside the one real stale file it
+# was after; restored from vendor/hyde and each theme's install cache, but
+# this regression test is what should have caught it first.
+mkdir -p "$tmp/repo/dotfiles/.config/hyde/wallbash/theme"
+echo "custom template" > "$tmp/repo/dotfiles/.config/hyde/wallbash/theme/custom.dcol"
+mkdir -p "$fake_home/.config/hyde/wallbash/theme"
+echo "not ours — pre-existing content in the same directory" \
+    > "$fake_home/.config/hyde/wallbash/theme/preexisting.dcol"
+HOME="$fake_home" "$tmp/repo/scripts/symlink-dotfiles.sh"
+[[ -f "$fake_home/.config/hyde/wallbash/theme/custom.dcol" ]] ||
+    { echo "FAIL: custom.dcol was not copied"; exit 1; }
+[[ -f "$fake_home/.config/hyde/wallbash/theme/preexisting.dcol" ]] ||
+    { echo "FAIL: preexisting.dcol was deleted — orphan cleanup must never touch a file it didn't itself write"; exit 1; }
+
+rm "$tmp/repo/dotfiles/.config/hyde/wallbash/theme/custom.dcol"
+HOME="$fake_home" "$tmp/repo/scripts/symlink-dotfiles.sh"
+[[ ! -f "$fake_home/.config/hyde/wallbash/theme/custom.dcol" ]] ||
+    { echo "FAIL: custom.dcol should have been pruned after its dotfiles/ source was deleted"; exit 1; }
+[[ -f "$fake_home/.config/hyde/wallbash/theme/preexisting.dcol" ]] ||
+    { echo "FAIL: preexisting.dcol was deleted during orphan cleanup of an unrelated file"; exit 1; }
 
 echo "PASS"

@@ -17,6 +17,7 @@ require 'lazy-bootstrap'
 -- [[ Configure and install plugins ]]
 require 'lazy-plugins'
 
+require 'custom.config.wallbash-theme'
 require 'custom.config.lualine'
 require 'custom.config.notify'
 require 'custom.config.comment'

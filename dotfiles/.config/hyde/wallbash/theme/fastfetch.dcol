@@ -1,0 +1,4 @@
+${HOME}/.config/fastfetch/config.jsonc|bash "${WALLBASH_SCRIPTS}/fastfetch.sh"
+# placeholder — fastfetch.sh regenerates this file immediately after
+# (fastfetch needs semicolon-separated RGB decimal embedded in ANSI
+# escapes, not a plain <wallbash_...> hex substitution)

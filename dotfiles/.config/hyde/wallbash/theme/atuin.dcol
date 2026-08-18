@@ -1,0 +1,20 @@
+${HOME}/.config/atuin/themes/wallbash.toml
+[theme]
+name = "wallbash"
+
+[colors]
+AlertInfo      = "#<wallbash_3xa7>"
+AlertWarn      = "#<wallbash_3xa9>"
+AlertError     = "#<wallbash_4xa9>"
+Annotation     = "#<wallbash_1xa9>"
+Base           = "#<wallbash_txt1>"
+Guidance       = "#<wallbash_2xa7>"
+Important      = "#<wallbash_1xa7>"
+Title          = "#<wallbash_2xa9>"
+Muted          = "#<wallbash_1xa9>"
+SyntaxCommand  = "#<wallbash_3xa7>"
+SyntaxFlag     = "#<wallbash_1xa7>"
+SyntaxString   = "#<wallbash_3xa9>"
+SyntaxVariable = "#<wallbash_2xa7>"
+SyntaxOperator = "#<wallbash_4xa9>"
+SyntaxComment  = "#<wallbash_1xa9>"

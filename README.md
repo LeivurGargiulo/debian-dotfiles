@@ -17,18 +17,29 @@ extra tooling layer. Goal: reformat = clone this repo, run
 - `dotfiles/` — our overlay, mirrors `$HOME` layout exactly (e.g.
   `dotfiles/.config/hypr/hyprland.lua` → `~/.config/hypr/hyprland.lua`).
   Applied last, after HyDE's installer, so it always wins. Every file is a
-  live symlink into this repo — edit here, see it immediately — except one:
-  `dotfiles/.config/hyde/themes/*/wall.*` is *copied*, not symlinked.
-  HyDE's own wallpaper scanner (`~/.local/lib/hyde/globalcontrol.sh`,
-  `find_wallpapers()`) walks the theme directory with `find -H ... -type f`,
-  and `-H` only dereferences a symlink that is `find`'s own starting-point
-  argument — a symlink it encounters *while recursing* still reports its
-  own type (`l`), not what it points to, so a symlinked `wall.png` is
-  invisible to `-type f` and HyDE logs "No compatible wallpapers found"
-  even though the file is a perfectly valid image. Confirmed against a
-  real run. `scripts/symlink-dotfiles.sh` re-copies the wallpaper on every
-  run, so editing the source and re-running still propagates the change —
-  it just isn't a live symlink like everything else.
+  live symlink into this repo — edit here, see it immediately — except two
+  classes of file, which are *copied*, not symlinked:
+  `dotfiles/.config/hyde/themes/*/{wall.*,wallpapers/*,*.theme,.sort}` and
+  everything under `dotfiles/.config/hyde/wallbash/`. HyDE's own scanners
+  for these (`~/.local/lib/hyde/globalcontrol.sh`'s `find_wallpapers()`,
+  and `color.set.sh`'s per-theme/wallbash template `find -H ... -type f`
+  scans) walk their directories with `find -H ... -type f`, and `-H` only
+  dereferences a symlink that is `find`'s own starting-point argument — a
+  symlink it encounters *while recursing* still reports its own type
+  (`l`), not what it points to, so a symlinked file in either category is
+  invisible to `-type f`. For the wallpaper that means HyDE logs "No
+  compatible wallpapers found" even though the file is valid; for a
+  `*.theme`/wallbash template it means the scan silently falls back to a
+  *different* (wallpaper-derived, or someone else's) template instead —
+  confirmed live both ways. `scripts/symlink-dotfiles.sh` re-copies these
+  on every run (and prunes a copy whose dotfiles/ source was deleted, via
+  a manifest at `.git/symlink-dotfiles.copied-manifest` — scoped to paths
+  this script has itself written, never a directory scan, after an early
+  version of that pruning logic swept up unrelated content sitting in the
+  same directories and had to be restored from `vendor/hyde` and each
+  theme's install cache), so editing the source and re-running still
+  propagates the change — they just aren't live symlinks like everything
+  else.
 - `packages/pacman.txt` / `packages/aur.txt` — everything beyond what
   HyDE's own installer already pulls in: the AMD driver stack, the
   CLI/TUI tools ported from a previous (Debian) dotfiles setup, a
@@ -38,7 +49,7 @@ extra tooling layer. Goal: reformat = clone this repo, run
   → `endcord`, Telegram/WhatsApp → `nchat`, GNOME Boxes → `vm-curator`),
   `claude-squad` for managing multiple Claude Code sessions, and
   starship (`dotfiles/.config/starship.toml`) as the zsh prompt —
-  Monokai Pro, two-line layout.
+  two-line layout, colors dynamic (see below).
 - `dotfiles/.config/zsh/.zshrc` and `.../user.zsh` — **not**
   `dotfiles/.zshrc`. This HyDE fork sets `ZDOTDIR=~/.config/zsh`
   (`vendor/hyde/Configs/.zshenv`), so a plain `~/.zshrc` is never read by
@@ -50,33 +61,31 @@ extra tooling layer. Goal: reformat = clone this repo, run
   in `$ZDOTDIR/.zshrc`"*. Personal aliases, `EDITOR`, and anything else
   you want zsh to pick up belong in this file now, under the "Aliases
   (personal)" heading near the bottom — not the old `~/.zshrc` path.
-- `dotfiles/.config/hyde/themes/Monokai-Pro/` — the HyDE theme, activated
-  by `install.sh` via `hydectl theme set "Monokai-Pro"`. Colors for
-  waybar/rofi/dunst/GTK/Qt/hyprlock/kitty come from HyDE's wallbash
-  engine extracting dominant colors from `wall.png` — there is
-  deliberately no `theme.dcol` here overriding that. An earlier version
-  pinned a fixed 2-accent palette (pink + purple, all wallbash's
-  architecture supports — its `color.set.sh` is hard-limited to 4 color
-  slots, 2 backgrounds + 2 accents) via `theme.dcol`, which made pink
-  the dominant color almost everywhere; removing it and using an actual
-  wallpaper instead gives real color variety again. Changing the desktop
-  accent colors now means changing `wall.png`, not editing a palette
-  file — every other themed CLI/TUI tool's config still lives under
-  `dotfiles/.config/<tool>/`, same overlay mechanism as everything else,
-  and still pulls from the fixed palette in
-  `docs/monokai-pro-palette.md` (nvim/bat/etc. syntax highlighting isn't
-  wallbash-driven and doesn't shift with the wallpaper).
-- `dotfiles/.config/nvim/` — a real kickstart.nvim config (ported directly
-  from the prior Debian setup's own fork, LSP/treesitter/telescope/etc all
-  intact), with the colorscheme swapped from Catppuccin to
-  [monokai-pro.nvim](https://github.com/loctvl842/monokai-pro.nvim) —
-  neovim had zero config until this was caught in a parity re-audit.
-- `firefox/` — `userChrome.css` + `user.js`, applied to Firefox's default
-  profile by `scripts/apply-firefox-theme.sh` (lives at the repo root, not
-  under `dotfiles/`, because Firefox profile directory names are
-  randomized and can't be a static symlink target). The profile itself
-  lives at `${XDG_CONFIG_HOME:-~/.config}/mozilla/firefox` on this repo's
-  Firefox (153.0.4, CachyOS's package) — confirmed directly, since it's
+- No single "our theme" anymore — every themed CLI/TUI tool follows
+  whichever HyDE theme is active (`hydectl theme set "<name>"`, any of
+  the themes under `~/.config/hyde/themes/`), system-wide, live. This
+  works in two layers:
+  - **HyDE's own chrome** (waybar/rofi/dunst/GTK/Qt/hyprlock/kitty/
+    Kvantum) is wallbash-native: colors come from whichever theme is
+    active, either its own `theme.dcol` override or dominant colors
+    extracted from its wallpaper. Nothing in this repo needs to change
+    when you switch themes.
+  - **Everything else** — `bat`, `eza`, `delta`, `fzf`,
+    `zsh-syntax-highlighting`, `tmux`, `btop`, `cava`, `MangoHud`,
+    `yazi`, `gitui`, `lazygit`, `zathura`, `mpv`/`uosc`, `aerc`,
+    `ncspot`, `cmus`, `calcurse`, `taskwarrior`, `newsboat`, `zellij`,
+    `nvim`, `starship`, `rtorrent`, `bluetuith`, `ducker`, `atuin` — is
+    wired into wallbash's *own* mechanism via
+    `dotfiles/.config/hyde/wallbash/theme/*.dcol` (or `always/` for
+    things like `cava`/Kvantum that HyDE already covers natively).
+    These are templates using `<wallbash_pryN>`/`<wallbash_NxaM>`
+    placeholders, exactly like HyDE's own `kitty.dcol`/`waybar.dcol` —
+    `hydectl theme set` regenerates every one of them, from whichever
+    theme is now active, automatically. Three tools whose color format
+    can't take hex directly (`taskwarrior`'s rgb-cube notation,
+    `cmus`/`newsboat`'s 256-color palette index) instead get a
+    conversion script under `dotfiles/.config/hyde/wallbash/scripts/`,
+    reading the same `dcol_*` variables `color.set.sh` exports.
   XDG-compliant rather than the legacy `~/.mozilla/firefox` most
   documentation still assumes. The script checks XDG first and falls back
   to the legacy path, so either Firefox build works. On a genuinely fresh
@@ -247,50 +256,36 @@ rewriting it — confirmed not a VM (`systemd-detect-virt` says `none`,
 real Gigabyte board, real AMD GPU) — and not something software here
 can fix.
 
-**`hydectl theme set` needs `~/.local/bin` on PATH, which this script
-doesn't have:** that directory is only ever added to `PATH` by
-Hyprland/uwsm's own session environment files
-(`~/.config/uwsm/env.d/00-hyde.sh`), sourced when a Hyprland session
-starts — never by `install.sh`, which necessarily runs from whatever
-terminal bootstrapped the machine (LXDE, in practice, since Hyprland
-isn't installed yet). Confirmed live: `command -v hydectl` silently
-found nothing right after a real install, so the theme was never set
-and the desktop came up on HyDE's own default (Catppuccin Mocha)
-instead, with install.log showing "applying Monokai Pro HyDE theme"
-and nothing after it — no error, the whole guarded block just quietly
-skipped. `install.sh` now exports `PATH="$HOME/.local/lib/hyde:$HOME/.local/bin:$PATH"`
-before checking for `hydectl` — the identical export HyDE's own vendor
-installer uses internally for this same reason, which only helps
-*inside that subprocess* and never reaches back here on its own.
-
-**Theme `.dcol` files are sourced as bash, not just data:** HyDE's
-wallbash engine loads any theme's `theme.dcol` with plain bash, so an
+**A theme's `theme.dcol`, if it has one, is sourced as bash, not just
+data:** HyDE's wallbash engine loads it with plain bash, so an
 `rgba(...)` value has to be quoted — `dcol_pry1_rgba="rgba(45,42,46,0.95)"`,
 matching every stock HyDE theme's own `.dcol` files — not
 `dcol_pry1_rgba=rgba(45,42,46,0.95)`, which is a bash syntax error
-(unquoted parens after `=` parse as a subshell). Monokai-Pro's
-`theme.dcol` briefly had exactly this bug, which broke silently:
-applying the theme failed with a syntax error deep in wallbash's own
-output, which also meant Hyprland never received any color values at
-all (`hyprctl reload` / `hyde-shell reload` reporting "Hyprland does
-not detect colors!" was a symptom of this, not a separate bug). That
-`theme.dcol` has since been removed entirely — see above — but
-`scripts/tests/test_theme-dcol-syntax.sh` still runs `bash -n` on every
-`*.dcol` file under `dotfiles/`, so this class of break is caught
-immediately if any theme in this repo ever gains one again.
+(unquoted parens after `=` parse as a subshell). A `theme.dcol` in this
+repo hit exactly this bug once, which broke silently: applying the
+theme failed with a syntax error deep in wallbash's own output, which
+also meant Hyprland never received any color values at all (`hyprctl
+reload` / `hyde-shell reload` reporting "Hyprland does not detect
+colors!" was a symptom of this, not a separate bug).
+`scripts/tests/test_theme-dcol-syntax.sh` runs `bash -n` on every file
+literally named `theme.dcol` under `dotfiles/` (not the wallbash
+*template* `.dcol` files under `dotfiles/.config/hyde/wallbash/theme/`
+— those are sed-substituted, never sourced, so they're free to be
+JSON/YAML/CSS/XML/tmux-conf/etc.) — this class of break is caught
+immediately if any theme in this repo ever gains a `theme.dcol` again.
 `theme.conf` is a different, non-bash format (Hyprland's own config
 syntax) and is deliberately not checked the same way.
 
-**`bat` needs its theme cache rebuilt — deploying the theme file isn't
+**`bat` needs its theme cache rebuilt — deploying a theme file isn't
 enough.** `bat` indexes `~/.config/bat/themes/` into a binary cache
 (`~/.cache/bat/themes.bin`) via `bat cache --build`; it does not scan
-that directory live on every run. `dotfiles/.config/bat/themes/Monokai
-Pro.tmTheme` being symlinked into place by `scripts/symlink-dotfiles.sh`
-was never enough on its own — confirmed live, `bat --list-themes` never
-listed "Monokai Pro" and `BAT_THEME="Monokai Pro"` (see above) made
-every `bat` call print `unknown theme 'Monokai Pro', using default` and
-fall back silently. `install.sh` now runs `bat cache --build` right
-after the overlay is applied.
+that directory live on every run. A `.tmTheme` being deployed by
+`scripts/symlink-dotfiles.sh`/wallbash is never enough on its own —
+confirmed live, `bat --list-themes` doesn't pick up a new theme and
+`BAT_THEME="<name>"` makes every `bat` call print `unknown theme
+'<name>', using default` and fall back silently until this runs.
+`install.sh` runs `bat cache --build` right after the overlay is
+applied.
 
 ## Updating HyDE
 

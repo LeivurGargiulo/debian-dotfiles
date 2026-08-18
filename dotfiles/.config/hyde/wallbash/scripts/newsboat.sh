@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 # newsboat has no hex support, only named-8 ANSI colors or colorN (256
-# palette index) -- see docs/monokai-pro-palette.md "Tools without hex
-# support". color.set.sh exports every dcol_* variable before running this
-# script, so it reads them directly instead of via a sed placeholder
-# substitution that can't do the hex->256 math.
+# palette index). color.set.sh exports every dcol_* variable before
+# running this script, so it reads them directly instead of via a sed
+# placeholder substitution that can't do the hex->256 math.
 set -euo pipefail
 
 hex_to_256() {

@@ -5,20 +5,6 @@
 
 return {
   {
-    -- Monokai Pro colorscheme, verified against loctvl842/monokai-pro.nvim's
-    -- real README install section — this repo's canonical palette
-    -- (docs/monokai-pro-palette.md) was itself sourced from this plugin.
-    'loctvl842/monokai-pro.nvim',
-    lazy = false,
-    priority = 1000,
-    config = function()
-      require('monokai-pro').setup {
-        filter = 'pro', -- classic | octagon | pro | machine | ristretto | spectrum
-      }
-      vim.cmd.colorscheme 'monokai-pro'
-    end,
-  },
-  {
     'nvim-lualine/lualine.nvim',
     event = 'VeryLazy',
     dependencies = { 'nvim-tree/nvim-web-devicons' },

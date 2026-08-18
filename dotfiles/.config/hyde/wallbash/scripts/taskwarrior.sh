@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # taskwarrior has no hex support (rgbRGB cube notation only, digits 0-5 per
-# channel) — see docs/monokai-pro-palette.md "Tools without hex support".
-# color.set.sh exports every dcol_* variable (`set -a; source "$dcol_file"`)
+# channel). color.set.sh exports every dcol_* variable (`set -a; source "$dcol_file"`)
 # before running this script, so it reads them directly instead of via a
 # sed placeholder substitution that can't do the hex->cube math.
 set -euo pipefail

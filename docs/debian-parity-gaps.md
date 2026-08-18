@@ -16,10 +16,9 @@ found one real miss, now fixed:** `dotfiles/.config/nvim/` never existed —
 neovim (this repo's declared sole editor) had zero configuration despite
 every other tool getting careful attention. Ported directly from debian's
 own real kickstart.nvim fork (LSP/treesitter/telescope/etc all intact,
-copied file-for-file, not reconstructed), with only the colorscheme
-swapped from Catppuccin to
-[monokai-pro.nvim](https://github.com/loctvl842/monokai-pro.nvim). The
-same audit also confirmed `flameshot` (debian's screenshot tool) really is
+copied file-for-file, not reconstructed); colorscheme is now a generated
+Lua module following the active HyDE theme, see §2 below. The same audit
+also confirmed `flameshot` (debian's screenshot tool) really is
 covered by HyDE's own bundled `screenshot.sh` — not a gap, verified
 directly against the vendored HyDE source rather than assumed.
 
@@ -46,72 +45,37 @@ of its own Hyprland config — so it's already covered, just not via
 `install.sh` runs on real hardware; only add something here if HyDE
 *doesn't* cover it.
 
-## 2. Theming/config layer — mostly done (2026-08-16 ricing pass), residual gaps below
+## 2. Theming/config layer — dynamic, follows the active HyDE theme
 
-The ricing pass themed HyDE's own chrome (via `dotfiles/.config/hyde/themes/Monokai-Pro/`,
-HyDE's wallbash engine) plus 21 CLI/TUI tools Monokai-Pro-style: bat, eza,
-git-delta, fzf, tmux, zsh-syntax-highlighting, btop, cava, mangohud, yazi,
-gitui, lazygit, zathura, mpv/uosc, newsboat, aerc, atuin, ncspot, cmus,
-calcurse, taskwarrior. See `docs/monokai-pro-palette.md` for the canonical
-palette and `docs/superpowers/plans/2026-08-16-monokai-pro-ricing.md` for
-what was built.
+An earlier pass themed everything a single fixed way (Monokai Pro,
+hardcoded hex throughout). That's gone — every themeable CLI/TUI tool now
+follows whichever HyDE theme is active (`hydectl theme set "<name>"`) via
+wallbash templates under `dotfiles/.config/hyde/wallbash/theme/`
+(`<wallbash_pryN>`/`<wallbash_NxaM>` placeholders, exactly like HyDE's own
+`kitty.dcol`/`waybar.dcol`), with a handful of tools whose color format
+can't take hex directly (`taskwarrior`'s rgb-cube notation,
+`cmus`/`newsboat`'s 256-color palette index, `fastfetch`'s semicolon-RGB
+ANSI escapes) getting a small conversion script under
+`dotfiles/.config/hyde/wallbash/scripts/` instead, reading the same
+`dcol_*` variables `color.set.sh` exports. See the README's "What's HyDE
+vs what's ours" section for the full mechanism and the current tool list.
 
-**zsh prompt history:** briefly swapped starship for Powerlevel10k
-(`dotfiles/.p10k.zsh`, ported from romkatv/powerlevel10k's real "classic"
-template), then reverted back to starship per a later explicit request —
-p10k's AUR package and config file were removed. Current
-`dotfiles/.config/starship.toml` is a from-scratch two-line Monokai Pro
-config (directory/git/status on line 1 powerline-style, prompt character
-on line 2, mimicking p10k classic's shape), using starship's real
-multi-line `format` + `add_newline` mechanism (verified against
-starship.rs/config/) — not the minimal single-line config from the first
-ricing pass. `.zshrc` also picked up the actual `eval "$(starship init
-zsh)"` line, which the first ricing pass never added (starship's config
-file existed but was never wired into the shell init — a real gap, now
-fixed).
+`nvim` in particular no longer uses a bundled colorscheme plugin
+(`monokai-pro.nvim`) — it never could have followed an arbitrary active
+theme, since a colorscheme plugin ships its own fixed palette variants.
+Replaced with a small generated Lua colorscheme
+(`dotfiles/.config/nvim/lua/custom/wallbash-colors.lua`, wallbash-owned)
+applied via `dotfiles/.config/nvim/lua/custom/config/wallbash-theme.lua`.
 
-**Closed (2026-08-16, two passes):** every themeable tool in debian's own
-`chezmoi/dot_config/colorice/templates/` (23 files, the authoritative list
-of what debian actually themes) that has an arch-dotfiles equivalent
-package is now themed here — full cross-reference swept, not just the
-three flagged after the first ricing pass:
+Icon theme, cursor theme, and Firefox theming were dropped entirely (not
+converted to dynamic) — the build tooling for a fixed cursor/icon
+palette doesn't make sense once the palette itself isn't fixed, and
+neither was live-tested on real hardware before removal in any case.
+Cursor theme now just follows whatever `$CURSOR_THEME` each HyDE theme's
+own `hypr.theme` declares — no separate build step, same as every other
+stock theme.
 
-bat, eza, git-delta (`.gitconfig`), fzf, tmux, zsh-syntax-highlighting,
-btop, cava, mangohud, yazi, lazygit, zathura, mpv/uosc, newsboat, aerc,
-atuin, ncspot, cmus, calcurse, taskwarrior (`.taskrc`), zellij (added to
-`packages/pacman.txt`, was never ported at all), ducker (missed in the
-first ricing pass), fastfetch, rtorrent, starship, bluetuith, glow (all
-five missed in the first ricing pass — installed but unthemed). Also
-`ttf-cascadia-mono-nerd` added to `packages/pacman.txt` (`hypr.theme`
-referenced `CaskaydiaCove Nerd Font Mono` but nothing installed it).
-
-Config schemas verified two ways: against the tool's own real upstream
-docs/source (zellij, bluetuith, ducker, glow) where debian's version
-needed independent confirmation, or ported directly from debian's own
-already-working `colorice` templates (fastfetch, rtorrent, starship, glow)
-with palette placeholders substituted for the canonical Monokai Pro hex
-values.
-
-**Closed (icon/cursor/browser, later pass):** Icon theme —
-`papirus-icon-theme` + `papirus-folders`, `scripts/build-monokai-icons.sh`
-recolors Papirus's stock folder SVGs to exact Monokai Pro hex (same
-technique catppuccin/papirus-folders uses — verified against
-papirus-folders' real source, not guessed). Cursor theme —
-`scripts/build-monokai-cursor.sh` builds a real Monokai-Pro-colored Bibata
-set via `cbmp`/`ctgen` (`yarn` + `python-clickgen` as build tooling, no
-pre-built Monokai cursor theme exists anywhere so this had to be built,
-not just installed). Firefox — swapped in for Zen Browser per explicit
-request; `scripts/apply-firefox-theme.sh` parses `profiles.ini` and
-installs `firefox/userChrome.css` + `firefox/user.js`, mechanism verified
-against Mozilla's own docs and a real reference implementation
-(black7375/Firefox-UI-Fix). None of these three scripts could be
-live-tested in this sandbox (no Hyprland/X session, Papirus/Bibata/Firefox
-aren't installed here) — verify on real hardware.
-
-**Deliberately deferred per the ricing spec** (not gaps, tracked
-decisions):
-- Real wallpaper — `wall.png` is a flat `#2d2a2e` placeholder, same
-  pattern as `monitors.conf`, pending real hardware.
+**Deliberately deferred** (not gaps, tracked decisions):
 - GRUB boot theme — CachyOS may default to a different bootloader
   (systemd-boot is common on Arch-based installers); verify what's
   actually in use before assuming GRUB applies at all.

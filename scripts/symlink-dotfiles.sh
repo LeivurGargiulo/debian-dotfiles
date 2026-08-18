@@ -36,8 +36,7 @@ while IFS= read -r src; do
     # if e.g. waybar.theme is a symlink, color.set.sh's deployList scan
     # can't see it, silently falls back to the *global* wallbash dcol
     # template for waybar, and renders wallpaper-extracted colors instead
-    # of the theme's own literal palette — confirmed live with Monokai-Pro
-    # (see docs/monokai-pro-palette.md). Every other dotfile stays a live
+    # of the theme's own literal palette — confirmed live. Every other dotfile stays a live
     # symlink (edits in this repo apply immediately, no re-run needed);
     # only files HyDE's own tree-walk needs to see directly — the
     # wallpaper and every top-level *.theme/.sort file in a theme dir —

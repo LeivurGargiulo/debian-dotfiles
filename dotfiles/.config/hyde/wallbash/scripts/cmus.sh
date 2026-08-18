@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-# cmus has no hex support, only the xterm 256-color palette index -- see
-# docs/monokai-pro-palette.md "Tools without hex support". color.set.sh
-# exports every dcol_* variable before running this script, so it reads
-# them directly instead of via a sed placeholder substitution that can't
-# do the hex->256 math.
+# cmus has no hex support, only the xterm 256-color palette index.
+# color.set.sh exports every dcol_* variable before running this script,
+# so it reads them directly instead of via a sed placeholder substitution
+# that can't do the hex->256 math.
 set -euo pipefail
 
 hex_to_256() {

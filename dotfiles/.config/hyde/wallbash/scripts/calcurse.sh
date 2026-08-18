@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 # calcurse only supports 8 ANSI names + "default", one global fg-on-bg pair
-# for the whole UI (no per-element theming at all) -- see
-# docs/monokai-pro-palette.md "Tools without hex support". color.set.sh
-# exports every dcol_* variable before running this script, so it reads
-# them directly instead of via a sed placeholder substitution that can't
+# for the whole UI (no per-element theming at all). color.set.sh exports
+# every dcol_* variable before running this script, so it reads them
+# directly instead of via a sed placeholder substitution that can't
 # pick a nearest-named-color.
 set -euo pipefail
 
