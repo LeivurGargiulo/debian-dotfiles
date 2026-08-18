@@ -1,0 +1,4 @@
+Ensures ~/.config/nchat/ exists before wallbash tries to write
+color.conf/usercolor.conf into it — fn_wallbash skips a template whose
+destination directory doesn't exist yet (see
+dotfiles/.config/hyde/wallbash/theme/nchat.dcol and nchat-usercolor.dcol).
