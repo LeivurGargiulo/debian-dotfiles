@@ -21,7 +21,7 @@
     { "type": "gpu", "keyColor": "171;157;242" },
     { "type": "disk", "keyColor": "171;157;242" },
     { "type": "memory", "keyColor": "171;157;242" },
-    { "type": "display", "keyColor": "171;157;242" },
+    { "type": "display", "keyColor": "171;157;242", "format": "{width}x{height} in 27\", {refresh-rate} Hz [{type}]" },
     { "type": "custom", "format": "\u001b[38;2;255;97;136m└\u001b[0m{$1}\u001b[38;2;255;97;136m──────────────────\u001b[0m{$1}\u001b[38;2;255;97;136m┘\u001b[0m" },
     { "type": "custom", "format": "" },
     { "type": "custom", "format": "\u001b[38;2;255;97;136m┌\u001b[0m{$1} \u001b[38;2;120;220;232mSoftware Information\u001b[0m {$1}\u001b[38;2;255;97;136m┐\u001b[0m" },
