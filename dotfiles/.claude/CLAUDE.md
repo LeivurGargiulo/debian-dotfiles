@@ -32,12 +32,18 @@ Coding + unsure of API/library/CLI behavior (syntax, config, flags, version migr
 # Model restriction for reviews
 Reviews, final reviews, code-review agents: sonnet only. Never dispatch opus for review work.
 
+# Python packages: always use a venv
+Never `pip install` into system/global Python for any project. Every Python project gets its own `.venv` (project root, `.gitignore`d), created with `python3 -m venv .venv` if missing, activated or invoked via `.venv/bin/python` / `.venv/bin/pip` for all installs and runs (including `pytest`).
+
 # Token/cost levers (learned 2026-08-11 audit)
 Real cost driver = API round-trip count, not turn count or plugin count. Every sequential single-tool call resends full cached context.
 - Batch Bash commands (`&&`/`;`) instead of many sequential single calls. Fire independent tool calls in parallel in one response, not one-at-a-time.
 - Batch TaskUpdate/TaskCreate calls where possible — each is its own round trip; per-task-per-round-trip churn is what made a prior dotfiles session hit 352 round trips / 52.9M cache_read tokens.
 - Start a fresh session for unrelated work instead of growing one marathon thread.
 - Don't over-trim always-on hook blocks (caveman/ponytail/remember/superpowers) chasing savings — fixed per-session cost, ~0.1% of a long session's total. Not the lever.
+
+# No unverified local execution (ENFORCE — caused real incidents)
+Never run compute-heavy or long-running processes on the user's own machine without asking first, even when framed internally as a "smoke test," "quick check," or "just verifying it compiles." If a tool claims isolation (e.g. Agent `isolation: "remote"`), verify it actually ran off-machine (check `ps aux` / worktree paths / no local CPU spike) before telling the user it didn't touch their PC — never assert "not your cores" / "not your machine" as a guess. If the user has said "don't run this on my PC," that instruction stands until they say otherwise; a differently-framed run (build check, timeout-bounded test) is still a violation if it burns real local CPU without asking. Reason: in one session, two separate local-execution incidents happened back to back — once trusting `isolation: "remote"` without checking it actually left the machine (it silently fell back to local, ran at 1186% CPU), and once immediately after, running an "innocent" 90s local smoke test on 12 cores without asking, right after promising not to.
 
 # Proactive skill usage
 Use these when they fit, don't wait to be asked by name:
