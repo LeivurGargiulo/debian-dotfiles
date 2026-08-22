@@ -32,6 +32,9 @@ Coding + unsure of API/library/CLI behavior (syntax, config, flags, version migr
 # Model restriction for reviews
 Reviews, final reviews, code-review agents: sonnet only. Never dispatch opus for review work.
 
+# Commit scope and auto-commit
+Only ever commit inside the current working project's own directory — never commit changes in another repo (e.g. editing this dotfiles repo's CLAUDE.md while working in a different project) without asking first. Within the working project, commit automatically once a requested change is complete and verified — no need to ask each time, overriding the general "only commit when explicitly asked" default for this in-project case.
+
 # Python packages: always use a venv
 Never `pip install` into system/global Python for any project. Every Python project gets its own `.venv` (project root, `.gitignore`d), created with `python3 -m venv .venv` if missing, activated or invoked via `.venv/bin/python` / `.venv/bin/pip` for all installs and runs (including `pytest`).
 
@@ -46,6 +49,8 @@ Real cost driver = API round-trip count, not turn count or plugin count. Every s
 Never run compute-heavy or long-running processes on the user's own machine without asking first, even when framed internally as a "smoke test," "quick check," or "just verifying it compiles." If a tool claims isolation (e.g. Agent `isolation: "remote"`), verify it actually ran off-machine (check `ps aux` / worktree paths / no local CPU spike) before telling the user it didn't touch their PC — never assert "not your cores" / "not your machine" as a guess. If the user has said "don't run this on my PC," that instruction stands until they say otherwise; a differently-framed run (build check, timeout-bounded test) is still a violation if it burns real local CPU without asking. Reason: in one session, two separate local-execution incidents happened back to back — once trusting `isolation: "remote"` without checking it actually left the machine (it silently fell back to local, ran at 1186% CPU), and once immediately after, running an "innocent" 90s local smoke test on 12 cores without asking, right after promising not to.
 
 # Proactive skill usage
+Default posture: freely use any installed skill, plugin, or MCP tool whenever it fits the task, without waiting for the user to name it explicitly. Check the available-skills/plugins listing before defaulting to a manual approach a skill already covers.
+
 Use these when they fit, don't wait to be asked by name:
 - `hookify` (writing-rules) — after fixing a mistake or repeated correction in a session, offer to turn it into a hook so it doesn't recur.
 - `skill-creator` — when a workflow gets repeated 2+ times in a project or would benefit from being reusable, offer to package it as a skill.

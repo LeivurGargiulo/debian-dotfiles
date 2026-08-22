@@ -20,6 +20,23 @@ fi
 # HYDE_ZSH_COMPINIT_CHECK=1 # Set 24 (hours) per compinit security check // lessens startup time
 # HYDE_ZSH_OMZ_DEFER=1 # Set to 1 to defer loading of oh-my-zsh plugins ONLY if prompt is already loaded
 
+alias glow='glow -p'
+alias markdown='glow -p'
+commands() {
+    cat <<'EOF'
+glow / markdown  - glow -p (render markdown in pager)
+reload           - re-source .zshrc
+mcc              - MinecraftClient
+cd <name>        - zoxide, jumps by frecency (not plain cd)
+cdi              - zoxide interactive fzf pick
+index            - bulk-seed zoxide with every dir under $HOME
+claudio [dir]    - run claude --dangerously-skip-permissions, cd first if dir given
+dev <project>    - tmux session in ~/Projects/<project>, launches claudio (reattaches if running)
+open <name>      - fuzzy-find a file under $HOME and xdg-open it
+commands         - this list
+EOF
+}
+
 if [[ ${HYDE_ZSH_NO_PLUGINS} != "1" ]]; then
     #  OMZ Plugins 
     # manually add your oh-my-zsh plugins here

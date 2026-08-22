@@ -13,7 +13,8 @@
       "Bash(git status*)",
       "Bash(git log*)",
       "Bash(git diff*)"
-    ]
+    ],
+    "defaultMode": "default"
   },
   "model": "sonnet",
   "hooks": {
@@ -29,6 +30,12 @@
       }
     ]
   },
+  "worktree": {
+    "baseRef": "fresh"
+  },
+  "enableWorkflows": false,
+  "workflowSizeGuideline": "small",
+  "workflowKeywordTriggerEnabled": false,
   "statusLine": {
     "type": "command",
     "command": "bash \"$HOME/.claude/statusline-command.sh\""
@@ -37,45 +44,39 @@
     "pyright-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true,
-    "ponytail@ponytail": true,
-    "superpowers@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": false,
     "context7@claude-plugins-official": true,
-    "claude-code-setup@claude-plugins-official": true,
-    "andrej-karpathy-skills@karpathy-skills": true,
-    "caveman@caveman": false,
-    "playwright@claude-plugins-official": true,
+    "playwright@claude-plugins-official": false,
     "serena@claude-plugins-official": true,
-    "agnix@claude-community": true
+    "frontend-design@claude-plugins-official": true,
+    "code-review@claude-plugins-official": false,
+    "skill-creator@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "playground@claude-plugins-official": false,
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "session-report@claude-plugins-official": true,
+    "remember@claude-plugins-official": false,
+    "claude-security@claude-plugins-official": true
   },
-  "extraKnownMarketplaces": {
-    "ponytail": {
-      "source": {
-        "source": "github",
-        "repo": "DietrichGebert/ponytail"
-      }
-    },
-    "karpathy-skills": {
-      "source": {
-        "source": "github",
-        "repo": "forrestchang/andrej-karpathy-skills"
-      }
-    },
-    "caveman": {
-      "source": {
-        "source": "github",
-        "repo": "JuliusBrussee/caveman"
-      }
-    },
-    "claude-community": {
-      "source": {
-        "source": "github",
-        "repo": "anthropics/claude-plugins-community"
-      }
-    }
-  },
-  "effortLevel": "medium",
+  "extraKnownMarketplaces": {},
+  "alwaysThinkingEnabled": false,
+  "effortLevel": "high",
+  "promptSuggestionEnabled": false,
+  "awaySummaryEnabled": false,
+  "askUserQuestionTimeout": "60s",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
+  "editorMode": "normal",
+  "verbose": false,
+  "preferredNotifChannel": "kitty",
+  "switchModelsOnFlag": false,
+  "fileCheckpointingEnabled": false,
+  "showTurnDuration": false,
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": false,
   "autoMode": {
     "environment": [
       "### Org-wide",
@@ -103,5 +104,6 @@
       "**Org-specific CLIs**: None configured",
       "No 'routine under <user>/ prefix' qualifiers identified from evidence"
     ]
-  }
+  },
+  "dialogExpiry": "60s"
 }

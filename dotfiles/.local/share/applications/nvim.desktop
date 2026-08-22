@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Neovim
+GenericName=Text Editor
+Comment=Edit text files in a terminal
+Exec=xdg-terminal-exec nvim %F
+Icon=nvim
+Terminal=false
+MimeType=text/plain;text/x-chdr;text/x-csrc;text/x-c++hdr;text/x-c++src;text/x-java;text/x-dsrc;text/x-pascal;text/x-perl;text/x-python;application/x-php;application/x-httpd-php3;application/x-httpd-php4;application/x-httpd-php5;text/css;text/x-sql;text/x-diff;
+Categories=Utility;TextEditor;Development;
+Keywords=text;editor;syntax;terminal;vim;

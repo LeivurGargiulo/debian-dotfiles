@@ -43,17 +43,21 @@ end
 --
 -- Other Lua files next to this one can be pulled in with require("name").
 
--- 3x 1080p desktop (gamdias). Real hardware, from `hyprctl monitors` —
--- dotfiles/.config/hypr/monitors.conf (the old hyprlang-era mechanism) is
--- dead in this HyDE fork: it migrated to Lua config, and per
--- vendor/hyde/MIGRATION-LUA.md, monitors are declared here with hl.monitor()
--- instead. HDMI-A-1 is the physically-central monitor and the only one of
--- the three that reports 180Hz support (DP-1/DP-2 cap at 120Hz per their own
+-- 3x 1080p desktop (gamdias) plus a 4th monitor mounted above the center
+-- one. Real hardware, from `hyprctl monitors` — dotfiles/.config/hypr/
+-- monitors.conf (the old hyprlang-era mechanism) is dead in this HyDE fork:
+-- it migrated to Lua config, and per vendor/hyde/MIGRATION-LUA.md, monitors
+-- are declared here with hl.monitor() instead. HDMI-A-1 is the
+-- physically-central monitor and the only one of the original three that
+-- reports 180Hz support (DP-1/DP-2 cap at 120Hz per their own
 -- availableModes) — it sits in the middle position on purpose, not
--- left-to-right by port name.
+-- left-to-right by port name. HDMI-A-2 is a 32" TV physically mounted above
+-- HDMI-A-1, so it shares its x position and sits one of its own heights
+-- (1080px) above y=0.
 hl.monitor({ output = "DP-1", mode = "1920x1080@60", position = "0x0", scale = 1 })
 hl.monitor({ output = "HDMI-A-1", mode = "1920x1080@180", position = "1920x0", scale = 1 })
 hl.monitor({ output = "DP-2", mode = "1920x1080@60", position = "3840x0", scale = 1 })
+hl.monitor({ output = "HDMI-A-2", mode = "1920x1080@60", position = "1920x-1080", scale = 1 })
 
 -- US + Latin American Spanish layouts. First entry (us) is active on login;
 -- switch with HyDE's own SUPER + K bind (hyprctl switchxkblayout all next),
